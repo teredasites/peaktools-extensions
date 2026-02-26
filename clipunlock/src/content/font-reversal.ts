@@ -81,12 +81,19 @@ export function detectCipherFonts(): string[] {
 /**
  * Build a character mapping by rendering text with the custom font
  * and comparing to a reference font. Uses canvas for pixel comparison.
+ * Batches all characters into 2 getImageData calls to avoid Chrome warnings.
  */
 export function buildCharMap(fontFamily: string): FontMapping {
   const charMap = new Map<string, string>();
+  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const charCount = chars.length; // 62
+  const cellW = 40; // width per character cell
+  const cellH = 50;
+  const canvasW = cellW * charCount;
+
   const canvas = document.createElement('canvas');
-  canvas.width = 100;
-  canvas.height = 50;
+  canvas.width = canvasW;
+  canvas.height = cellH;
   const ctx = canvas.getContext('2d', { willReadFrequently: true });
   if (!ctx) return { fontFamily, charMap };
 
@@ -94,42 +101,55 @@ export function buildCharMap(fontFamily: string): FontMapping {
   const refFont = `${size}px serif`;
   const testFont = `${size}px "${fontFamily}", serif`;
 
-  // Render each printable ASCII character in both fonts and compare
-  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  // Render ALL chars in the reference font, one getImageData call
+  ctx.font = refFont;
+  ctx.fillStyle = '#000';
+  ctx.textBaseline = 'top';
+  for (let i = 0; i < charCount; i++) {
+    ctx.fillText(chars[i], i * cellW + 4, 10);
+  }
+  const refData = ctx.getImageData(0, 0, canvasW, cellH).data;
 
-  function getGlyphHash(font: string, char: string): string {
-    ctx!.clearRect(0, 0, 100, 50);
-    ctx!.font = font;
-    ctx!.fillStyle = '#000';
-    ctx!.textBaseline = 'top';
-    ctx!.fillText(char, 10, 10);
-    const data = ctx!.getImageData(0, 0, 100, 50).data;
-    // Simple hash: sum of non-zero alpha pixels and their positions
+  // Render ALL chars in the custom font, one getImageData call
+  ctx.clearRect(0, 0, canvasW, cellH);
+  ctx.font = testFont;
+  ctx.fillStyle = '#000';
+  ctx.textBaseline = 'top';
+  for (let i = 0; i < charCount; i++) {
+    ctx.fillText(chars[i], i * cellW + 4, 10);
+  }
+  const testData = ctx.getImageData(0, 0, canvasW, cellH).data;
+
+  // Hash each character cell from both renders
+  function hashCell(data: Uint8ClampedArray, cellIndex: number): string {
     let hash = 0;
-    for (let i = 3; i < data.length; i += 4) {
-      if (data[i] > 0) hash += i * data[i];
+    const xStart = cellIndex * cellW;
+    for (let y = 0; y < cellH; y++) {
+      for (let x = xStart; x < xStart + cellW; x++) {
+        const idx = (y * canvasW + x) * 4 + 3; // alpha channel
+        if (data[idx] > 0) hash += idx * data[idx];
+      }
     }
     return String(hash);
   }
 
-  // Build reference hashes for standard font
+  // Build reference hash → char lookup
   const refHashes = new Map<string, string>();
-  for (const char of chars) {
-    refHashes.set(getGlyphHash(refFont, char), char);
+  const refCellHashes: string[] = [];
+  for (let i = 0; i < charCount; i++) {
+    const h = hashCell(refData, i);
+    refHashes.set(h, chars[i]);
+    refCellHashes.push(h);
   }
 
-  // Compare custom font glyphs to reference
+  // Compare custom font cells to reference
   let mismatches = 0;
-  for (const char of chars) {
-    const customHash = getGlyphHash(testFont, char);
-    const refHash = getGlyphHash(refFont, char);
-
-    if (customHash !== refHash) {
-      // This character renders differently in the custom font
-      // Try to find which reference character it visually matches
+  for (let i = 0; i < charCount; i++) {
+    const customHash = hashCell(testData, i);
+    if (customHash !== refCellHashes[i]) {
       const matchedChar = refHashes.get(customHash);
-      if (matchedChar && matchedChar !== char) {
-        charMap.set(char, matchedChar);
+      if (matchedChar && matchedChar !== chars[i]) {
+        charMap.set(chars[i], matchedChar);
         mismatches++;
       }
     }
