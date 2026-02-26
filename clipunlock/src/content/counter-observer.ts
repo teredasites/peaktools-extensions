@@ -121,6 +121,9 @@ export class CounterObserver {
         this.opCount++;
       }
     }
+    // Skip our own UI overlays
+    if ((el as HTMLElement).id?.startsWith('copyunlock-')) return;
+
     const style = window.getComputedStyle(el);
     if ((style.position === 'absolute' || style.position === 'fixed') && parseFloat(style.opacity) < 0.05) {
       const rect = el.getBoundingClientRect();
