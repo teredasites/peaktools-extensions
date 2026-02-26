@@ -300,7 +300,7 @@ chrome extensions/
   - Shield icon protection badge with slide-in animation
   - Clipboard items with hover gradient reveal, type badges
   - Footer actions with SVG icons (sidepanel, settings)
-  - Deep dark theme (`#0c0c14` base), accent `#6366f1` (indigo)
+  - Monochromatic zinc palette (`#09090b` → `#1f1f23`), single blue accent `#3b82f6`
 - **Complete settings page redesign** — Tabbed navigation:
   - 5 tabs: General, Clipboard, Sites, Pro, Data (with SVG icons)
   - Custom iOS-style toggle switches (replaced native checkboxes)
@@ -322,6 +322,24 @@ chrome extensions/
   - `publish-extension.yml` and `deploy-worker.yml` only trigger on `master`
   - Safe to push freely to dev — nothing goes live until PR merges to master
   - Set `CWS_ITEM_ID_CLIPUNLOCK` per-extension secret on GitHub
+
+### Accomplished (Session 5 — UI Color Overhaul)
+- **Rewrote popup.css & options.css** — killed all purple (#6366f1) and green (#10b981)
+- **New color system** — monochromatic zinc palette used across all UI:
+  - Backgrounds: `#09090b` → `#111113` → `#18181b` → `#1f1f23` (near-black scale)
+  - Text: `#fafafa` → `#d4d4d8` → `#a1a1aa` → `#71717a` → `#52525b` (zinc gray)
+  - Single accent: `#3b82f6` (blue) — used very sparingly (power button, status pill, accent actions)
+  - Danger: `#ef4444` (red) — only for destructive actions
+  - No purple, no green anywhere in the UI
+- **Updated options.html** — changed hardcoded green SVG stroke to blue (`#3b82f6`)
+- **Design direction**: Linear/Raycast inspired — clean, dark, understated, expensive-looking
+- **Nav tabs**: No more colored active state — uses `bg-3` + `border-strong` (subtle, not flashy)
+- **Toggles**: Track turns blue on check, neutral dark when unchecked
+- **Plan cards**: No gradient background — clean flat cards with subtle hover lift
+- **Pro hero**: No gradient background — solid `bg-1` with `border-strong`
+- **Stats**: Numbers in white (`text-100`) not accent — cleaner look
+- **Toast**: Success uses blue accent border, not green
+- Build clean, committed & pushed to dev
 
 ---
 
