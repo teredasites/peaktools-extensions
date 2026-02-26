@@ -141,8 +141,9 @@ chrome extensions/
 ### GitHub Repository
 - **Repo**: `teredasites/peaktools-extensions` (PRIVATE)
 - **URL**: https://github.com/teredasites/peaktools-extensions
-- **Secrets Set**: CLOUDFLARE_API_TOKEN, CWS_CLIENT_ID, CWS_CLIENT_SECRET, CWS_REFRESH_TOKEN, CWS_ITEM_ID
+- **Secrets Set**: CLOUDFLARE_API_TOKEN, CWS_CLIENT_ID, CWS_CLIENT_SECRET, CWS_REFRESH_TOKEN, CWS_ITEM_ID_CLIPUNLOCK
 - **CI/CD**: 3 GitHub Actions workflows (ci.yml, deploy-worker.yml, publish-extension.yml)
+- **Auto-publish**: Push to master auto-publishes changed extensions to CWS (no manual trigger needed)
 
 ### Adding a New Extension to Payment System
 1. Run: `STRIPE_SECRET_KEY=sk_live_... node license-worker/scripts/create-stripe-product.mjs --name "ExtName" --slug ext-slug --monthly X.XX --annual XX.XX --lifetime XX.XX`
@@ -317,14 +318,14 @@ chrome extensions/
 
 ## Architecture — How Updates Flow
 
-### The Update Pipeline
+### The Update Pipeline (FULLY AUTOMATED)
 ```
 Local code → git push → GitHub (teredasites/peaktools-extensions)
                               ↓ (automatic on push)
                          CI runs (build + test)
-                              ↓ (manual trigger)
-                    publish-extension.yml workflow
-                              ↓
+                              ↓ (automatic — detects changed extensions)
+                    publish-extension.yml auto-triggers
+                              ↓ (builds, tests, packages, uploads)
                    Chrome Web Store API (via OAuth)
                               ↓ (Chrome auto-updates every few hours)
                          Users' browsers
@@ -332,11 +333,12 @@ Local code → git push → GitHub (teredasites/peaktools-extensions)
 
 ### Key Points
 - **GitHub is the source of truth** — all code lives in `teredasites/peaktools-extensions` (private monorepo)
-- **GitHub does NOT auto-publish** — you must manually trigger the publish workflow
-- **CI runs automatically** on every push (builds, tests, typechecks)
-- **To publish an update**: GitHub.com → Actions tab → "Publish Extension to Chrome Web Store" → Run workflow → enter folder name (e.g., "clipunlock")
+- **Auto-publish on push to master** — when any extension's `src/`, `assets/`, `manifest.json`, or `package.json` changes, the publish workflow auto-detects and publishes ONLY the changed extensions
+- **CI also runs automatically** on every push (builds, tests, typechecks) — separate from publish
+- **Manual trigger still available**: GitHub.com → Actions tab → "Publish Extensions to Chrome Web Store" → Run workflow → optionally specify folder name
 - **License worker auto-deploys**: Any push that changes `license-worker/` triggers `deploy-worker.yml` automatically
 - **Chrome auto-updates**: CWS pushes updates to users within hours of publish
+- **Per-extension CWS secrets**: Each extension has its own `CWS_ITEM_ID_<NAME>` secret (e.g., `CWS_ITEM_ID_CLIPUNLOCK`)
 
 ### Per-Extension Safety
 - Each extension has its own CWS Item ID (stored as GitHub secret `CWS_ITEM_ID`)
