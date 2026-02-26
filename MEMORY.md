@@ -141,9 +141,11 @@ chrome extensions/
 ### GitHub Repository
 - **Repo**: `teredasites/peaktools-extensions` (PRIVATE)
 - **URL**: https://github.com/teredasites/peaktools-extensions
+- **Default branch**: `dev` (all daily work goes here)
+- **Production branch**: `master` (only merged via PR — triggers auto-publish)
 - **Secrets Set**: CLOUDFLARE_API_TOKEN, CWS_CLIENT_ID, CWS_CLIENT_SECRET, CWS_REFRESH_TOKEN, CWS_ITEM_ID_CLIPUNLOCK
 - **CI/CD**: 3 GitHub Actions workflows (ci.yml, deploy-worker.yml, publish-extension.yml)
-- **Auto-publish**: Push to master auto-publishes changed extensions to CWS (no manual trigger needed)
+- **Auto-publish**: PR merge to master auto-publishes changed extensions to CWS
 
 ### Adding a New Extension to Payment System
 1. Run: `STRIPE_SECRET_KEY=sk_live_... node license-worker/scripts/create-stripe-product.mjs --name "ExtName" --slug ext-slug --monthly X.XX --annual XX.XX --lifetime XX.XX`
@@ -313,32 +315,53 @@ chrome extensions/
   - Shortcuts link, Stripe checkout (3 plans), license refresh (2 buttons)
   - Version display, stats loading, pro status loading
 - **Build clean**, committed & pushed to GitHub
+- **Set up dev/production branching strategy**:
+  - Created `dev` branch from master, pushed to GitHub
+  - Set `dev` as default branch on GitHub (all work goes here by default)
+  - Updated CI to run on both `dev` and `master` branches
+  - `publish-extension.yml` and `deploy-worker.yml` only trigger on `master`
+  - Safe to push freely to dev — nothing goes live until PR merges to master
+  - Set `CWS_ITEM_ID_CLIPUNLOCK` per-extension secret on GitHub
 
 ---
 
 ## Architecture — How Updates Flow
 
-### The Update Pipeline (FULLY AUTOMATED)
+### Branching Strategy (Dev/Production)
 ```
-Local code → git push → GitHub (teredasites/peaktools-extensions)
-                              ↓ (automatic on push)
-                         CI runs (build + test)
-                              ↓ (automatic — detects changed extensions)
-                    publish-extension.yml auto-triggers
-                              ↓ (builds, tests, packages, uploads)
-                   Chrome Web Store API (via OAuth)
-                              ↓ (Chrome auto-updates every few hours)
-                         Users' browsers
+dev branch (DEFAULT) ← all daily work, bug fixes, features
+    │
+    │  CI runs on every push (build + test)
+    │  NOTHING gets published to users — safe to push freely
+    │
+    └──► PR merge to master ──► auto-publishes to CWS + auto-deploys worker
+                                     ↓
+                              Chrome auto-updates users
 ```
 
+| Branch | Purpose | CI? | Publishes to CWS? | Deploys worker? |
+|--------|---------|-----|--------------------|-----------------|
+| `dev` | Daily work | YES | NO | NO |
+| `master` | Production | YES | YES (auto) | YES (auto) |
+
+### Daily Workflow
+1. Work on `dev` branch, push as much as you want — CI tests everything, nothing goes live
+2. When ready to release: `gh pr create --base master` (or create PR on GitHub)
+3. PR merges to master → auto-publishes changed extensions to CWS + auto-deploys worker
+4. Chrome pushes update to all users within a few hours
+
 ### Key Points
-- **GitHub is the source of truth** — all code lives in `teredasites/peaktools-extensions` (private monorepo)
-- **Auto-publish on push to master** — when any extension's `src/`, `assets/`, `manifest.json`, or `package.json` changes, the publish workflow auto-detects and publishes ONLY the changed extensions
-- **CI also runs automatically** on every push (builds, tests, typechecks) — separate from publish
-- **Manual trigger still available**: GitHub.com → Actions tab → "Publish Extensions to Chrome Web Store" → Run workflow → optionally specify folder name
-- **License worker auto-deploys**: Any push that changes `license-worker/` triggers `deploy-worker.yml` automatically
-- **Chrome auto-updates**: CWS pushes updates to users within hours of publish
+- **`dev` is the default branch** — `git push` goes to dev by default, safe to push broken code
+- **`master` is production** — ONLY gets code via PR merges from dev, auto-publishes on merge
+- **CI runs on BOTH branches** — catches bugs early on dev, double-checks before publish on master
 - **Per-extension CWS secrets**: Each extension has its own `CWS_ITEM_ID_<NAME>` secret (e.g., `CWS_ITEM_ID_CLIPUNLOCK`)
+- **License worker auto-deploys**: Only on master when `license-worker/` changes
+- **Manual publish still available**: GitHub Actions tab → Run workflow (as fallback)
+
+### Local Development (NOT auto-reloading)
+- Chrome does NOT auto-reload local unpacked extensions — you must click reload on `chrome://extensions`
+- Use `npm run dev` for watch mode (auto-rebuilds on file save, but still requires manual Chrome reload)
+- `npm run build` for production build, `npm run test` for tests
 
 ### Per-Extension Safety
 - Each extension has its own CWS Item ID (stored as GitHub secret `CWS_ITEM_ID`)
