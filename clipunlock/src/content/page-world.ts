@@ -8,6 +8,7 @@
   const origAddEventListener = EventTarget.prototype.addEventListener;
   const origRemoveEventListener = EventTarget.prototype.removeEventListener;
   const origRemoveAllRanges = Selection.prototype.removeAllRanges;
+  const origEmpty = Selection.prototype.empty;
   const origGetSelection = window.getSelection;
 
   // ─── Auto-tracker: capture copy-related addEventListener calls ───
@@ -42,8 +43,7 @@
   (window as Record<string, unknown>).__copyunlock_orig_addEventListener = origAddEventListener;
 
   // ─── State for removeAllRanges protection ───
-  let userSelecting = false;
-  let lastMouseDown = 0;
+  let selectionProtectedUntil = 0;
   let removeAllRangesPatched = false;
 
   // ─── Master kill-switch: all capture-phase blockers check this ───
@@ -205,56 +205,62 @@
         if (removeAllRangesPatched) break;
         removeAllRangesPatched = true;
 
-        origAddEventListener.call(
-          document,
-          'mousedown',
-          function () {
-            if (!unlockActive) return;
-            userSelecting = true;
-            lastMouseDown = Date.now();
-          },
-          true,
-        );
-        origAddEventListener.call(
-          document,
-          'mouseup',
-          function () {
-            if (!unlockActive) return;
-            setTimeout(function () {
-              if (Date.now() - lastMouseDown > 1500) {
-                userSelecting = false;
-              }
-            }, 2000);
-          },
-          true,
-        );
+        // Track user interaction — protect selections for 3s after any selection-related action
+        const extendProtection = function () {
+          if (!unlockActive) return;
+          selectionProtectedUntil = Date.now() + 3000;
+        };
+
+        // Mousedown = user starting to select
+        origAddEventListener.call(document, 'mousedown', extendProtection, true);
+        // Mouseup = user just finished selecting — protect for 3s after
+        origAddEventListener.call(document, 'mouseup', extendProtection, true);
+        // Keyboard selection (Shift+Arrow, Shift+Home/End, Ctrl+A)
         origAddEventListener.call(
           document,
           'keydown',
           function (ev: Event) {
             if (!unlockActive) return;
             const ke = ev as KeyboardEvent;
-            if (ke.shiftKey && (ke.key.startsWith('Arrow') || ke.key === 'Home' || ke.key === 'End')) {
-              userSelecting = true;
-              setTimeout(function () {
-                userSelecting = false;
-              }, 2000);
+            if (ke.shiftKey || ((ke.ctrlKey || ke.metaKey) && ke.key === 'a')) {
+              extendProtection();
             }
           },
           true,
         );
+        // Context menu = user right-clicked, likely wants to copy selection
+        origAddEventListener.call(document, 'contextmenu', extendProtection, true);
+        // Touch events for mobile selection
+        origAddEventListener.call(document, 'touchstart', extendProtection, true);
+        origAddEventListener.call(document, 'touchend', extendProtection, true);
+
+        // Core guard: block removeAllRanges if there's a non-empty selection and user is interacting
+        function shouldBlock(sel: Selection): boolean {
+          if (!unlockActive) return false;
+          // Always protect non-empty selections during the protection window
+          if (Date.now() < selectionProtectedUntil) {
+            try { if (sel.toString().length > 0) return true; } catch { /* ignore */ }
+            // Even if selection is empty during mousedown phase, block to prevent preemptive clearing
+            return true;
+          }
+          // Outside protection window, still protect non-empty selections
+          // (catches programmatic timer-based clearing like Method 12)
+          try { if (sel.rangeCount > 0 && sel.toString().length > 0) return true; } catch { /* ignore */ }
+          return false;
+        }
 
         Selection.prototype.removeAllRanges = function () {
-          if (unlockActive && userSelecting) return;
-          if (unlockActive) {
-            try {
-              if (this.toString().length > 0) return;
-            } catch {
-              // ignore
-            }
-          }
+          if (shouldBlock(this)) return;
           return origRemoveAllRanges.call(this);
         };
+
+        // Also patch Selection.empty() — Chrome alias for removeAllRanges
+        if (origEmpty) {
+          Selection.prototype.empty = function () {
+            if (shouldBlock(this)) return;
+            return origEmpty.call(this);
+          };
+        }
         break;
       }
 
@@ -367,9 +373,10 @@
         // Restore prototypes
         EventTarget.prototype.addEventListener = origAddEventListener;
         Selection.prototype.removeAllRanges = origRemoveAllRanges;
+        Selection.prototype.empty = origEmpty;
         window.getSelection = origGetSelection;
         removeAllRangesPatched = false;
-        userSelecting = false;
+        selectionProtectedUntil = 0;
 
         // Restore document handlers that were nulled
         if (savedDocHandlers) {

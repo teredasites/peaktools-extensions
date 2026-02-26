@@ -12,6 +12,7 @@ const clipCount = document.getElementById('clip-count') as HTMLSpanElement;
 const recentItemsContainer = document.getElementById('recent-items') as HTMLDivElement;
 const openSidepanelBtn = document.getElementById('open-sidepanel') as HTMLButtonElement;
 const openOptionsBtn = document.getElementById('open-options') as HTMLButtonElement;
+const proBadge = document.getElementById('pro-badge') as HTMLSpanElement;
 
 let currentTabId: number | null = null;
 
@@ -139,6 +140,16 @@ async function init(): Promise<void> {
     renderRecentItems(Array.isArray(items) ? items : []);
   } catch {
     renderRecentItems([]);
+  }
+
+  // Load Pro status
+  try {
+    const proStatus = await chrome.runtime.sendMessage({ type: 'GET_PRO_STATUS', payload: {} });
+    if (proStatus?.isPro && proBadge) {
+      proBadge.classList.remove('hidden');
+    }
+  } catch {
+    // Not Pro or unavailable
   }
 }
 

@@ -12,6 +12,11 @@ const log = createLogger('service-worker');
 
 let proStatus: ProStatus = { isPro: false, trialActive: false, trialDaysLeft: 0 };
 
+// License readiness gate — all Pro-dependent code awaits this before responding
+// Prevents race condition where GET_PRO_STATUS arrives before checkLicense() resolves
+let licenseReadyResolve: () => void;
+let licenseReady: Promise<void> = new Promise((r) => { licenseReadyResolve = r; });
+
 // ─── License System — Real Stripe via PeakTools License Worker ───
 
 interface LicenseCacheEntry {
@@ -44,6 +49,15 @@ async function getCachedLicense(): Promise<LicenseCacheEntry | null> {
   }
 }
 
+async function getCachedLicenseStale(): Promise<LicenseCacheEntry | null> {
+  try {
+    const result = await chrome.storage.local.get(LICENSE_CACHE_KEY);
+    return (result[LICENSE_CACHE_KEY] as LicenseCacheEntry) ?? null;
+  } catch {
+    return null;
+  }
+}
+
 async function cacheLicense(entry: LicenseCacheEntry): Promise<void> {
   try {
     await chrome.storage.local.set({ [LICENSE_CACHE_KEY]: entry });
@@ -65,37 +79,84 @@ async function checkLicense(): Promise<void> {
   // Try cache first
   const cached = await getCachedLicense();
   if (cached) {
-    proStatus = cached.proStatus;
-    log.info(`license from cache: isPro=${proStatus.isPro}`);
-    return;
+    // Validate expiry even from cache
+    if (cached.expiresAt) {
+      const expiry = new Date(cached.expiresAt);
+      if (expiry < new Date()) {
+        log.info('cached license expired, clearing cache');
+        await chrome.storage.local.remove(LICENSE_CACHE_KEY);
+        // Fall through to API check
+      } else {
+        proStatus = cached.proStatus;
+        log.info(`license from cache: isPro=${proStatus.isPro}`);
+        licenseReadyResolve();
+        return;
+      }
+    } else {
+      // No expiry = lifetime or free
+      proStatus = cached.proStatus;
+      log.info(`license from cache: isPro=${proStatus.isPro}`);
+      licenseReadyResolve();
+      return;
+    }
   }
 
   const email = await getUserEmail();
   if (!email) {
     proStatus = { isPro: false, trialActive: false, trialDaysLeft: 0 };
     log.info('no user email available — free tier');
+    licenseReadyResolve();
     return;
   }
 
-  try {
-    const result = await checkLicenseFromAPI(email);
-    proStatus = {
-      isPro: result.active === true,
-      trialActive: false,
-      trialDaysLeft: 0,
-    };
+  // Retry logic: up to 3 attempts with exponential backoff
+  let lastErr: unknown;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const result = await checkLicenseFromAPI(email);
+      proStatus = {
+        isPro: result.active === true,
+        trialActive: false,
+        trialDaysLeft: 0,
+      };
+      await cacheLicense({
+        proStatus,
+        email,
+        plan: result.plan ?? null,
+        expiresAt: result.expiresAt ?? null,
+        cachedAt: Date.now(),
+      });
+      log.info(`license checked: isPro=${proStatus.isPro}, plan=${result.plan ?? 'none'}`);
+      licenseReadyResolve();
+      return;
+    } catch (err) {
+      lastErr = err;
+      if (attempt < 2) {
+        const delayMs = 1000 * Math.pow(2, attempt); // 1s, 2s
+        log.warn(`license check attempt ${attempt + 1} failed, retrying in ${delayMs}ms`);
+        await new Promise((r) => setTimeout(r, delayMs));
+      }
+    }
+  }
+
+  // All retries failed — check cache even if expired (stale is better than wrong)
+  const staleCache = await getCachedLicenseStale();
+  if (staleCache && staleCache.proStatus.isPro) {
+    proStatus = staleCache.proStatus;
+    log.warn('all retries failed, using stale cache (user is Pro)');
+  } else {
+    proStatus = { isPro: false, trialActive: false, trialDaysLeft: 0 };
+    log.error('license check failed after 3 attempts, using free tier:', lastErr);
+    // Cache a SHORT TTL so we retry sooner (5 minutes, not 24 hours)
     await cacheLicense({
       proStatus,
       email,
-      plan: result.plan ?? null,
-      expiresAt: result.expiresAt ?? null,
-      cachedAt: Date.now(),
+      plan: null,
+      expiresAt: null,
+      cachedAt: Date.now() - LICENSE_CACHE_TTL_MS + 5 * 60 * 1000, // expire in 5 min
     });
-    log.info(`license checked: isPro=${proStatus.isPro}, plan=${result.plan ?? 'none'}`);
-  } catch (err) {
-    log.error('license check failed, using free tier:', err);
-    proStatus = { isPro: false, trialActive: false, trialDaysLeft: 0 };
   }
+  licenseReadyResolve();
 }
 
 async function openCheckout(plan: 'monthly' | 'annual' | 'lifetime'): Promise<string | null> {
@@ -121,7 +182,9 @@ async function openCheckout(plan: 'monthly' | 'annual' | 'lifetime'): Promise<st
     }
     const data = await resp.json() as { url?: string };
     if (data.url) {
-      chrome.tabs.create({ url: data.url });
+      const tab = await chrome.tabs.create({ url: data.url });
+      // Auto-recheck license when checkout tab closes or navigates to success URL
+      startCheckoutWatcher(tab.id ?? 0, email);
       return data.url;
     }
   } catch (err) {
@@ -129,6 +192,83 @@ async function openCheckout(plan: 'monthly' | 'annual' | 'lifetime'): Promise<st
     chrome.tabs.create({ url: `https://peaktools.dev/copyunlock/#pricing` });
   }
   return null;
+}
+
+// Watch for checkout completion — re-check license when user returns from Stripe
+function startCheckoutWatcher(checkoutTabId: number, email: string): void {
+  if (!checkoutTabId || checkoutTabId <= 0) return;
+
+  let pollCount = 0;
+  const MAX_POLLS = 30; // poll for up to 5 minutes (10s intervals)
+  let pollTimer: ReturnType<typeof setInterval> | null = null;
+
+  // Method 1: Watch for tab close
+  const onRemoved = (tabId: number) => {
+    if (tabId === checkoutTabId) {
+      cleanup();
+      recheckAfterCheckout(email);
+    }
+  };
+
+  // Method 2: Watch for navigation to success URL
+  const onUpdated = (tabId: number, changeInfo: chrome.tabs.TabChangeInfo) => {
+    if (tabId === checkoutTabId && changeInfo.url) {
+      if (changeInfo.url.includes('peaktools.dev/success')) {
+        cleanup();
+        recheckAfterCheckout(email);
+      } else if (changeInfo.url.includes('peaktools.dev/cancel')) {
+        cleanup();
+        log.info('checkout cancelled by user');
+      }
+    }
+  };
+
+  // Method 3: Poll the license API in case webhook fires while tab is still open
+  pollTimer = setInterval(async () => {
+    pollCount++;
+    if (pollCount > MAX_POLLS) {
+      cleanup();
+      return;
+    }
+    try {
+      const result = await checkLicenseFromAPI(email);
+      if (result.active) {
+        cleanup();
+        proStatus = { isPro: true, trialActive: false, trialDaysLeft: 0 };
+        await cacheLicense({
+          proStatus,
+          email,
+          plan: result.plan ?? null,
+          expiresAt: result.expiresAt ?? null,
+          cachedAt: Date.now(),
+        });
+        log.info('checkout detected via polling — user is now Pro!');
+      }
+    } catch {
+      // Polling failure is non-fatal
+    }
+  }, 10_000);
+
+  chrome.tabs.onRemoved.addListener(onRemoved);
+  chrome.tabs.onUpdated.addListener(onUpdated);
+
+  function cleanup(): void {
+    chrome.tabs.onRemoved.removeListener(onRemoved);
+    chrome.tabs.onUpdated.removeListener(onUpdated);
+    if (pollTimer) {
+      clearInterval(pollTimer);
+      pollTimer = null;
+    }
+  }
+}
+
+async function recheckAfterCheckout(email: string): Promise<void> {
+  // Small delay for webhook to process
+  await new Promise((r) => setTimeout(r, 3000));
+  // Clear cache and recheck
+  await chrome.storage.local.remove(LICENSE_CACHE_KEY);
+  await checkLicense();
+  log.info(`post-checkout recheck: isPro=${proStatus.isPro}`);
 }
 
 function setupContextMenus(): void {
@@ -421,11 +561,14 @@ onMessage((msg: Message, sender, sendResponse) => {
       return true;
     }
     case 'GET_PRO_STATUS': {
-      sendResponse(proStatus);
-      break;
+      // Wait for initial license check to complete before responding
+      licenseReady.then(() => sendResponse(proStatus));
+      return true;
     }
     case 'CHECK_LICENSE': {
       // Force re-check license from API (clears cache)
+      // Reset the license gate so subsequent GET_PRO_STATUS calls wait
+      licenseReady = new Promise((r) => { licenseReadyResolve = r; });
       chrome.storage.local.remove(LICENSE_CACHE_KEY).then(() => {
         checkLicense().then(() => {
           sendResponse(proStatus);
