@@ -1,0 +1,47 @@
+name: CI — Build & Test Extensions
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  # ─── Build & test each extension ───
+  clipunlock:
+    name: CopyUnlock — Build & Test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: clipunlock
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: clipunlock/package-lock.json
+      - run: npm ci
+      - run: npm run build
+      - run: npx vitest run
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: clipunlock-dist
+          path: clipunlock/dist/
+          retention-days: 7
+
+  # ─── License Worker typecheck ───
+  license-worker:
+    name: License Worker — Typecheck
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: license-worker
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install
+      - run: npm run typecheck

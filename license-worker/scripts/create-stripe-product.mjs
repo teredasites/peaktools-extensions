@@ -27,13 +27,15 @@ if (!name || !slug || !SK) {
 }
 
 async function stripe(endpoint, body) {
+  // Filter out undefined/null values before encoding
+  const clean = Object.fromEntries(Object.entries(body).filter(([, v]) => v != null));
   const res = await fetch(`https://api.stripe.com/v1${endpoint}`, {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${SK}`,
       'Content-Type': 'application/x-www-form-urlencoded',
     },
-    body: new URLSearchParams(body).toString(),
+    body: new URLSearchParams(clean).toString(),
   });
   const data = await res.json();
   if (data.error) {
@@ -62,8 +64,7 @@ async function main() {
     const p = await stripe('/prices', {
       product: product.id,
       currency: 'usd',
-      unit_amount: Math.round(monthly * 100),
-      recurring: JSON.stringify ? undefined : undefined,
+      unit_amount: String(Math.round(monthly * 100)),
       'recurring[interval]': 'month',
       'metadata[slug]': slug,
       'metadata[plan]': 'monthly',
@@ -77,7 +78,7 @@ async function main() {
     const p = await stripe('/prices', {
       product: product.id,
       currency: 'usd',
-      unit_amount: Math.round(annual * 100),
+      unit_amount: String(Math.round(annual * 100)),
       'recurring[interval]': 'year',
       'metadata[slug]': slug,
       'metadata[plan]': 'annual',
@@ -91,7 +92,7 @@ async function main() {
     const p = await stripe('/prices', {
       product: product.id,
       currency: 'usd',
-      unit_amount: Math.round(lifetime * 100),
+      unit_amount: String(Math.round(lifetime * 100)),
       'metadata[slug]': slug,
       'metadata[plan]': 'lifetime',
     });
