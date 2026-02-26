@@ -130,7 +130,7 @@ function extractFromElement(el: HTMLImageElement | HTMLCanvasElement): OCRResult
     width = result.canvas.width;
     height = result.canvas.height;
   } else {
-    const c = el.getContext('2d');
+    const c = el.getContext('2d', { willReadFrequently: true });
     if (!c) return null;
     ctx = c;
     width = el.width;

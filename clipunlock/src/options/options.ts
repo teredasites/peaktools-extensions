@@ -43,7 +43,7 @@ const proBadge = document.getElementById('pro-badge') as HTMLSpanElement;
 const proActiveInfo = document.getElementById('pro-active-info') as HTMLDivElement;
 const proUpgradeSection = document.getElementById('pro-upgrade-section') as HTMLDivElement;
 const proPlanName = document.getElementById('pro-plan-name') as HTMLElement;
-const planButtons = document.querySelectorAll('.plan-btn') as NodeListOf<HTMLButtonElement>;
+const planButtons = document.querySelectorAll('.plan-card') as NodeListOf<HTMLButtonElement>;
 const refreshLicenseBtn = document.getElementById('refresh-license-btn') as HTMLButtonElement;
 const refreshLicenseBtnFree = document.getElementById('refresh-license-btn-free') as HTMLButtonElement;
 const versionEl = document.getElementById('version') as HTMLSpanElement;
@@ -51,6 +51,8 @@ const statUnlocks = document.getElementById('stat-unlocks') as HTMLSpanElement;
 const statCopies = document.getElementById('stat-copies') as HTMLSpanElement;
 const statWatermarks = document.getElementById('stat-watermarks') as HTMLSpanElement;
 const toast = document.getElementById('toast') as HTMLDivElement;
+const navItems = document.querySelectorAll('.nav-item') as NodeListOf<HTMLButtonElement>;
+const sectionPanels = document.querySelectorAll('.section-panel') as NodeListOf<HTMLElement>;
 
 let currentSettings: Settings = {
   enabled: true,
@@ -64,17 +66,44 @@ let currentSettings: Settings = {
   siteOverrides: {},
 };
 
+// ── Tab Navigation ──
+navItems.forEach((navBtn) => {
+  navBtn.addEventListener('click', () => {
+    const sectionId = navBtn.dataset.section;
+    if (!sectionId) return;
+
+    navItems.forEach((n) => n.classList.remove('active'));
+    navBtn.classList.add('active');
+
+    sectionPanels.forEach((panel) => {
+      if (panel.id === `section-${sectionId}`) {
+        panel.classList.add('active');
+        // Re-trigger animation
+        panel.style.animation = 'none';
+        panel.offsetHeight; // force reflow
+        panel.style.animation = '';
+      } else {
+        panel.classList.remove('active');
+      }
+    });
+  });
+});
+
 // Toast
 function showToast(message: string, isError = false): void {
   toast.textContent = message;
-  toast.classList.remove('hidden', 'error');
-  if (isError) toast.classList.add('error');
+  toast.classList.remove('hidden', 'error', 'success');
+  if (isError) {
+    toast.classList.add('error');
+  } else {
+    toast.classList.add('success');
+  }
   setTimeout(() => {
     toast.classList.add('hidden');
   }, 2500);
 }
 
-// Load settings — uses correct storage key
+// Load settings
 async function loadSettings(): Promise<void> {
   try {
     const result = await chrome.storage.sync.get(STORAGE_KEY);
@@ -97,11 +126,11 @@ async function loadSettings(): Promise<void> {
   }
 }
 
-// Render overrides — Record<string, {enabled, mode}> format
+// Render overrides
 function renderOverrides(): void {
   const domains = Object.keys(currentSettings.siteOverrides);
   if (domains.length === 0) {
-    overridesList.innerHTML = '<p class="section-desc">No site overrides configured.</p>';
+    overridesList.innerHTML = '<div class="no-overrides">No site overrides configured.</div>';
     return;
   }
 
@@ -127,7 +156,7 @@ function renderOverrides(): void {
   });
 }
 
-// Load stats — uses correct storage key
+// Load stats
 async function loadStats(): Promise<void> {
   try {
     const result = await chrome.storage.local.get(STATS_KEY);
@@ -148,7 +177,6 @@ async function loadProStatus(): Promise<void> {
       proBadge.classList.remove('hidden');
       proActiveInfo.classList.remove('hidden');
       proUpgradeSection.classList.add('hidden');
-      // Try to get plan name from cache
       const cache = await chrome.storage.local.get('copyunlock_license_cache');
       const cached = cache['copyunlock_license_cache'];
       if (cached?.plan) {
@@ -161,13 +189,12 @@ async function loadProStatus(): Promise<void> {
       proUpgradeSection.classList.remove('hidden');
     }
   } catch {
-    // Use free status — show upgrade section
     proActiveInfo.classList.add('hidden');
     proUpgradeSection.classList.remove('hidden');
   }
 }
 
-// Save — uses correct storage key and field names
+// Save
 async function save(): Promise<void> {
   currentSettings.enabled = enabledCheckbox.checked;
   currentSettings.defaultMode = defaultModeSelect.value;
@@ -181,9 +208,8 @@ async function save(): Promise<void> {
   try {
     await chrome.storage.sync.set({ [STORAGE_KEY]: currentSettings });
     showToast(chrome.i18n.getMessage('settingsSaved') || 'Settings saved');
-    // Notify background of settings change
     chrome.runtime.sendMessage({ type: 'UPDATE_SETTINGS', payload: currentSettings }).catch(() => {});
-  } catch (err) {
+  } catch {
     showToast('Failed to save settings', true);
   }
 }
@@ -198,7 +224,7 @@ maxItemsInput.addEventListener('change', save);
 retentionDaysInput.addEventListener('change', save);
 watermarkStrippingCheckbox.addEventListener('change', save);
 
-// Add override — Record format
+// Add override
 addOverrideBtn.addEventListener('click', () => {
   const domain = overrideDomainInput.value.trim();
   const mode = overrideModeSelect.value;
@@ -224,7 +250,7 @@ exportDataBtn.addEventListener('click', async () => {
     a.download = `copyunlock-export-${new Date().toISOString().slice(0, 10)}.json`;
     a.click();
     URL.revokeObjectURL(url);
-    showToast(chrome.i18n.getMessage('exportSuccess') || 'Data exported successfully');
+    showToast(chrome.i18n.getMessage('exportSuccess') || 'Data exported');
   } catch {
     showToast('Export failed', true);
   }
@@ -254,7 +280,7 @@ importFileInput.addEventListener('change', async () => {
     loadSettings();
     loadStats();
   } catch {
-    showToast('Import failed - invalid file', true);
+    showToast('Import failed — invalid file', true);
   }
 
   importFileInput.value = '';
@@ -281,24 +307,22 @@ configureShortcutsLink.addEventListener('click', (e) => {
   chrome.tabs.create({ url: 'chrome://extensions/shortcuts' });
 });
 
-// Plan checkout buttons (monthly, annual, lifetime)
+// Plan checkout buttons
 planButtons.forEach((btn) => {
   btn.addEventListener('click', () => {
     const plan = btn.dataset.plan || 'monthly';
-    btn.disabled = true;
-    btn.textContent = 'Opening checkout...';
+    btn.style.opacity = '0.6';
+    btn.style.pointerEvents = 'none';
     chrome.runtime.sendMessage({ type: 'OPEN_CHECKOUT', payload: { plan } }).then(() => {
       setTimeout(() => {
-        btn.disabled = false;
-        if (plan === 'monthly') btn.textContent = '$3.99/month';
-        else if (plan === 'annual') btn.innerHTML = '$29.99/year <span class="plan-save">Save 37%</span>';
-        else btn.textContent = '$49.99 lifetime';
+        btn.style.opacity = '';
+        btn.style.pointerEvents = '';
       }, 3000);
     });
   });
 });
 
-// Refresh license buttons (for both pro-active and free views)
+// Refresh license buttons
 function handleRefreshLicense(): void {
   showToast('Checking license...');
   chrome.runtime.sendMessage({ type: 'CHECK_LICENSE', payload: {} }).then((result) => {
