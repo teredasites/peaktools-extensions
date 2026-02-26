@@ -1,42 +1,113 @@
-name: Publish Extension to Chrome Web Store
+name: Publish Extensions to Chrome Web Store
 
 on:
+  # Auto-publish when extension source changes hit master
+  push:
+    branches: [master, main]
+    paths:
+      - 'clipunlock/src/**'
+      - 'clipunlock/assets/**'
+      - 'clipunlock/manifest.json'
+      - 'clipunlock/package.json'
+      # Add more extensions here as they're built:
+      # - 'tabvault/src/**'
+      # - 'focusforge/src/**'
+
+  # Manual trigger still available
   workflow_dispatch:
     inputs:
       extension:
-        description: 'Extension folder name (e.g., clipunlock)'
-        required: true
+        description: 'Extension folder name (e.g., clipunlock). Leave blank to auto-detect.'
+        required: false
         type: string
 
 jobs:
-  publish:
-    name: Build & Upload to CWS
+  # ─── Step 1: Figure out which extensions changed ───
+  detect:
+    name: Detect Changed Extensions
     runs-on: ubuntu-latest
+    outputs:
+      extensions: ${{ steps.detect.outputs.extensions }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Detect changed extensions
+        id: detect
+        run: |
+          # If manually triggered with a specific extension, use that
+          if [ -n "${{ inputs.extension }}" ]; then
+            echo 'extensions=["${{ inputs.extension }}"]' >> "$GITHUB_OUTPUT"
+            echo "Manual trigger: ${{ inputs.extension }}"
+            exit 0
+          fi
+
+          # Auto-detect: check which extension folders have changes
+          CHANGED=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git diff --name-only HEAD)
+          EXTENSIONS=()
+
+          # Map of extension folders (add new extensions here)
+          for ext in clipunlock; do
+            if echo "$CHANGED" | grep -q "^${ext}/"; then
+              EXTENSIONS+=("\"${ext}\"")
+              echo "Detected changes in: ${ext}"
+            fi
+          done
+
+          if [ ${#EXTENSIONS[@]} -eq 0 ]; then
+            echo "extensions=[]" >> "$GITHUB_OUTPUT"
+            echo "No extension changes detected"
+          else
+            JOINED=$(IFS=,; echo "${EXTENSIONS[*]}")
+            echo "extensions=[${JOINED}]" >> "$GITHUB_OUTPUT"
+          fi
+
+  # ─── Step 2: Build, test, and publish each changed extension ───
+  publish:
+    name: Publish ${{ matrix.extension }}
+    needs: detect
+    if: needs.detect.outputs.extensions != '[]'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        extension: ${{ fromJson(needs.detect.outputs.extensions) }}
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: ${{ inputs.extension }}/package-lock.json
+          cache-dependency-path: ${{ matrix.extension }}/package-lock.json
 
       - name: Install dependencies
-        working-directory: ${{ inputs.extension }}
+        working-directory: ${{ matrix.extension }}
         run: npm ci
 
       - name: Build
-        working-directory: ${{ inputs.extension }}
+        working-directory: ${{ matrix.extension }}
         run: npm run build
 
       - name: Run tests
-        working-directory: ${{ inputs.extension }}
+        working-directory: ${{ matrix.extension }}
         run: npx vitest run
 
       - name: Package ZIP
-        working-directory: ${{ inputs.extension }}
+        working-directory: ${{ matrix.extension }}
         run: node scripts/package.mjs
 
-      - name: Get access token
+      # ── Resolve the correct CWS Item ID for this extension ──
+      # Each extension has its own secret: CWS_ITEM_ID_CLIPUNLOCK, CWS_ITEM_ID_TABVAULT, etc.
+      - name: Resolve CWS Item ID
+        id: resolve
+        run: |
+          EXT_UPPER=$(echo "${{ matrix.extension }}" | tr '[:lower:]' '[:upper:]')
+          echo "secret_name=CWS_ITEM_ID_${EXT_UPPER}" >> "$GITHUB_OUTPUT"
+          echo "Resolved secret: CWS_ITEM_ID_${EXT_UPPER}"
+
+      - name: Get CWS access token
         id: token
         run: |
           RESPONSE=$(curl -s -X POST https://oauth2.googleapis.com/token \
@@ -45,23 +116,65 @@ jobs:
             -d "refresh_token=${{ secrets.CWS_REFRESH_TOKEN }}" \
             -d "grant_type=refresh_token")
           TOKEN=$(echo "$RESPONSE" | jq -r '.access_token')
+          if [ "$TOKEN" = "null" ] || [ -z "$TOKEN" ]; then
+            echo "::error::Failed to get CWS access token"
+            echo "$RESPONSE"
+            exit 1
+          fi
           echo "access_token=$TOKEN" >> "$GITHUB_OUTPUT"
+
+      # GitHub doesn't support dynamic secret names directly, so we use a mapping
+      - name: Get CWS Item ID
+        id: item
+        env:
+          CWS_ITEM_ID_CLIPUNLOCK: ${{ secrets.CWS_ITEM_ID_CLIPUNLOCK }}
+          CWS_ITEM_ID_TABVAULT: ${{ secrets.CWS_ITEM_ID_TABVAULT }}
+          CWS_ITEM_ID_FOCUSFORGE: ${{ secrets.CWS_ITEM_ID_FOCUSFORGE }}
+          CWS_ITEM_ID_COOKIEFORGE: ${{ secrets.CWS_ITEM_ID_COOKIEFORGE }}
+          CWS_ITEM_ID_CONSENTKILL: ${{ secrets.CWS_ITEM_ID_CONSENTKILL }}
+          CWS_ITEM_ID_PAGEDIGEST: ${{ secrets.CWS_ITEM_ID_PAGEDIGEST }}
+          CWS_ITEM_ID_DARKSHIFT: ${{ secrets.CWS_ITEM_ID_DARKSHIFT }}
+          CWS_ITEM_ID_PRICEPULSE: ${{ secrets.CWS_ITEM_ID_PRICEPULSE }}
+          CWS_ITEM_ID_FORMFILL: ${{ secrets.CWS_ITEM_ID_FORMFILL }}
+          CWS_ITEM_ID_DEVLENS: ${{ secrets.CWS_ITEM_ID_DEVLENS }}
+        run: |
+          EXT_UPPER=$(echo "${{ matrix.extension }}" | tr '[:lower:]' '[:upper:]')
+          VAR_NAME="CWS_ITEM_ID_${EXT_UPPER}"
+          ITEM_ID="${!VAR_NAME}"
+          if [ -z "$ITEM_ID" ]; then
+            echo "::error::No CWS Item ID found for ${{ matrix.extension }}. Set secret ${VAR_NAME} on the repo."
+            exit 1
+          fi
+          echo "item_id=$ITEM_ID" >> "$GITHUB_OUTPUT"
 
       - name: Upload to Chrome Web Store
         run: |
-          ZIP_FILE=$(ls ${{ inputs.extension }}/*.zip | head -1)
-          curl -s \
+          ZIP_FILE=$(ls ${{ matrix.extension }}/*.zip | head -1)
+          echo "Uploading: $ZIP_FILE"
+          RESPONSE=$(curl -s \
             -H "Authorization: Bearer ${{ steps.token.outputs.access_token }}" \
             -H "x-goog-api-version: 2" \
             -X PUT \
             -T "$ZIP_FILE" \
-            "https://www.googleapis.com/upload/chromewebstore/v1.1/items/${{ secrets.CWS_ITEM_ID }}"
+            "https://www.googleapis.com/upload/chromewebstore/v1.1/items/${{ steps.item.outputs.item_id }}")
+          echo "$RESPONSE"
+          # Check for upload errors
+          if echo "$RESPONSE" | jq -e '.uploadState == "FAILURE"' > /dev/null 2>&1; then
+            echo "::error::Upload failed"
+            exit 1
+          fi
 
       - name: Publish to Chrome Web Store
         run: |
-          curl -s \
+          RESPONSE=$(curl -s \
             -H "Authorization: Bearer ${{ steps.token.outputs.access_token }}" \
             -H "x-goog-api-version: 2" \
             -H "Content-Length: 0" \
             -X POST \
-            "https://www.googleapis.com/chromewebstore/v1.1/items/${{ secrets.CWS_ITEM_ID }}/publish"
+            "https://www.googleapis.com/chromewebstore/v1.1/items/${{ steps.item.outputs.item_id }}/publish")
+          echo "$RESPONSE"
+          # Check for publish errors
+          if echo "$RESPONSE" | jq -e '.status[0] != "OK"' > /dev/null 2>&1; then
+            echo "::warning::Publish response may need review"
+          fi
+          echo "Published ${{ matrix.extension }} successfully"
