@@ -1,0 +1,77 @@
+COPYUNLOCK — CWS PUBLISH CHECKLIST
+Step-by-step. Do them in order.
+
+Go to: https://chrome.google.com/webstore/devconsole
+Find item: fepnibopopogakkkjaimedepnpkgcgbb
+
+
+STEP 1 — STORE LISTING TAB
+============================
+
+1. The name and short description are already in the manifest.json upload:
+   Name: CopyUnlock — Enable Copy, Right Click & Text Selection
+   Short desc: Enable copy paste on any website. Remove right-click restrictions, unblock text selection, strip watermarks. Free. No data collected.
+
+2. Detailed Description:
+   Open 01-detailed-description.txt
+   Select All (Ctrl+A), Copy (Ctrl+C)
+   Paste into the Detailed Description field
+
+3. Category: Productivity
+
+4. Language: English (US)
+
+5. Store Icon: Upload assets/store-icon-128.png
+
+6. Screenshots (1280x800 PNG each):
+   You need to create these — take real screenshots in Chrome, add text overlays in Canva.
+   Minimum 1 required, recommend all 5. See CWS-LISTING.md for what to capture.
+
+7. Homepage URL: https://peaktools.dev/copyunlock
+
+8. Support URL: https://peaktools.dev/contact
+
+
+STEP 2 — PRIVACY TAB
+=====================
+
+1. Single Purpose Description:
+   Open 02-single-purpose.txt
+   Copy the entire text, paste into the field
+
+2. Permission Justifications:
+   Open 03-permission-justifications.txt
+   For each permission listed in the dashboard, copy the matching justification text
+
+3. Do you use remote code?
+   Select: No
+
+4. Data Usage Disclosures:
+   Select: "This extension does NOT collect or use user data"
+   Check the certification checkbox
+
+5. Privacy Policy URL: https://peaktools.dev/privacy/copyunlock
+
+
+STEP 3 — DISTRIBUTION TAB
+==========================
+
+1. Payments: Select "This item uses in-app payments"
+   (CopyUnlock has Pro tier via Stripe)
+
+2. Visibility: Public
+
+3. Distribution: All regions
+
+
+STEP 4 — PUBLISH
+=================
+
+1. Review the preview — make sure everything looks right
+2. Click "Submit for review"
+3. Google review typically takes 1-3 business days
+4. You'll get an email when it's approved or if changes are needed
+
+
+DONE. Extension will be live at:
+https://chromewebstore.google.com/detail/fepnibopopogakkkjaimedepnpkgcgbb

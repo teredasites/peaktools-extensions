@@ -1,0 +1,192 @@
+{
+  "extensionName": {
+    "message": "CopyUnlock",
+    "description": "扩展名称"
+  },
+  "extensionDescription": {
+    "message": "解除复制限制，轻松管理剪贴板历史记录。",
+    "description": "扩展描述"
+  },
+  "commandToggle": {
+    "message": "切换 CopyUnlock",
+    "description": "切换扩展的键盘命令"
+  },
+  "commandClipboard": {
+    "message": "打开剪贴板历史",
+    "description": "打开剪贴板历史的键盘命令"
+  },
+  "commandSearch": {
+    "message": "搜索剪贴板",
+    "description": "搜索剪贴板的键盘命令"
+  },
+  "contextMenuCopy": {
+    "message": "复制 (CopyUnlock)",
+    "description": "右键菜单复制选项"
+  },
+  "contextMenuCopyClean": {
+    "message": "复制干净文本",
+    "description": "不带水印的复制"
+  },
+  "contextMenuPin": {
+    "message": "固定到剪贴板",
+    "description": "右键菜单固定选项"
+  },
+  "contextMenuSearch": {
+    "message": "在剪贴板历史中搜索",
+    "description": "右键菜单搜索选项"
+  },
+  "popupEnable": {
+    "message": "启用",
+    "description": "弹窗启用按钮标签"
+  },
+  "popupActive": {
+    "message": "已激活",
+    "description": "弹窗激活状态标签"
+  },
+  "popupProtections": {
+    "message": "已移除 $COUNT$ 个保护",
+    "description": "已移除的保护数量",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "modeAuto": {
+    "message": "自动",
+    "description": "自动模式标签"
+  },
+  "modeSafe": {
+    "message": "安全",
+    "description": "安全模式标签"
+  },
+  "modeAggressive": {
+    "message": "强力",
+    "description": "强力模式标签"
+  },
+  "recentCopies": {
+    "message": "最近复制",
+    "description": "最近剪贴板项目标题"
+  },
+  "noHistory": {
+    "message": "暂无剪贴板历史",
+    "description": "剪贴板空状态"
+  },
+  "clipboardHistory": {
+    "message": "剪贴板历史",
+    "description": "剪贴板历史标题"
+  },
+  "settings": {
+    "message": "设置",
+    "description": "设置页面标题"
+  },
+  "searchPlaceholder": {
+    "message": "搜索剪贴板历史...",
+    "description": "搜索输入框占位符"
+  },
+  "filterAll": {
+    "message": "全部",
+    "description": "筛选全部"
+  },
+  "filterPinned": {
+    "message": "已固定",
+    "description": "筛选已固定"
+  },
+  "filterUrls": {
+    "message": "网址",
+    "description": "筛选网址"
+  },
+  "filterCode": {
+    "message": "代码",
+    "description": "筛选代码"
+  },
+  "filterText": {
+    "message": "文本",
+    "description": "筛选文本"
+  },
+  "copy": {
+    "message": "复制",
+    "description": "复制操作"
+  },
+  "copied": {
+    "message": "已复制！",
+    "description": "复制确认"
+  },
+  "pin": {
+    "message": "固定",
+    "description": "固定操作"
+  },
+  "unpin": {
+    "message": "取消固定",
+    "description": "取消固定操作"
+  },
+  "delete": {
+    "message": "删除",
+    "description": "删除操作"
+  },
+  "clearAll": {
+    "message": "清除全部",
+    "description": "清除所有项目"
+  },
+  "clearConfirm": {
+    "message": "清除所有剪贴板历史？此操作无法撤销。",
+    "description": "清除确认对话框"
+  },
+  "items": {
+    "message": "$COUNT$ 个项目",
+    "description": "项目计数显示",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "42"
+      }
+    }
+  },
+  "justNow": {
+    "message": "刚刚",
+    "description": "时间 - 刚刚"
+  },
+  "minutesAgo": {
+    "message": "$MINUTES$分钟前",
+    "description": "时间 - 分钟",
+    "placeholders": {
+      "MINUTES": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "hoursAgo": {
+    "message": "$HOURS$小时前",
+    "description": "时间 - 小时",
+    "placeholders": {
+      "HOURS": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "daysAgo": {
+    "message": "$DAYS$天前",
+    "description": "时间 - 天",
+    "placeholders": {
+      "DAYS": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "watermarkNotice": {
+    "message": "已从复制的文本中移除水印字符。",
+    "description": "水印移除通知"
+  },
+  "settingsSaved": {
+    "message": "设置已保存",
+    "description": "设置保存确认"
+  },
+  "exportSuccess": {
+    "message": "数据导出成功",
+    "description": "导出成功消息"
+  }
+}

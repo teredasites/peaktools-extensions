@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CopyUnlock Settings</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div id="options-root">
+    <header class="options-header">
+      <h1>CopyUnlock Settings</h1>
+    </header>
+
+    <!-- General Section -->
+    <section class="settings-section">
+      <h2>General</h2>
+      <div class="setting-row">
+        <label for="enabled">Enable CopyUnlock</label>
+        <input type="checkbox" id="enabled" checked>
+      </div>
+      <div class="setting-row">
+        <label for="default-mode">Default Mode</label>
+        <select id="default-mode">
+          <option value="auto">Auto</option>
+          <option value="safe">Safe</option>
+          <option value="aggressive">Aggressive</option>
+        </select>
+      </div>
+      <div class="setting-row">
+        <label for="notifications">Show Notifications</label>
+        <input type="checkbox" id="notifications" checked>
+      </div>
+      <div class="setting-row">
+        <label for="theme">Theme</label>
+        <select id="theme">
+          <option value="dark">Dark</option>
+          <option value="light">Light</option>
+          <option value="system">System</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- Clipboard History Section -->
+    <section class="settings-section">
+      <h2>Clipboard History</h2>
+      <div class="setting-row">
+        <label for="clipboard-enabled">Enable Clipboard History</label>
+        <input type="checkbox" id="clipboard-enabled" checked>
+      </div>
+      <div class="setting-row">
+        <label for="max-items">Max Items</label>
+        <input type="number" id="max-items" min="10" max="10000" value="500">
+      </div>
+      <div class="setting-row">
+        <label for="retention-days">Retention (days)</label>
+        <input type="number" id="retention-days" min="1" max="365" value="30">
+      </div>
+      <div class="setting-row">
+        <label for="watermark-stripping">Watermark Stripping</label>
+        <input type="checkbox" id="watermark-stripping" checked>
+      </div>
+    </section>
+
+    <!-- Site Overrides Section -->
+    <section class="settings-section">
+      <h2>Site Overrides</h2>
+      <p class="section-desc">Configure per-site mode overrides.</p>
+      <div id="overrides-list" class="overrides-list"></div>
+      <div class="override-add">
+        <input type="text" id="override-domain" placeholder="example.com" class="override-input">
+        <select id="override-mode" class="override-select">
+          <option value="auto">Auto</option>
+          <option value="safe">Safe</option>
+          <option value="aggressive">Aggressive</option>
+          <option value="disabled">Disabled</option>
+        </select>
+        <button id="add-override" class="btn btn-primary btn-small">Add</button>
+      </div>
+    </section>
+
+    <!-- Data Management Section -->
+    <section class="settings-section">
+      <h2>Data Management</h2>
+      <div class="button-group">
+        <button id="export-data" class="btn btn-secondary">Export Data</button>
+        <button id="import-data" class="btn btn-secondary">Import Data</button>
+        <button id="clear-data" class="btn btn-danger">Clear All Data</button>
+      </div>
+      <input type="file" id="import-file" accept=".json" style="display: none;">
+    </section>
+
+    <!-- Keyboard Shortcuts Section -->
+    <section class="settings-section">
+      <h2>Keyboard Shortcuts</h2>
+      <table class="shortcuts-table">
+        <thead>
+          <tr>
+            <th>Action</th>
+            <th>Shortcut</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Toggle CopyUnlock</td>
+            <td><kbd>Alt+Shift+U</kbd></td>
+          </tr>
+          <tr>
+            <td>Open Clipboard History</td>
+            <td><kbd>Alt+Shift+C</kbd></td>
+          </tr>
+          <tr>
+            <td>Search Clipboard</td>
+            <td><kbd>Alt+Shift+S</kbd></td>
+          </tr>
+        </tbody>
+      </table>
+      <a href="#" id="configure-shortcuts" class="shortcuts-link">Configure in Chrome Settings</a>
+    </section>
+
+    <!-- Pro Section -->
+    <section class="settings-section pro-section">
+      <h2>
+        CopyUnlock Pro
+        <span id="pro-badge" class="pro-badge hidden">PRO</span>
+      </h2>
+      <div id="pro-active-info" class="pro-active-info hidden">
+        <p class="pro-active-text">Your Pro license is active.</p>
+        <p class="pro-plan-text">Plan: <strong id="pro-plan-name">—</strong></p>
+        <button id="refresh-license-btn" class="btn btn-secondary btn-small">Refresh License</button>
+      </div>
+      <div id="pro-upgrade-section">
+        <p class="section-desc">Unlock unlimited clipboard history (100,000 items), 10-year retention, and priority support.</p>
+        <ul class="pro-features">
+          <li>100,000 clipboard history items (vs 200 free)</li>
+          <li>10-year retention (vs 30 days free)</li>
+          <li>Unlimited pins and tags</li>
+          <li>Priority support via support@peaktools.dev</li>
+        </ul>
+        <div class="plan-buttons">
+          <button id="plan-monthly" class="btn btn-accent plan-btn" data-plan="monthly">$3.99/month</button>
+          <button id="plan-annual" class="btn btn-accent plan-btn" data-plan="annual">$29.99/year <span class="plan-save">Save 37%</span></button>
+          <button id="plan-lifetime" class="btn btn-accent plan-btn" data-plan="lifetime">$49.99 lifetime</button>
+        </div>
+        <p class="section-desc plan-note">Powered by Stripe. Cancel anytime. License tied to your Chrome profile email.</p>
+        <button id="refresh-license-btn-free" class="btn btn-secondary btn-small">Already purchased? Refresh license</button>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="settings-section">
+      <h2>About</h2>
+      <div class="about-info">
+        <p>CopyUnlock v<span id="version">1.0.0</span></p>
+        <div class="stats">
+          <div class="stat">
+            <span class="stat-value" id="stat-unlocks">0</span>
+            <span class="stat-label">Total Unlocks</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" id="stat-copies">0</span>
+            <span class="stat-label">Copies Saved</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value" id="stat-watermarks">0</span>
+            <span class="stat-label">Watermarks Stripped</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Toast -->
+    <div id="toast" class="toast hidden"></div>
+  </div>
+
+  <script src="../../dist/options/options.js"></script>
+</body>
+</html>

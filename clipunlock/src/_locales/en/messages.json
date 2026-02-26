@@ -1,0 +1,192 @@
+{
+  "extensionName": {
+    "message": "CopyUnlock",
+    "description": "Extension name"
+  },
+  "extensionDescription": {
+    "message": "Unlock copy restrictions and manage your clipboard history with ease.",
+    "description": "Extension description"
+  },
+  "commandToggle": {
+    "message": "Toggle CopyUnlock",
+    "description": "Keyboard command to toggle the extension"
+  },
+  "commandClipboard": {
+    "message": "Open Clipboard History",
+    "description": "Keyboard command to open clipboard history"
+  },
+  "commandSearch": {
+    "message": "Search Clipboard",
+    "description": "Keyboard command to search clipboard"
+  },
+  "contextMenuCopy": {
+    "message": "Copy (CopyUnlock)",
+    "description": "Context menu copy option"
+  },
+  "contextMenuCopyClean": {
+    "message": "Copy Clean Text",
+    "description": "Context menu copy without watermarks"
+  },
+  "contextMenuPin": {
+    "message": "Pin to Clipboard",
+    "description": "Context menu pin option"
+  },
+  "contextMenuSearch": {
+    "message": "Search in Clipboard History",
+    "description": "Context menu search option"
+  },
+  "popupEnable": {
+    "message": "Enable",
+    "description": "Popup enable button label"
+  },
+  "popupActive": {
+    "message": "Active",
+    "description": "Popup active state label"
+  },
+  "popupProtections": {
+    "message": "$COUNT$ protections removed",
+    "description": "Number of protections removed",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "modeAuto": {
+    "message": "Auto",
+    "description": "Auto mode label"
+  },
+  "modeSafe": {
+    "message": "Safe",
+    "description": "Safe mode label"
+  },
+  "modeAggressive": {
+    "message": "Aggressive",
+    "description": "Aggressive mode label"
+  },
+  "recentCopies": {
+    "message": "Recent Copies",
+    "description": "Recent clipboard items header"
+  },
+  "noHistory": {
+    "message": "No clipboard history yet",
+    "description": "Empty clipboard state"
+  },
+  "clipboardHistory": {
+    "message": "Clipboard History",
+    "description": "Clipboard history title"
+  },
+  "settings": {
+    "message": "Settings",
+    "description": "Settings page title"
+  },
+  "searchPlaceholder": {
+    "message": "Search clipboard history...",
+    "description": "Search input placeholder"
+  },
+  "filterAll": {
+    "message": "All",
+    "description": "Filter all items"
+  },
+  "filterPinned": {
+    "message": "Pinned",
+    "description": "Filter pinned items"
+  },
+  "filterUrls": {
+    "message": "URLs",
+    "description": "Filter URL items"
+  },
+  "filterCode": {
+    "message": "Code",
+    "description": "Filter code items"
+  },
+  "filterText": {
+    "message": "Text",
+    "description": "Filter text items"
+  },
+  "copy": {
+    "message": "Copy",
+    "description": "Copy action"
+  },
+  "copied": {
+    "message": "Copied!",
+    "description": "Copy confirmation"
+  },
+  "pin": {
+    "message": "Pin",
+    "description": "Pin action"
+  },
+  "unpin": {
+    "message": "Unpin",
+    "description": "Unpin action"
+  },
+  "delete": {
+    "message": "Delete",
+    "description": "Delete action"
+  },
+  "clearAll": {
+    "message": "Clear All",
+    "description": "Clear all items"
+  },
+  "clearConfirm": {
+    "message": "Clear all clipboard history? This cannot be undone.",
+    "description": "Clear confirmation dialog"
+  },
+  "items": {
+    "message": "$COUNT$ items",
+    "description": "Item count display",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "42"
+      }
+    }
+  },
+  "justNow": {
+    "message": "Just now",
+    "description": "Time ago - just now"
+  },
+  "minutesAgo": {
+    "message": "$MINUTES$m ago",
+    "description": "Time ago - minutes",
+    "placeholders": {
+      "MINUTES": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "hoursAgo": {
+    "message": "$HOURS$h ago",
+    "description": "Time ago - hours",
+    "placeholders": {
+      "HOURS": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "daysAgo": {
+    "message": "$DAYS$d ago",
+    "description": "Time ago - days",
+    "placeholders": {
+      "DAYS": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "watermarkNotice": {
+    "message": "Watermark characters were removed from the copied text.",
+    "description": "Watermark stripping notification"
+  },
+  "settingsSaved": {
+    "message": "Settings saved",
+    "description": "Settings save confirmation"
+  },
+  "exportSuccess": {
+    "message": "Data exported successfully",
+    "description": "Export success message"
+  }
+}

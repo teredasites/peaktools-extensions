@@ -1,0 +1,192 @@
+{
+  "extensionName": {
+    "message": "CopyUnlock",
+    "description": "Nome da extensão"
+  },
+  "extensionDescription": {
+    "message": "Desbloqueie restrições de cópia e gerencie seu histórico da área de transferência com facilidade.",
+    "description": "Descrição da extensão"
+  },
+  "commandToggle": {
+    "message": "Alternar CopyUnlock",
+    "description": "Comando de teclado para alternar a extensão"
+  },
+  "commandClipboard": {
+    "message": "Abrir Histórico da Área de Transferência",
+    "description": "Comando de teclado para abrir o histórico"
+  },
+  "commandSearch": {
+    "message": "Pesquisar na Área de Transferência",
+    "description": "Comando de teclado para pesquisar"
+  },
+  "contextMenuCopy": {
+    "message": "Copiar (CopyUnlock)",
+    "description": "Opção de copiar no menu de contexto"
+  },
+  "contextMenuCopyClean": {
+    "message": "Copiar Texto Limpo",
+    "description": "Copiar sem marcas d'água"
+  },
+  "contextMenuPin": {
+    "message": "Fixar na Área de Transferência",
+    "description": "Opção de fixar no menu de contexto"
+  },
+  "contextMenuSearch": {
+    "message": "Pesquisar no Histórico da Área de Transferência",
+    "description": "Opção de pesquisa no menu de contexto"
+  },
+  "popupEnable": {
+    "message": "Ativar",
+    "description": "Rótulo do botão de ativar"
+  },
+  "popupActive": {
+    "message": "Ativo",
+    "description": "Rótulo do estado ativo"
+  },
+  "popupProtections": {
+    "message": "$COUNT$ proteções removidas",
+    "description": "Número de proteções removidas",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "modeAuto": {
+    "message": "Auto",
+    "description": "Rótulo do modo automático"
+  },
+  "modeSafe": {
+    "message": "Seguro",
+    "description": "Rótulo do modo seguro"
+  },
+  "modeAggressive": {
+    "message": "Agressivo",
+    "description": "Rótulo do modo agressivo"
+  },
+  "recentCopies": {
+    "message": "Cópias Recentes",
+    "description": "Cabeçalho de itens recentes"
+  },
+  "noHistory": {
+    "message": "Ainda não há histórico da área de transferência",
+    "description": "Estado vazio da área de transferência"
+  },
+  "clipboardHistory": {
+    "message": "Histórico da Área de Transferência",
+    "description": "Título do histórico"
+  },
+  "settings": {
+    "message": "Configurações",
+    "description": "Título das configurações"
+  },
+  "searchPlaceholder": {
+    "message": "Pesquisar no histórico...",
+    "description": "Placeholder do campo de pesquisa"
+  },
+  "filterAll": {
+    "message": "Todos",
+    "description": "Filtrar todos"
+  },
+  "filterPinned": {
+    "message": "Fixados",
+    "description": "Filtrar fixados"
+  },
+  "filterUrls": {
+    "message": "URLs",
+    "description": "Filtrar URLs"
+  },
+  "filterCode": {
+    "message": "Código",
+    "description": "Filtrar código"
+  },
+  "filterText": {
+    "message": "Texto",
+    "description": "Filtrar texto"
+  },
+  "copy": {
+    "message": "Copiar",
+    "description": "Ação de copiar"
+  },
+  "copied": {
+    "message": "Copiado!",
+    "description": "Confirmação de cópia"
+  },
+  "pin": {
+    "message": "Fixar",
+    "description": "Ação de fixar"
+  },
+  "unpin": {
+    "message": "Desfixar",
+    "description": "Ação de desfixar"
+  },
+  "delete": {
+    "message": "Excluir",
+    "description": "Ação de excluir"
+  },
+  "clearAll": {
+    "message": "Limpar Tudo",
+    "description": "Limpar todos os itens"
+  },
+  "clearConfirm": {
+    "message": "Limpar todo o histórico da área de transferência? Isso não pode ser desfeito.",
+    "description": "Diálogo de confirmação de limpeza"
+  },
+  "items": {
+    "message": "$COUNT$ itens",
+    "description": "Contador de itens",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "42"
+      }
+    }
+  },
+  "justNow": {
+    "message": "Agora mesmo",
+    "description": "Tempo - agora mesmo"
+  },
+  "minutesAgo": {
+    "message": "há $MINUTES$m",
+    "description": "Tempo - minutos",
+    "placeholders": {
+      "MINUTES": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "hoursAgo": {
+    "message": "há $HOURS$h",
+    "description": "Tempo - horas",
+    "placeholders": {
+      "HOURS": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "daysAgo": {
+    "message": "há $DAYS$d",
+    "description": "Tempo - dias",
+    "placeholders": {
+      "DAYS": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "watermarkNotice": {
+    "message": "Caracteres de marca d'água foram removidos do texto copiado.",
+    "description": "Notificação de remoção de marca d'água"
+  },
+  "settingsSaved": {
+    "message": "Configurações salvas",
+    "description": "Confirmação de salvamento"
+  },
+  "exportSuccess": {
+    "message": "Dados exportados com sucesso",
+    "description": "Mensagem de sucesso de exportação"
+  }
+}

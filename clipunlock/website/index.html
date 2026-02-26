@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CopyUnlock — Copy & Paste Anywhere</title>
+  <meta name="description" content="CopyUnlock removes copy/paste restrictions on any website. Instantly detect and bypass 29+ blocking methods. Free Chrome extension.">
+  <meta name="theme-color" content="#0A0A0B">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="CopyUnlock — Copy & Paste Anywhere">
+  <meta property="og:description" content="Remove copy/paste restrictions on any website. 29+ detection methods. Free forever.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://copyunlock.com">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="CopyUnlock — Copy & Paste Anywhere">
+  <meta name="twitter:description" content="Remove copy/paste restrictions on any website. 29+ detection methods. Free forever.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Favicon (inline SVG as data URI) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔓</text></svg>">
+</head>
+<body>
+  <!-- ═══════════════════════════════════════════ NAV ═══════════════════════════════════════════ -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">
+        <svg class="nav-logo-icon" width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <rect x="2" y="12" width="24" height="14" rx="3" stroke="url(#logo-grad)" stroke-width="2" fill="none"/>
+          <path d="M8 12V8a6 6 0 0 1 12 0v1" stroke="url(#logo-grad)" stroke-width="2" stroke-linecap="round" fill="none"/>
+          <circle cx="14" cy="19" r="2" fill="url(#logo-grad)"/>
+          <defs>
+            <linearGradient id="logo-grad" x1="0" y1="0" x2="28" y2="28">
+              <stop stop-color="#6366F1"/>
+              <stop offset="1" stop-color="#8B5CF6"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span>CopyUnlock</span>
+      </a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#privacy">Privacy</a>
+      </div>
+      <a href="https://chrome.google.com/webstore/detail/copyunlock/fepnibopopogakkkjaimedepnpkgcgbb" class="nav-cta" target="_blank" rel="noopener">
+        Add to Chrome
+      </a>
+      <button class="nav-mobile-toggle" id="mobile-toggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <!-- Mobile menu -->
+    <div class="mobile-menu" id="mobile-menu">
+      <a href="#features">Features</a>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#privacy">Privacy</a>
+      <a href="https://chrome.google.com/webstore/detail/copyunlock/fepnibopopogakkkjaimedepnpkgcgbb" class="mobile-cta" target="_blank" rel="noopener">Add to Chrome</a>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════ HERO ═══════════════════════════════════════════ -->
+  <section class="hero" id="hero">
+    <!-- Animated gradient orbs -->
+    <div class="hero-glow hero-glow-1"></div>
+    <div class="hero-glow hero-glow-2"></div>
+    <div class="hero-grid-bg"></div>
+
+    <div class="container hero-content">
+      <div class="hero-badge fade-in">
+        <span class="badge-dot"></span>
+        Chrome Extension &mdash; 29+ Detection Methods
+      </div>
+      <h1 class="hero-title fade-in">
+        Copy <span class="gradient-text">&amp;</span> Paste<br>Anywhere
+      </h1>
+      <p class="hero-subtitle fade-in">
+        CopyUnlock removes copy/paste restrictions on any website.<br class="hide-mobile">
+        Instantly detect and bypass 29+ blocking methods. <strong>Free forever.</strong>
+      </p>
+      <div class="hero-actions fade-in">
+        <a href="https://chrome.google.com/webstore/detail/copyunlock/fepnibopopogakkkjaimedepnpkgcgbb" class="btn btn-primary" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="10" cy="10" r="3.5" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M10 1a9 9 0 0 1 7.794 4.5H10" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M2.206 5.5A9 9 0 0 1 6.897 15.5l-0.001-.001" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+          Add to Chrome &mdash; It's Free
+        </a>
+        <a href="https://github.com" class="btn btn-ghost" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M10 0C4.477 0 0 4.477 0 10c0 4.42 2.87 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C17.137 18.163 20 14.418 20 10c0-5.523-4.477-10-10-10z"/>
+          </svg>
+          View on GitHub
+        </a>
+      </div>
+      <div class="hero-stats fade-in">
+        <div class="stat">
+          <span class="stat-number">29+</span>
+          <span class="stat-label">Detection Methods</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-number">11</span>
+          <span class="stat-label">Watermark Types Stripped</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-number">0</span>
+          <span class="stat-label">Data Collected</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ FEATURES ═══════════════════════════════════════════ -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-header fade-in">
+        <p class="section-label">Features</p>
+        <h2 class="section-title">Everything you need to<br><span class="gradient-text">copy freely</span></h2>
+        <p class="section-desc">Built to handle every copy-protection trick on the modern web.</p>
+      </div>
+
+      <div class="features-grid">
+        <!-- Feature 1 -->
+        <div class="feature-card fade-in">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="url(#feat1)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 12l2 2 4-4"/>
+              <path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z"/>
+              <defs><linearGradient id="feat1" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#6366F1"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient></defs>
+            </svg>
+          </div>
+          <h3 class="feature-title">29 Detection Methods</h3>
+          <p class="feature-desc">Detects CSS blocks, JavaScript handlers, DOM manipulation, clipboard API interception, and visual overlays.</p>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="feature-card fade-in">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="url(#feat2)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+              <defs><linearGradient id="feat2" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#6366F1"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient></defs>
+            </svg>
+          </div>
+          <h3 class="feature-title">Counter-Observer</h3>
+          <p class="feature-desc">Sites re-apply protections? CopyUnlock fights back automatically with exponential backoff.</p>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="feature-card fade-in">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="url(#feat3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              <defs><linearGradient id="feat3" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#6366F1"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient></defs>
+            </svg>
+          </div>
+          <h3 class="feature-title">Watermark Stripping</h3>
+          <p class="feature-desc">Removes 11 types of invisible zero-width Unicode characters injected into copied text.</p>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="feature-card fade-in">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="url(#feat4)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+              <defs><linearGradient id="feat4" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#6366F1"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient></defs>
+            </svg>
+          </div>
+          <h3 class="feature-title">Safe Mode</h3>
+          <p class="feature-desc">Won't break YouTube, Google Docs, Netflix, or Figma. Smart preservation of web app functionality.</p>
+        </div>
+
+        <!-- Feature 5 -->
+        <div class="feature-card fade-in">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="url(#feat5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+              <path d="M9 14l2 2 4-4"/>
+              <defs><linearGradient id="feat5" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#6366F1"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient></defs>
+            </svg>
+          </div>
+          <h3 class="feature-title">Clipboard History</h3>
+          <p class="feature-desc">Search, tag, and pin your clipboard items. Export your entire history as JSON.</p>
+        </div>
+
+        <!-- Feature 6 -->
+        <div class="feature-card fade-in">
+          <div class="feature-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="url(#feat6)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M3 3l18 18"/>
+              <defs><linearGradient id="feat6" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#6366F1"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient></defs>
+            </svg>
+          </div>
+          <h3 class="feature-title">Zero Telemetry</h3>
+          <p class="feature-desc">All data stays on your device. No analytics, no tracking, no network requests. Period.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ HOW IT WORKS ═══════════════════════════════════════════ -->
+  <section class="how-it-works" id="how-it-works">
+    <div class="container">
+      <div class="section-header fade-in">
+        <p class="section-label">How It Works</p>
+        <h2 class="section-title">Three steps to<br><span class="gradient-text">freedom</span></h2>
+        <p class="section-desc">No configuration needed. It just works.</p>
+      </div>
+
+      <div class="steps">
+        <div class="step fade-in">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h3 class="step-title">Activate</h3>
+            <p class="step-desc">Click the CopyUnlock icon in your toolbar or press <kbd>Alt</kbd>+<kbd>Shift</kbd>+<kbd>U</kbd> on any page.</p>
+          </div>
+        </div>
+
+        <div class="step-connector fade-in">
+          <svg width="2" height="48" viewBox="0 0 2 48"><line x1="1" y1="0" x2="1" y2="48" stroke="#6366F1" stroke-width="2" stroke-dasharray="4 4" opacity="0.4"/></svg>
+        </div>
+
+        <div class="step fade-in">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h3 class="step-title">Detect</h3>
+            <p class="step-desc">CopyUnlock instantly scans the page and identifies all active copy/paste blocking methods.</p>
+          </div>
+        </div>
+
+        <div class="step-connector fade-in">
+          <svg width="2" height="48" viewBox="0 0 2 48"><line x1="1" y1="0" x2="1" y2="48" stroke="#6366F1" stroke-width="2" stroke-dasharray="4 4" opacity="0.4"/></svg>
+        </div>
+
+        <div class="step fade-in">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h3 class="step-title">Unlock</h3>
+            <p class="step-desc">One click removes them all. Copy, paste, and select text freely&nbsp;&mdash;&nbsp;exactly as the web should be.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ PRICING ═══════════════════════════════════════════ -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div class="section-header fade-in">
+        <p class="section-label">Pricing</p>
+        <h2 class="section-title">Start free,<br><span class="gradient-text">upgrade when ready</span></h2>
+        <p class="section-desc">All 29 unlock methods are free. No trial. No credit card.</p>
+      </div>
+
+      <div class="pricing-toggle fade-in">
+        <span class="toggle-label active" id="toggle-monthly">Monthly</span>
+        <button class="toggle-switch" id="billing-toggle" aria-label="Toggle billing period">
+          <span class="toggle-knob"></span>
+        </button>
+        <span class="toggle-label" id="toggle-yearly">
+          Yearly
+          <span class="save-badge">Save 37%</span>
+        </span>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- Free Tier -->
+        <div class="pricing-card pricing-card-featured fade-in">
+          <div class="pricing-popular">Most Popular</div>
+          <h3 class="pricing-plan">Free</h3>
+          <div class="pricing-price">
+            <span class="price-amount">$0</span>
+            <span class="price-period">/ forever</span>
+          </div>
+          <p class="pricing-tagline">Everything you need to copy freely.</p>
+          <ul class="pricing-features">
+            <li>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="#6366F1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              All 29 unlock methods
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="#6366F1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Counter-Observer engine
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="#6366F1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Watermark stripping
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="#6366F1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Safe Mode for web apps
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="#6366F1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              200 clipboard items
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="#6366F1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              24-hour retention
+            </li>
+          </ul>
+          <a href="https://chrome.google.com/webstore/detail/copyunlock/fepnibopopogakkkjaimedepnpkgcgbb" class="btn btn-primary btn-full" target="_blank" rel="noopener">
+            Add to Chrome &mdash; Free
+          </a>
+        </div>
+
+        <!-- Pro Tier -->
+        <div class="pricing-card fade-in">
+          <h3 class="pricing-plan">Pro</h3>
+          <div class="pricing-price">
+            <span class="price-amount" id="pro-price">$3.99</span>
+            <span class="price-period" id="pro-period">/ month</span>
+          </div>
+          <p class="pricing-tagline">For power users who live in their clipboard.</p>
+          <ul class="pricing-features">
+            <li>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="#6366F1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Everything in Free
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="#6366F1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Unlimited clipboard history
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="#6366F1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Forever retention
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="#6366F1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Fuzzy search
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="#6366F1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Tags &amp; organization
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="#6366F1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              JSON export
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 5" stroke="#6366F1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Dark mode clipboard UI
+            </li>
+          </ul>
+          <a href="#" class="btn btn-secondary btn-full">
+            Upgrade to Pro
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ PRIVACY ═══════════════════════════════════════════ -->
+  <section class="privacy-section" id="privacy">
+    <div class="container">
+      <div class="privacy-card fade-in">
+        <div class="privacy-icon">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <path d="M24 4L6 12v12c0 11.11 7.67 21.47 18 24 10.33-2.53 18-12.89 18-24V12L24 4z" stroke="url(#priv-grad)" stroke-width="2.5" fill="none"/>
+            <path d="M16 24l5 5 10-10" stroke="url(#priv-grad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <defs><linearGradient id="priv-grad" x1="6" y1="4" x2="42" y2="40"><stop stop-color="#6366F1"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient></defs>
+          </svg>
+        </div>
+        <h2 class="privacy-title">Zero data collection.<br>Everything stays on <span class="gradient-text">your device</span>.</h2>
+        <p class="privacy-desc">CopyUnlock makes zero network requests. No analytics. No telemetry. No tracking pixels. Your clipboard data never leaves your browser. We built this for privacy-conscious users who refuse to compromise.</p>
+        <a href="privacy.html" class="btn btn-ghost">
+          Read Privacy Policy
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ CTA BANNER ═══════════════════════════════════════════ -->
+  <section class="cta-banner">
+    <div class="container">
+      <div class="cta-inner fade-in">
+        <h2 class="cta-title">Ready to copy freely?</h2>
+        <p class="cta-desc">Join thousands of users who have taken back control of their clipboard.</p>
+        <a href="https://chrome.google.com/webstore/detail/copyunlock/fepnibopopogakkkjaimedepnpkgcgbb" class="btn btn-primary btn-lg" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="10" cy="10" r="3.5" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M10 1a9 9 0 0 1 7.794 4.5H10" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M2.206 5.5A9 9 0 0 1 6.897 15.5l-0.001-.001" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+          Add to Chrome &mdash; It's Free
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════ FOOTER ═══════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <a href="#" class="nav-logo">
+            <svg class="nav-logo-icon" width="24" height="24" viewBox="0 0 28 28" fill="none">
+              <rect x="2" y="12" width="24" height="14" rx="3" stroke="url(#logo-grad-f)" stroke-width="2" fill="none"/>
+              <path d="M8 12V8a6 6 0 0 1 12 0v1" stroke="url(#logo-grad-f)" stroke-width="2" stroke-linecap="round" fill="none"/>
+              <circle cx="14" cy="19" r="2" fill="url(#logo-grad-f)"/>
+              <defs><linearGradient id="logo-grad-f" x1="0" y1="0" x2="28" y2="28"><stop stop-color="#6366F1"/><stop offset="1" stop-color="#8B5CF6"/></linearGradient></defs>
+            </svg>
+            <span>CopyUnlock</span>
+          </a>
+          <p class="footer-tagline">Built by PeakTools Publishing</p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-col">
+            <h4>Product</h4>
+            <a href="https://chrome.google.com/webstore/detail/copyunlock/fepnibopopogakkkjaimedepnpkgcgbb" target="_blank" rel="noopener">Chrome Web Store</a>
+            <a href="#features">Features</a>
+            <a href="#pricing">Pricing</a>
+          </div>
+          <div class="footer-col">
+            <h4>Resources</h4>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 PeakTools Publishing. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CopyUnlock</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div id="popup-root">
+    <header>
+      <div class="logo-row">
+        <img src="../../assets/icons/icon-48.png" alt="CopyUnlock" class="icon" width="28" height="28">
+        <h1>CopyUnlock</h1>
+      </div>
+      <span id="site-domain" class="site-domain"></span>
+    </header>
+
+    <section class="toggle-section">
+      <button id="toggle-btn" class="toggle-btn" aria-label="Toggle unlock">
+        <span class="toggle-label">Enable</span>
+        <span class="toggle-switch"></span>
+      </button>
+    </section>
+
+    <div id="protection-badge" class="protection-badge hidden">
+      <span class="badge-icon">&#x1f6e1;</span>
+      <span id="protection-count" class="badge-text">0 protections removed</span>
+    </div>
+
+    <section class="mode-section">
+      <button class="mode-btn" data-mode="auto">Auto</button>
+      <button class="mode-btn" data-mode="safe">Safe</button>
+      <button class="mode-btn" data-mode="aggressive">Aggressive</button>
+    </section>
+
+    <section class="quick-clipboard">
+      <h2>Recent Copies</h2>
+      <div id="recent-items" class="recent-items"></div>
+    </section>
+
+    <footer>
+      <button id="open-sidepanel" class="footer-btn">Clipboard History</button>
+      <button id="open-options" class="footer-btn">Settings</button>
+    </footer>
+  </div>
+
+  <script src="../../dist/popup/popup.js"></script>
+</body>
+</html>

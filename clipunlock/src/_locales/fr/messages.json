@@ -1,0 +1,192 @@
+{
+  "extensionName": {
+    "message": "CopyUnlock",
+    "description": "Nom de l'extension"
+  },
+  "extensionDescription": {
+    "message": "Débloquez les restrictions de copie et gérez votre historique du presse-papiers facilement.",
+    "description": "Description de l'extension"
+  },
+  "commandToggle": {
+    "message": "Basculer CopyUnlock",
+    "description": "Commande clavier pour basculer l'extension"
+  },
+  "commandClipboard": {
+    "message": "Ouvrir l'Historique du Presse-papiers",
+    "description": "Commande clavier pour ouvrir l'historique"
+  },
+  "commandSearch": {
+    "message": "Rechercher dans le Presse-papiers",
+    "description": "Commande clavier pour rechercher"
+  },
+  "contextMenuCopy": {
+    "message": "Copier (CopyUnlock)",
+    "description": "Option de copie dans le menu contextuel"
+  },
+  "contextMenuCopyClean": {
+    "message": "Copier le Texte Propre",
+    "description": "Copier sans filigranes"
+  },
+  "contextMenuPin": {
+    "message": "Épingler au Presse-papiers",
+    "description": "Option d'épinglage dans le menu contextuel"
+  },
+  "contextMenuSearch": {
+    "message": "Rechercher dans l'Historique du Presse-papiers",
+    "description": "Option de recherche dans le menu contextuel"
+  },
+  "popupEnable": {
+    "message": "Activer",
+    "description": "Libellé du bouton d'activation"
+  },
+  "popupActive": {
+    "message": "Actif",
+    "description": "Libellé de l'état actif"
+  },
+  "popupProtections": {
+    "message": "$COUNT$ protections supprimées",
+    "description": "Nombre de protections supprimées",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "modeAuto": {
+    "message": "Auto",
+    "description": "Libellé du mode automatique"
+  },
+  "modeSafe": {
+    "message": "Prudent",
+    "description": "Libellé du mode prudent"
+  },
+  "modeAggressive": {
+    "message": "Agressif",
+    "description": "Libellé du mode agressif"
+  },
+  "recentCopies": {
+    "message": "Copies Récentes",
+    "description": "En-tête des éléments récents"
+  },
+  "noHistory": {
+    "message": "Pas encore d'historique du presse-papiers",
+    "description": "État vide du presse-papiers"
+  },
+  "clipboardHistory": {
+    "message": "Historique du Presse-papiers",
+    "description": "Titre de l'historique"
+  },
+  "settings": {
+    "message": "Paramètres",
+    "description": "Titre de la page de paramètres"
+  },
+  "searchPlaceholder": {
+    "message": "Rechercher dans l'historique...",
+    "description": "Placeholder du champ de recherche"
+  },
+  "filterAll": {
+    "message": "Tout",
+    "description": "Filtrer tout"
+  },
+  "filterPinned": {
+    "message": "Épinglés",
+    "description": "Filtrer les épinglés"
+  },
+  "filterUrls": {
+    "message": "URLs",
+    "description": "Filtrer les URLs"
+  },
+  "filterCode": {
+    "message": "Code",
+    "description": "Filtrer le code"
+  },
+  "filterText": {
+    "message": "Texte",
+    "description": "Filtrer le texte"
+  },
+  "copy": {
+    "message": "Copier",
+    "description": "Action de copie"
+  },
+  "copied": {
+    "message": "Copié !",
+    "description": "Confirmation de copie"
+  },
+  "pin": {
+    "message": "Épingler",
+    "description": "Action d'épinglage"
+  },
+  "unpin": {
+    "message": "Désépingler",
+    "description": "Action de désépinglage"
+  },
+  "delete": {
+    "message": "Supprimer",
+    "description": "Action de suppression"
+  },
+  "clearAll": {
+    "message": "Tout Effacer",
+    "description": "Effacer tous les éléments"
+  },
+  "clearConfirm": {
+    "message": "Effacer tout l'historique du presse-papiers ? Cette action est irréversible.",
+    "description": "Dialogue de confirmation d'effacement"
+  },
+  "items": {
+    "message": "$COUNT$ éléments",
+    "description": "Compteur d'éléments",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "42"
+      }
+    }
+  },
+  "justNow": {
+    "message": "À l'instant",
+    "description": "Temps - à l'instant"
+  },
+  "minutesAgo": {
+    "message": "il y a $MINUTES$m",
+    "description": "Temps - minutes",
+    "placeholders": {
+      "MINUTES": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "hoursAgo": {
+    "message": "il y a $HOURS$h",
+    "description": "Temps - heures",
+    "placeholders": {
+      "HOURS": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "daysAgo": {
+    "message": "il y a $DAYS$j",
+    "description": "Temps - jours",
+    "placeholders": {
+      "DAYS": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "watermarkNotice": {
+    "message": "Les caractères de filigrane ont été supprimés du texte copié.",
+    "description": "Notification de suppression de filigrane"
+  },
+  "settingsSaved": {
+    "message": "Paramètres enregistrés",
+    "description": "Confirmation d'enregistrement"
+  },
+  "exportSuccess": {
+    "message": "Données exportées avec succès",
+    "description": "Message de succès d'exportation"
+  }
+}
