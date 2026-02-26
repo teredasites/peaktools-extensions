@@ -42,10 +42,9 @@ function injectStyles(): void {
       align-items: center;
       justify-content: center;
       pointer-events: none;
-      opacity: 0;
+      opacity: 1;
       transition: opacity 300ms ease;
     }
-    #${CONTAINER_ID}.cu-visible { opacity: 1; }
     #${CONTAINER_ID}.cu-fade-out { opacity: 0; }
 
     .cu-lock-card {
@@ -63,7 +62,7 @@ function injectStyles(): void {
       transform: scale(0.7);
       transition: transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
     }
-    #${CONTAINER_ID}.cu-visible .cu-lock-card {
+    #${CONTAINER_ID}.cu-popped .cu-lock-card {
       transform: scale(1);
     }
     #${CONTAINER_ID}.cu-fade-out .cu-lock-card {
@@ -168,11 +167,11 @@ export function showLockAnimation(unlocking: boolean): void {
   overlay.appendChild(card);
   document.body.appendChild(overlay);
 
-  // Phase 1: appear with pop (0ms)
+  // Phase 1: pop the card in (next frame so CSS transition triggers)
   requestAnimationFrame(() => {
-    overlay.classList.add('cu-visible');
+    overlay.classList.add('cu-popped');
 
-    // Phase 2: pop the icon (200ms)
+    // Phase 2: pop the icon + fill bar (200ms)
     setTimeout(() => {
       icon.classList.add('cu-pop');
       barFill.classList.add('cu-done');
@@ -180,7 +179,6 @@ export function showLockAnimation(unlocking: boolean): void {
 
     // Phase 3: fade out (1200ms)
     setTimeout(() => {
-      overlay.classList.remove('cu-visible');
       overlay.classList.add('cu-fade-out');
     }, 1200);
 
