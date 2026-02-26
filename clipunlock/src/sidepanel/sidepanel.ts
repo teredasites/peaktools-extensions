@@ -85,6 +85,9 @@ const upgradeBannerMsg = document.getElementById('upgrade-banner-msg') as HTMLSp
 const upgradeBannerBtn = document.getElementById('upgrade-banner-btn') as HTMLButtonElement;
 const upgradeBannerClose = document.getElementById('upgrade-banner-close') as HTMLButtonElement;
 
+// Collection bar
+const collectionBar = document.getElementById('collection-bar') as HTMLDivElement;
+
 // Projects
 const projectsPanel = document.getElementById('projects-panel') as HTMLDivElement;
 const projectsList = document.getElementById('projects-list') as HTMLDivElement;
@@ -107,6 +110,8 @@ const domainChips = document.getElementById('domain-chips') as HTMLDivElement;
 const domainInput = document.getElementById('domain-input') as HTMLInputElement;
 const colorPicker = document.getElementById('color-picker') as HTMLDivElement;
 const projectSaveBtn = document.getElementById('project-save') as HTMLButtonElement;
+const newProjectFooterBtn = document.getElementById('new-project-footer-btn') as HTMLButtonElement;
+const detailNewProject = document.getElementById('detail-new-project') as HTMLButtonElement;
 
 // Virtual Scrolling
 const ITEM_HEIGHT = 62;
@@ -818,14 +823,36 @@ function populateCollectionFilter(): void {
     collectionFilter.appendChild(opt);
   }
   collectionFilter.value = current;
+
+  // Show/hide the collection bar based on whether collections exist
+  if (collections.length > 0) {
+    collectionBar.classList.remove('hidden');
+  } else {
+    collectionBar.classList.add('hidden');
+  }
 }
 
 function populateCollectionSelect(select: HTMLSelectElement, currentValue: string): void {
-  select.innerHTML = `<option value="">${chrome.i18n.getMessage('none') || 'None'}</option>`;
-  for (const c of collections) {
+  select.innerHTML = `<option value="">No project</option>`;
+  // Show projects first, then other collections
+  const projects = collections.filter((c) => c.isProject);
+  const others = collections.filter((c) => !c.isProject);
+  for (const c of projects) {
     const opt = document.createElement('option');
     opt.value = c.id;
-    opt.textContent = `${c.isProject ? '📁 ' : ''}${c.name}`;
+    opt.textContent = `📁 ${c.name}`;
+    select.appendChild(opt);
+  }
+  if (others.length > 0 && projects.length > 0) {
+    const sep = document.createElement('option');
+    sep.disabled = true;
+    sep.textContent = '── Collections ──';
+    select.appendChild(sep);
+  }
+  for (const c of others) {
+    const opt = document.createElement('option');
+    opt.value = c.id;
+    opt.textContent = c.name;
     select.appendChild(opt);
   }
   select.value = currentValue;
@@ -995,6 +1022,7 @@ function showProjectsPanel(): void {
   projectDetail.classList.add('hidden');
   urlSubActions.classList.add('hidden');
   codeSubActions.classList.add('hidden');
+  collectionBar.classList.add('hidden');
   renderProjectsList();
 }
 
@@ -1002,6 +1030,10 @@ function hideProjectsPanel(): void {
   clipList.classList.remove('hidden');
   projectsPanel.classList.add('hidden');
   projectDetail.classList.add('hidden');
+  // Restore collection bar if collections exist
+  if (collections.length > 0) {
+    collectionBar.classList.remove('hidden');
+  }
 }
 
 function renderProjectsList(): void {
@@ -1332,6 +1364,38 @@ projectSaveBtn.addEventListener('click', async () => {
 
   projectSaveBtn.disabled = false;
   projectSaveBtn.textContent = editingProjectId ? 'Save Changes' : 'Create Project';
+});
+
+// Footer "+ Project" button — always accessible from main view
+newProjectFooterBtn.addEventListener('click', async () => {
+  const projects = collections.filter((c) => c.isProject);
+  try {
+    const proRes = await chrome.runtime.sendMessage({ type: 'GET_PRO_STATUS', payload: {} });
+    const pro = proRes as { isPro: boolean } | null;
+    const limit = pro?.isPro ? 100 : 2;
+    if (projects.length >= limit) {
+      showUpgradeBanner(`Project limit reached (${projects.length}/${limit}). Upgrade for more.`);
+      return;
+    }
+  } catch { /* */ }
+  editingProjectId = null;
+  openProjectOverlay(null);
+});
+
+// Detail panel: "+ new project" button
+detailNewProject.addEventListener('click', async () => {
+  const projects = collections.filter((c) => c.isProject);
+  try {
+    const proRes = await chrome.runtime.sendMessage({ type: 'GET_PRO_STATUS', payload: {} });
+    const pro = proRes as { isPro: boolean } | null;
+    const limit = pro?.isPro ? 100 : 2;
+    if (projects.length >= limit) {
+      showUpgradeBanner(`Project limit reached (${projects.length}/${limit}). Upgrade for more.`);
+      return;
+    }
+  } catch { /* */ }
+  editingProjectId = null;
+  openProjectOverlay(null);
 });
 
 // Auto-refresh every 3 seconds

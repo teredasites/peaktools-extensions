@@ -517,6 +517,23 @@ body {
   gap: 6px;
 }
 
+.new-project-footer-btn {
+  padding: 5px 12px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.new-project-footer-btn:hover {
+  border-color: var(--accent);
+  background: rgba(51, 143, 255, 0.15);
+}
+
 .add-item-btn {
   padding: 5px 12px;
   background: var(--accent);
@@ -584,8 +601,44 @@ body {
   line-height: 1.4;
 }
 
-/* Collection Select */
-.collection-select,
+/* Collection Bar (below filter chips) */
+.collection-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  background: var(--bg-secondary);
+}
+
+.collection-bar.hidden {
+  display: none;
+}
+
+.collection-filter-select {
+  flex: 1;
+  padding: 5px 8px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.collection-filter-select:focus {
+  border-color: var(--accent);
+}
+
+.collection-filter-select option {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+/* Collection Select (small, used in detail panel) */
 .collection-select-small {
   padding: 4px 8px;
   background: var(--bg-secondary);
@@ -596,22 +649,40 @@ body {
   cursor: pointer;
   outline: none;
   transition: border-color 0.2s ease;
+  flex: 1;
 }
 
-.collection-select:focus,
 .collection-select-small:focus {
   border-color: var(--accent);
 }
 
-.collection-select option,
 .collection-select-small option {
   background: var(--bg-secondary);
   color: var(--text-primary);
 }
 
-.collection-select-small {
-  font-size: 11px;
-  padding: 3px 6px;
+/* New project button in detail panel */
+.detail-new-project-btn {
+  width: 28px;
+  height: 28px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--accent);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+  line-height: 1;
+}
+
+.detail-new-project-btn:hover {
+  border-color: var(--accent);
+  background: rgba(51, 143, 255, 0.15);
 }
 
 /* Detail Citation */

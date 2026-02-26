@@ -18,10 +18,14 @@
     <button class="filter-chip" data-filter="code" data-i18n="filterCode">Code</button>
     <button class="filter-chip" data-filter="text" data-i18n="filterText">Text</button>
     <button id="projects-btn" class="filter-chip projects-chip" data-filter="projects">Projects</button>
-    <select id="collection-filter" class="collection-select" title="Filter by collection">
+  </nav>
+
+  <!-- Collection filter bar (shown when collections exist) -->
+  <div id="collection-bar" class="collection-bar hidden">
+    <select id="collection-filter" class="collection-filter-select" title="Filter by collection">
       <option value="" data-i18n="allCollections">All Collections</option>
     </select>
-  </nav>
+  </div>
 
   <!-- Sub-action bars (shown when specific filter is active) -->
   <div id="url-sub-actions" class="sub-actions hidden">
@@ -81,10 +85,11 @@
     <div id="detail-citation" class="detail-citation hidden"></div>
     <div id="detail-meta" class="detail-meta"></div>
     <div id="detail-collection" class="detail-collection">
-      <label class="detail-collection-label">Collection:</label>
-      <select id="detail-collection-select" class="collection-select-small" title="Assign to collection">
+      <label class="detail-collection-label">Project:</label>
+      <select id="detail-collection-select" class="collection-select-small" title="Assign to project folder">
         <option value="" data-i18n="none">None</option>
       </select>
+      <button id="detail-new-project" class="detail-new-project-btn" title="Create new project">+</button>
     </div>
     <div id="detail-tags" class="detail-tags"></div>
   </div>
@@ -150,6 +155,7 @@
   <footer class="panel-footer">
     <span id="item-count" class="item-count">0 items</span>
     <div class="footer-actions">
+      <button id="new-project-footer-btn" class="new-project-footer-btn" title="Create new project folder">+ Project</button>
       <button id="add-item" class="add-item-btn" title="Add to clipboard history" data-i18n="addButton">+ Add</button>
       <button id="clear-all" class="clear-all-btn" data-i18n="clearAll">Clear All</button>
     </div>
