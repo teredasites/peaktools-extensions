@@ -7,6 +7,11 @@ activeTab
 Required to inject the unlock script into the currently active tab when the user clicks the extension icon or uses the keyboard shortcut. Only activates on user gesture.
 
 
+scripting
+---------
+Required as a fallback to dynamically inject content scripts into tabs where the content script failed to load (e.g., tabs opened before the extension was installed). Uses chrome.scripting.executeScript() only on user-initiated unlock action.
+
+
 clipboardRead
 -------------
 Required to read clipboard contents for the clipboard history feature. Items are stored locally in IndexedDB and never transmitted.
@@ -19,7 +24,7 @@ Required to restore clipboard items when users paste from their clipboard histor
 
 storage
 -------
-Required to save user preferences (Smart Mode on/off, Safe Mode domains, theme) and sync settings across devices via Chrome Sync.
+Required to save user preferences (unlock mode, Safe Mode domains, theme) and sync settings across devices via Chrome Sync.
 
 
 sidePanel
@@ -29,22 +34,37 @@ Required to display the clipboard history panel as a Chrome side panel, allowing
 
 contextMenus
 -------------
-Required to add "Copy with CopyUnlock" and "Paste from history" options to the right-click context menu for quick access.
+Required to add "Toggle Page Unlock" and clipboard management options to the right-click context menu for quick access without opening the popup.
 
 
 alarms
 ------
-Required to schedule clipboard history cleanup (removing expired items for free-tier 24-hour retention) and periodic safe domain list updates.
+Required to schedule clipboard history cleanup (removing expired items based on retention settings) and daily Pro license re-validation.
 
 
 offscreen
 ---------
-Required to read clipboard contents in the background when the extension popup is not open, using an offscreen document to access the Clipboard API.
+Required to read clipboard contents in the background when the extension popup is not open, using an offscreen document to access the Clipboard API (required by Manifest V3).
+
+
+identity
+--------
+Required to authenticate users for Pro license verification via Google identity. Used only when the user initiates a Pro subscription check or checkout.
+
+
+identity.email
+--------------
+Required to look up the user's Pro license status by email address. The email is sent only to our license API (peaktools-license.teredasoftware.workers.dev) and is not stored, shared, or used for marketing.
 
 
 host_permissions: <all_urls>
 ----------------------------
 Required because copy protection can exist on any website. The content script must run on all pages to detect and remove copy/paste restrictions when the user activates the extension. The content script only modifies page behavior — it does not read or transmit page content.
+
+
+tabs (optional)
+---------------
+Only requested if the user enables per-site profiles. Used to read the current tab URL to load site-specific unlock settings. Not requested by default.
 
 
 REMOTE CODE DECLARATION

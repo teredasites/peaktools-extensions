@@ -1,51 +1,83 @@
 {
   "extensionName": {
     "message": "CopyUnlock",
-    "description": "Nome da extensão"
+    "description": "Extension name"
   },
   "extensionDescription": {
     "message": "Desbloqueie restrições de cópia e gerencie seu histórico da área de transferência com facilidade.",
-    "description": "Descrição da extensão"
+    "description": "Extension description"
   },
   "commandToggle": {
     "message": "Alternar CopyUnlock",
-    "description": "Comando de teclado para alternar a extensão"
+    "description": "Keyboard command to toggle the extension"
   },
   "commandClipboard": {
     "message": "Abrir Histórico da Área de Transferência",
-    "description": "Comando de teclado para abrir o histórico"
+    "description": "Keyboard command to open clipboard history"
   },
   "commandSearch": {
     "message": "Pesquisar na Área de Transferência",
-    "description": "Comando de teclado para pesquisar"
+    "description": "Keyboard command to search clipboard"
+  },
+  "contextMenuUnlock": {
+    "message": "Desbloquear Página",
+    "description": "Context menu toggle unlock"
+  },
+  "contextMenuLock": {
+    "message": "Bloquear Página (reverter)",
+    "description": "Context menu toggle lock"
   },
   "contextMenuCopy": {
-    "message": "Copiar (CopyUnlock)",
-    "description": "Opção de copiar no menu de contexto"
+    "message": "Copiar para Histórico",
+    "description": "Context menu copy option"
   },
   "contextMenuCopyClean": {
-    "message": "Copiar Texto Limpo",
-    "description": "Copiar sem marcas d'água"
+    "message": "Copiar Limpo (sem marcas d'água)",
+    "description": "Context menu copy without watermarks"
+  },
+  "contextMenuCopyCitation": {
+    "message": "Copiar com Citação",
+    "description": "Context menu copy with source citation"
   },
   "contextMenuPin": {
-    "message": "Fixar na Área de Transferência",
-    "description": "Opção de fixar no menu de contexto"
+    "message": "Fixar Seleção",
+    "description": "Context menu pin option"
   },
-  "contextMenuSearch": {
-    "message": "Pesquisar no Histórico da Área de Transferência",
-    "description": "Opção de pesquisa no menu de contexto"
+  "contextMenuSaveCollection": {
+    "message": "Salvar na Coleção",
+    "description": "Context menu save to collection parent"
+  },
+  "contextMenuNewCollection": {
+    "message": "+ Nova Coleção...",
+    "description": "Context menu create new collection"
+  },
+  "contextMenuMode": {
+    "message": "Modo",
+    "description": "Context menu mode parent"
+  },
+  "contextMenuClipboardHistory": {
+    "message": "Histórico da Área de Transferência",
+    "description": "Context menu open clipboard history"
+  },
+  "contextMenuQuickPaste": {
+    "message": "Colagem Rápida",
+    "description": "Context menu quick paste overlay"
+  },
+  "contextMenuSettings": {
+    "message": "Configurações",
+    "description": "Context menu open settings"
   },
   "popupEnable": {
     "message": "Ativar",
-    "description": "Rótulo do botão de ativar"
+    "description": "Popup enable button label"
   },
   "popupActive": {
     "message": "Ativo",
-    "description": "Rótulo do estado ativo"
+    "description": "Popup active state label"
   },
   "popupProtections": {
     "message": "$COUNT$ proteções removidas",
-    "description": "Número de proteções removidas",
+    "description": "Number of protections removed",
     "placeholders": {
       "COUNT": {
         "content": "$1",
@@ -55,87 +87,91 @@
   },
   "modeAuto": {
     "message": "Auto",
-    "description": "Rótulo do modo automático"
+    "description": "Auto mode label"
   },
   "modeSafe": {
     "message": "Seguro",
-    "description": "Rótulo do modo seguro"
+    "description": "Safe mode label"
   },
   "modeAggressive": {
     "message": "Agressivo",
-    "description": "Rótulo do modo agressivo"
+    "description": "Aggressive mode label"
   },
   "recentCopies": {
     "message": "Cópias Recentes",
-    "description": "Cabeçalho de itens recentes"
+    "description": "Recent clipboard items header"
   },
   "noHistory": {
     "message": "Ainda não há histórico da área de transferência",
-    "description": "Estado vazio da área de transferência"
+    "description": "Empty clipboard state"
   },
   "clipboardHistory": {
     "message": "Histórico da Área de Transferência",
-    "description": "Título do histórico"
+    "description": "Clipboard history title"
   },
   "settings": {
     "message": "Configurações",
-    "description": "Título das configurações"
+    "description": "Settings page title"
   },
   "searchPlaceholder": {
     "message": "Pesquisar no histórico...",
-    "description": "Placeholder do campo de pesquisa"
+    "description": "Search input placeholder"
   },
   "filterAll": {
     "message": "Todos",
-    "description": "Filtrar todos"
+    "description": "Filter all items"
   },
   "filterPinned": {
     "message": "Fixados",
-    "description": "Filtrar fixados"
+    "description": "Filter pinned items"
   },
   "filterUrls": {
     "message": "URLs",
-    "description": "Filtrar URLs"
+    "description": "Filter URL items"
   },
   "filterCode": {
     "message": "Código",
-    "description": "Filtrar código"
+    "description": "Filter code items"
   },
   "filterText": {
     "message": "Texto",
-    "description": "Filtrar texto"
+    "description": "Filter text items"
+  },
+  "typeAuto": {
+    "message": "Auto-detect",
+    "description": "Auto-detect content type option in add overlay"
   },
   "copy": {
     "message": "Copiar",
-    "description": "Ação de copiar"
+    "description": "Copy action"
   },
   "copied": {
     "message": "Copiado!",
-    "description": "Confirmação de cópia"
+    "description": "Copy confirmation"
   },
   "pin": {
     "message": "Fixar",
-    "description": "Ação de fixar"
+    "description": "Pin action"
   },
   "unpin": {
     "message": "Desfixar",
-    "description": "Ação de desfixar"
+    "description": "Unpin action"
   },
   "delete": {
     "message": "Excluir",
-    "description": "Ação de excluir"
+    "description": "Delete action"
   },
   "clearAll": {
     "message": "Limpar Tudo",
-    "description": "Limpar todos os itens"
+    "description": "Clear all items"
   },
   "clearConfirm": {
     "message": "Limpar todo o histórico da área de transferência? Isso não pode ser desfeito.",
-    "description": "Diálogo de confirmação de limpeza"
+    "description": "Clear confirmation dialog"
   },
   "items": {
     "message": "$COUNT$ itens",
-    "description": "Contador de itens",
+    "description": "Item count display",
     "placeholders": {
       "COUNT": {
         "content": "$1",
@@ -145,11 +181,11 @@
   },
   "justNow": {
     "message": "Agora mesmo",
-    "description": "Tempo - agora mesmo"
+    "description": "Time ago - just now"
   },
   "minutesAgo": {
     "message": "há $MINUTES$m",
-    "description": "Tempo - minutos",
+    "description": "Time ago - minutes",
     "placeholders": {
       "MINUTES": {
         "content": "$1",
@@ -159,7 +195,7 @@
   },
   "hoursAgo": {
     "message": "há $HOURS$h",
-    "description": "Tempo - horas",
+    "description": "Time ago - hours",
     "placeholders": {
       "HOURS": {
         "content": "$1",
@@ -169,7 +205,7 @@
   },
   "daysAgo": {
     "message": "há $DAYS$d",
-    "description": "Tempo - dias",
+    "description": "Time ago - days",
     "placeholders": {
       "DAYS": {
         "content": "$1",
@@ -179,14 +215,616 @@
   },
   "watermarkNotice": {
     "message": "Caracteres de marca d'água foram removidos do texto copiado.",
-    "description": "Notificação de remoção de marca d'água"
+    "description": "Watermark stripping notification"
   },
   "settingsSaved": {
     "message": "Configurações salvas",
-    "description": "Confirmação de salvamento"
+    "description": "Settings save confirmation"
   },
   "exportSuccess": {
     "message": "Dados exportados com sucesso",
-    "description": "Mensagem de sucesso de exportação"
+    "description": "Export success message"
+  },
+  "protectionActive": {
+    "message": "Proteção ativa",
+    "description": "Popup label when unlock is active"
+  },
+  "tapToEnable": {
+    "message": "Toque para ativar",
+    "description": "Popup label when unlock is inactive"
+  },
+  "statusActive": {
+    "message": "Ativo",
+    "description": "Popup status pill when active"
+  },
+  "statusOff": {
+    "message": "Desligado",
+    "description": "Popup status pill when off"
+  },
+  "noRecentCopies": {
+    "message": "Sem cópias recentes",
+    "description": "Popup empty clipboard state"
+  },
+  "timeNow": {
+    "message": "agora",
+    "description": "Popup time ago - just now short form"
+  },
+  "removed": {
+    "message": "$COUNT$ removidas",
+    "description": "Popup protection count label",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "history": {
+    "message": "Histórico",
+    "description": "Popup button to open clipboard history"
+  },
+  "recentLabel": {
+    "message": "Recentes",
+    "description": "Popup section header for recent clipboard items"
+  },
+  "allCollections": {
+    "message": "Todas as coleções",
+    "description": "Sidepanel collection filter default option"
+  },
+  "none": {
+    "message": "Nenhuma",
+    "description": "Sidepanel collection select no-collection option"
+  },
+  "saving": {
+    "message": "Salvando...",
+    "description": "Sidepanel add overlay saving indicator"
+  },
+  "save": {
+    "message": "Salvar",
+    "description": "Sidepanel add overlay save button"
+  },
+  "addTitle": {
+    "message": "Adicionar ao histórico da área de transferência",
+    "description": "Sidepanel add overlay title"
+  },
+  "addPlaceholder": {
+    "message": "Cole ou digite qualquer coisa — URLs, texto, código...",
+    "description": "Sidepanel add overlay placeholder"
+  },
+  "addButton": {
+    "message": "+ Adicionar",
+    "description": "Sidepanel footer add button label"
+  },
+  "back": {
+    "message": "Voltar",
+    "description": "Detail panel back button"
+  },
+  "cite": {
+    "message": "+ Citar",
+    "description": "Detail panel copy with citation button"
+  },
+  "open": {
+    "message": "Abrir",
+    "description": "Detail panel open source URL button"
+  },
+  "emptyUrlIcon": {
+    "message": "&#128279;",
+    "description": "Empty state icon for URLs filter"
+  },
+  "emptyUrlText": {
+    "message": "Nenhuma URL salva ainda",
+    "description": "Empty state text for URLs filter"
+  },
+  "emptyUrlHint": {
+    "message": "Copie qualquer URL do seu navegador para salvar aqui, ou clique em + Adicionar abaixo.",
+    "description": "Empty state hint for URLs filter"
+  },
+  "emptyCodeText": {
+    "message": "Nenhum trecho de código ainda",
+    "description": "Empty state text for Code filter"
+  },
+  "emptyCodeHint": {
+    "message": "Copie código de qualquer editor ou site para salvar aqui.",
+    "description": "Empty state hint for Code filter"
+  },
+  "emptyTextText": {
+    "message": "Nenhum clip de texto ainda",
+    "description": "Empty state text for Text filter"
+  },
+  "emptyTextHint": {
+    "message": "Copie texto de qualquer página para começar a construir seu histórico.",
+    "description": "Empty state hint for Text filter"
+  },
+  "emptyPinnedText": {
+    "message": "Nenhum item fixado",
+    "description": "Empty state text for Pinned filter"
+  },
+  "emptyPinnedHint": {
+    "message": "Abra qualquer item e clique em Fixar para mantê-lo no topo.",
+    "description": "Empty state hint for Pinned filter"
+  },
+  "emptyDefaultHint": {
+    "message": "Copie qualquer coisa na web — aparece aqui automaticamente.",
+    "description": "Empty state hint for All filter"
+  },
+  "words": {
+    "message": "$COUNT$ palavras",
+    "description": "Word count display in clip items",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "42"
+      }
+    }
+  },
+  "pdfCleaned": {
+    "message": "PDF limpo",
+    "description": "PDF cleaned indicator in detail view"
+  },
+  "type": {
+    "message": "Tipo",
+    "description": "Type label in detail view"
+  },
+  "source": {
+    "message": "Fonte",
+    "description": "Source label in detail view"
+  },
+  "optGeneralSettings": {
+    "message": "Configurações gerais",
+    "description": "Options page general settings header"
+  },
+  "optGeneralDesc": {
+    "message": "Configure o comportamento principal do CopyUnlock.",
+    "description": "Options page general settings description"
+  },
+  "optEnableCopyUnlock": {
+    "message": "Ativar CopyUnlock",
+    "description": "Options enable toggle label"
+  },
+  "optEnableHint": {
+    "message": "Interruptor principal para todas as funções de desbloqueio",
+    "description": "Options enable toggle hint"
+  },
+  "optDefaultMode": {
+    "message": "Modo padrão",
+    "description": "Options default mode label"
+  },
+  "optDefaultModeHint": {
+    "message": "Nível de agressividade para remover proteções de cópia",
+    "description": "Options default mode hint"
+  },
+  "optShowNotifications": {
+    "message": "Mostrar notificações",
+    "description": "Options notifications toggle label"
+  },
+  "optNotificationsHint": {
+    "message": "Exibir aviso quando proteções são removidas",
+    "description": "Options notifications hint"
+  },
+  "optContextMenu": {
+    "message": "Menu de contexto",
+    "description": "Options context menu toggle label"
+  },
+  "optContextMenuHint": {
+    "message": "Mostrar CopyUnlock no menu do botão direito",
+    "description": "Options context menu hint"
+  },
+  "optKeyboardShortcuts": {
+    "message": "Atalhos de teclado",
+    "description": "Options keyboard shortcuts header"
+  },
+  "optToggleCopyUnlock": {
+    "message": "Alternar CopyUnlock",
+    "description": "Options shortcut action label"
+  },
+  "optOpenClipboardHistory": {
+    "message": "Abrir histórico da área de transferência",
+    "description": "Options shortcut action label"
+  },
+  "optSearchClipboard": {
+    "message": "Pesquisar na área de transferência",
+    "description": "Options shortcut action label"
+  },
+  "optQuickPaste": {
+    "message": "Colagem rápida",
+    "description": "Options shortcut action label"
+  },
+  "optConfigureShortcuts": {
+    "message": "Configurar nas configurações do Chrome",
+    "description": "Options link to chrome shortcuts page"
+  },
+  "optClipboardHistory": {
+    "message": "Histórico da área de transferência",
+    "description": "Options clipboard section header"
+  },
+  "optClipboardDesc": {
+    "message": "Gerencie como os itens da área de transferência são armazenados.",
+    "description": "Options clipboard section description"
+  },
+  "optEnableClipboard": {
+    "message": "Ativar histórico da área de transferência",
+    "description": "Options clipboard enable label"
+  },
+  "optEnableClipboardHint": {
+    "message": "Salvar automaticamente o conteúdo da área de transferência",
+    "description": "Options clipboard enable hint"
+  },
+  "optMaxItems": {
+    "message": "Máximo de itens",
+    "description": "Options max items label"
+  },
+  "optMaxItemsHint": {
+    "message": "Número máximo de entradas da área de transferência",
+    "description": "Options max items hint"
+  },
+  "optRetentionPeriod": {
+    "message": "Período de retenção",
+    "description": "Options retention period label"
+  },
+  "optRetentionHint": {
+    "message": "Dias antes da limpeza automática de entradas antigas",
+    "description": "Options retention hint"
+  },
+  "optDays": {
+    "message": "dias",
+    "description": "Options retention days suffix"
+  },
+  "optWatermarkStripping": {
+    "message": "Remoção de marca d'água",
+    "description": "Options watermark stripping label"
+  },
+  "optWatermarkHint": {
+    "message": "Remover caracteres de rastreamento invisíveis do texto copiado",
+    "description": "Options watermark hint"
+  },
+  "optAutoCitation": {
+    "message": "Citação automática",
+    "description": "Options auto citation label"
+  },
+  "optAutoCitationHint": {
+    "message": "Gerar automaticamente citação de fonte para texto copiado",
+    "description": "Options auto citation hint"
+  },
+  "optCitationOff": {
+    "message": "Desligado",
+    "description": "Options citation mode off"
+  },
+  "optCitationUrl": {
+    "message": "Apenas URL (Grátis)",
+    "description": "Options citation mode url"
+  },
+  "optCitationFormatted": {
+    "message": "Formatado (Pro)",
+    "description": "Options citation mode formatted"
+  },
+  "optDefaultPasteFormat": {
+    "message": "Formato de colagem padrão",
+    "description": "Options paste format label"
+  },
+  "optPasteFormatHint": {
+    "message": "Formato usado ao colar do histórico",
+    "description": "Options paste format hint"
+  },
+  "optPastePlain": {
+    "message": "Texto simples",
+    "description": "Options paste format plain"
+  },
+  "optPasteRich": {
+    "message": "Texto rico (com formatação)",
+    "description": "Options paste format rich"
+  },
+  "optPasteClean": {
+    "message": "Limpo (colapsar espaços)",
+    "description": "Options paste format clean"
+  },
+  "optPasteCitation": {
+    "message": "Com citação",
+    "description": "Options paste format with citation"
+  },
+  "optPdfCleanup": {
+    "message": "Limpeza de quebras de linha PDF",
+    "description": "Options PDF cleanup label"
+  },
+  "optPdfCleanupHint": {
+    "message": "Corrigir quebras de linha artificiais de texto copiado de PDF",
+    "description": "Options PDF cleanup hint"
+  },
+  "optSiteOverrides": {
+    "message": "Exceções de sites",
+    "description": "Options site overrides header"
+  },
+  "optSiteOverridesDesc": {
+    "message": "Definir modos de desbloqueio personalizados para sites específicos.",
+    "description": "Options site overrides description"
+  },
+  "optNoOverrides": {
+    "message": "Nenhuma exceção de site configurada.",
+    "description": "Options empty overrides state"
+  },
+  "optDisabled": {
+    "message": "Desativado",
+    "description": "Options override mode disabled"
+  },
+  "optAdd": {
+    "message": "Adicionar",
+    "description": "Options add override button"
+  },
+  "optProTitle": {
+    "message": "CopyUnlock Pro",
+    "description": "Options pro section header"
+  },
+  "optProLicenseActive": {
+    "message": "Licença Pro ativa",
+    "description": "Options pro active status"
+  },
+  "optProPlan": {
+    "message": "Plano",
+    "description": "Options pro plan label"
+  },
+  "optRefresh": {
+    "message": "Atualizar",
+    "description": "Options refresh license button"
+  },
+  "optManageSubscription": {
+    "message": "Gerenciar assinatura",
+    "description": "Options manage subscription label"
+  },
+  "optManageHint": {
+    "message": "Atualizar pagamento, mudar plano ou cancelar",
+    "description": "Options manage subscription hint"
+  },
+  "optManage": {
+    "message": "Gerenciar",
+    "description": "Options manage button"
+  },
+  "optPrioritySupport": {
+    "message": "Suporte prioritário",
+    "description": "Options priority support label"
+  },
+  "optPrioritySupportHint": {
+    "message": "Membros Pro têm tempos de resposta rápidos",
+    "description": "Options priority support hint"
+  },
+  "optEmailUs": {
+    "message": "Fale conosco",
+    "description": "Options email support button"
+  },
+  "optUnlockPower": {
+    "message": "Desbloqueie todo o poder",
+    "description": "Options pro hero title"
+  },
+  "optUnlockDesc": {
+    "message": "Motor de desbloqueio completo, área de transferência ilimitada, coleções, limpeza PDF, citações formatadas e suporte prioritário.",
+    "description": "Options pro hero description"
+  },
+  "optProFeatureItems": {
+    "message": "100.000 itens da área de transferência",
+    "description": "Options pro feature"
+  },
+  "optProFeatureItemsSub": {
+    "message": "vs 500 no plano gratuito",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureRetention": {
+    "message": "Retenção de 10 anos",
+    "description": "Options pro feature"
+  },
+  "optProFeatureRetentionSub": {
+    "message": "vs 30 dias no gratuito",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureCollections": {
+    "message": "1.000 coleções",
+    "description": "Options pro feature"
+  },
+  "optProFeatureCollectionsSub": {
+    "message": "vs 3 no gratuito",
+    "description": "Options pro feature sub"
+  },
+  "optProFeaturePdf": {
+    "message": "Limpeza de quebras de linha PDF",
+    "description": "Options pro feature"
+  },
+  "optProFeaturePdfSub": {
+    "message": "Corrigir texto PDF quebrado",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureCitations": {
+    "message": "Citações formatadas",
+    "description": "Options pro feature"
+  },
+  "optProFeatureCitationsSub": {
+    "message": "Cite suas fontes automaticamente",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureSupport": {
+    "message": "Suporte prioritário",
+    "description": "Options pro feature"
+  },
+  "optProFeatureSupportSub": {
+    "message": "Resposta rápida por email",
+    "description": "Options pro feature sub"
+  },
+  "optMonthly": {
+    "message": "Mensal",
+    "description": "Options plan monthly"
+  },
+  "optAnnual": {
+    "message": "Anual",
+    "description": "Options plan annual"
+  },
+  "optLifetime": {
+    "message": "Vitalício",
+    "description": "Options plan lifetime"
+  },
+  "optBestValue": {
+    "message": "Melhor valor",
+    "description": "Options plan best value badge"
+  },
+  "optSave44": {
+    "message": "Economize 44%",
+    "description": "Options annual savings"
+  },
+  "optOneTime": {
+    "message": "Pagamento único",
+    "description": "Options lifetime one-time label"
+  },
+  "optProLegal": {
+    "message": "Powered by Stripe. Cancele a qualquer momento. Licença vinculada ao email do seu perfil Chrome.",
+    "description": "Options pro legal text"
+  },
+  "optAlreadyPurchased": {
+    "message": "Já comprou? Atualizar licença",
+    "description": "Options refresh license link"
+  },
+  "optDataManagement": {
+    "message": "Gerenciamento de dados",
+    "description": "Options data section header"
+  },
+  "optDataDesc": {
+    "message": "Exportar, importar ou limpar dados da extensão.",
+    "description": "Options data section description"
+  },
+  "optExportData": {
+    "message": "Exportar dados",
+    "description": "Options export label"
+  },
+  "optExportHint": {
+    "message": "Baixar todas as configurações e histórico como JSON",
+    "description": "Options export hint"
+  },
+  "optExport": {
+    "message": "Exportar",
+    "description": "Options export button"
+  },
+  "optImportData": {
+    "message": "Importar dados",
+    "description": "Options import label"
+  },
+  "optImportHint": {
+    "message": "Restaurar de um arquivo JSON exportado anteriormente",
+    "description": "Options import hint"
+  },
+  "optImport": {
+    "message": "Importar",
+    "description": "Options import button"
+  },
+  "optClearAllData": {
+    "message": "Limpar todos os dados",
+    "description": "Options clear data label"
+  },
+  "optClearHint": {
+    "message": "Excluir permanentemente todas as configurações, histórico e exceções",
+    "description": "Options clear data hint"
+  },
+  "optClear": {
+    "message": "Limpar",
+    "description": "Options clear button"
+  },
+  "optStatistics": {
+    "message": "Estatísticas",
+    "description": "Options statistics header"
+  },
+  "optUnlocks": {
+    "message": "Desbloqueios",
+    "description": "Options stat unlocks label"
+  },
+  "optCopiesSaved": {
+    "message": "Cópias salvas",
+    "description": "Options stat copies label"
+  },
+  "optWatermarksStripped": {
+    "message": "Marcas d'água removidas",
+    "description": "Options stat watermarks label"
+  },
+  "optNavGeneral": {
+    "message": "Geral",
+    "description": "Options nav general tab"
+  },
+  "optNavClipboard": {
+    "message": "Transferência",
+    "description": "Options nav clipboard tab"
+  },
+  "optNavSites": {
+    "message": "Sites",
+    "description": "Options nav sites tab"
+  },
+  "optNavPro": {
+    "message": "Pro",
+    "description": "Options nav pro tab"
+  },
+  "optNavData": {
+    "message": "Dados",
+    "description": "Options nav data tab"
+  },
+  "optSaveFailed": {
+    "message": "Falha ao salvar configurações",
+    "description": "Options save error toast"
+  },
+  "optImportSuccess": {
+    "message": "Dados importados com sucesso",
+    "description": "Options import success toast"
+  },
+  "optImportFailed": {
+    "message": "Importação falhou — arquivo inválido",
+    "description": "Options import error toast"
+  },
+  "optClearConfirm": {
+    "message": "Tem certeza que deseja limpar todos os dados do CopyUnlock? Isso não pode ser desfeito.",
+    "description": "Options clear data confirm dialog"
+  },
+  "optAllDataCleared": {
+    "message": "Todos os dados foram limpos",
+    "description": "Options clear success toast"
+  },
+  "optClearFailed": {
+    "message": "Falha ao limpar dados",
+    "description": "Options clear error toast"
+  },
+  "optCheckingLicense": {
+    "message": "Verificando licença...",
+    "description": "Options license check toast"
+  },
+  "optProVerified": {
+    "message": "Licença Pro verificada!",
+    "description": "Options license verified toast"
+  },
+  "optNoLicense": {
+    "message": "Nenhuma licença ativa encontrada",
+    "description": "Options no license toast"
+  },
+  "optLicenseCheckFailed": {
+    "message": "Falha na verificação da licença",
+    "description": "Options license check error toast"
+  },
+  "optOpening": {
+    "message": "Abrindo...",
+    "description": "Options manage subscription opening state"
+  },
+  "optOpeningPortal": {
+    "message": "Abrindo portal de faturamento...",
+    "description": "Options billing portal opening toast"
+  },
+  "optPortalFailed": {
+    "message": "Não foi possível abrir o portal de faturamento. Entre em contato com o suporte.",
+    "description": "Options billing portal error toast"
+  },
+  "optPortalError": {
+    "message": "Falha ao abrir o portal de faturamento",
+    "description": "Options billing portal error toast"
+  },
+  "optExportFailed": {
+    "message": "Falha na exportação",
+    "description": "Options export error toast"
+  },
+  "optRenews": {
+    "message": "Renova em $DATE$",
+    "description": "Options pro renewal date",
+    "placeholders": {
+      "DATE": {
+        "content": "$1",
+        "example": "Jan 15, 2026"
+      }
+    }
   }
 }

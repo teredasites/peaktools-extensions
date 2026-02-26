@@ -60,7 +60,7 @@ export function findCSSGeneratedContent(root?: Document | Element): CSSContentMa
   const elements = scanRoot.querySelectorAll('*');
 
   for (let i = 0; i < Math.min(elements.length, 2000); i++) {
-    const el = elements[i];
+    const el = elements[i]!;
     for (const pseudo of ['::before', '::after'] as const) {
       try {
         const style = window.getComputedStyle(el, pseudo);

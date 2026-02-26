@@ -583,6 +583,18 @@ kbd {
 
 .pro-tag.hidden { display: none; }
 
+.pro-inline-tag {
+  font-size: 9px;
+  font-weight: 800;
+  padding: 1px 6px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 100px;
+  letter-spacing: 0.3px;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+
 .pro-active-card {
   display: flex;
   align-items: center;
@@ -772,6 +784,15 @@ kbd {
   text-align: center;
   line-height: 1.5;
 }
+
+.pro-renew-date {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-400);
+  margin-left: 4px;
+}
+
+#pro-manage-section.hidden { display: none; }
 
 #pro-upgrade-section.hidden { display: none; }
 

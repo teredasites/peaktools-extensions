@@ -1,3 +1,5 @@
+import { applyI18n } from '../shared/i18n';
+
 // DOM Refs
 const toggleBtn = document.getElementById('toggle-btn') as HTMLButtonElement;
 const toggleLabel = document.getElementById('toggle-label') as HTMLDivElement;
@@ -19,33 +21,33 @@ let currentTabId: number | null = null;
 // Helpers
 function timeAgo(timestamp: number): string {
   const seconds = Math.floor((Date.now() - timestamp) / 1000);
-  if (seconds < 60) return 'now';
+  if (seconds < 60) return chrome.i18n.getMessage('timeNow') || 'now';
   const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) return `${minutes}m`;
+  if (minutes < 60) return chrome.i18n.getMessage('minutesAgo', [String(minutes)]) || `${minutes}m`;
   const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours}h`;
+  if (hours < 24) return chrome.i18n.getMessage('hoursAgo', [String(hours)]) || `${hours}h`;
   const days = Math.floor(hours / 24);
-  return `${days}d`;
+  return chrome.i18n.getMessage('daysAgo', [String(days)]) || `${days}d`;
 }
 
 function setUnlockedState(active: boolean, protections: number = 0): void {
   if (active) {
     toggleBtn.classList.add('active');
-    toggleLabel.textContent = 'Protection active';
+    toggleLabel.textContent = chrome.i18n.getMessage('protectionActive') || 'Protection active';
     statusPill.classList.remove('off');
     statusPill.classList.add('on');
-    statusText.textContent = 'Active';
+    statusText.textContent = chrome.i18n.getMessage('statusActive') || 'Active';
   } else {
     toggleBtn.classList.remove('active');
-    toggleLabel.textContent = 'Tap to enable';
+    toggleLabel.textContent = chrome.i18n.getMessage('tapToEnable') || 'Tap to enable';
     statusPill.classList.remove('on');
     statusPill.classList.add('off');
-    statusText.textContent = 'Off';
+    statusText.textContent = chrome.i18n.getMessage('statusOff') || 'Off';
   }
 
   if (protections > 0) {
     protectionBadge.classList.remove('hidden');
-    protectionCount.textContent = `${protections} removed`;
+    protectionCount.textContent = chrome.i18n.getMessage('removed', [String(protections)]) || `${protections} removed`;
   } else {
     protectionBadge.classList.add('hidden');
   }
@@ -65,7 +67,7 @@ function renderRecentItems(items: Array<{ id: string; preview: string; contentTy
   clipCount.textContent = String(list.length);
 
   if (list.length === 0) {
-    recentItemsContainer.innerHTML = '<div class="no-items">No recent copies</div>';
+    recentItemsContainer.innerHTML = `<div class="no-items">${chrome.i18n.getMessage('noRecentCopies') || 'No recent copies'}</div>`;
     return;
   }
 
@@ -198,6 +200,9 @@ openSidepanelBtn.addEventListener('click', async () => {
 openOptionsBtn.addEventListener('click', () => {
   chrome.runtime.openOptionsPage();
 });
+
+// Apply i18n translations to static HTML elements
+applyI18n();
 
 // Initialize
 init();

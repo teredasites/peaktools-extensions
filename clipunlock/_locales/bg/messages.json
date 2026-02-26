@@ -1,0 +1,826 @@
+{
+  "extensionName": {
+    "message": "CopyUnlock",
+    "description": "Extension name"
+  },
+  "extensionDescription": {
+    "message": "Отключете ограниченията за копиране и управлявайте историята на клипборда с лекота.",
+    "description": "Extension description"
+  },
+  "commandToggle": {
+    "message": "Превключване на CopyUnlock",
+    "description": "Keyboard command to toggle the extension"
+  },
+  "commandClipboard": {
+    "message": "Отворете историята на клипборда",
+    "description": "Keyboard command to open clipboard history"
+  },
+  "commandSearch": {
+    "message": "Търсене в клипборда",
+    "description": "Keyboard command to search clipboard"
+  },
+  "contextMenuUnlock": {
+    "message": "Отключи страницата",
+    "description": "Context menu toggle unlock"
+  },
+  "contextMenuLock": {
+    "message": "Заключи страницата (върни)",
+    "description": "Context menu toggle lock"
+  },
+  "contextMenuCopy": {
+    "message": "Копирай в историята",
+    "description": "Context menu copy option"
+  },
+  "contextMenuCopyClean": {
+    "message": "Чисто копиране (премахни водни знаци)",
+    "description": "Context menu copy without watermarks"
+  },
+  "contextMenuCopyCitation": {
+    "message": "Копирай с цитат",
+    "description": "Context menu copy with source citation"
+  },
+  "contextMenuPin": {
+    "message": "Закачи селекцията",
+    "description": "Context menu pin option"
+  },
+  "contextMenuSaveCollection": {
+    "message": "Запази в колекция",
+    "description": "Context menu save to collection parent"
+  },
+  "contextMenuNewCollection": {
+    "message": "+ Нова колекция...",
+    "description": "Context menu create new collection"
+  },
+  "contextMenuMode": {
+    "message": "Режим",
+    "description": "Context menu mode parent"
+  },
+  "contextMenuClipboardHistory": {
+    "message": "История на клипборда",
+    "description": "Context menu open clipboard history"
+  },
+  "contextMenuQuickPaste": {
+    "message": "Бързо поставяне",
+    "description": "Context menu quick paste overlay"
+  },
+  "contextMenuSettings": {
+    "message": "Настройки",
+    "description": "Context menu open settings"
+  },
+  "popupEnable": {
+    "message": "Включи",
+    "description": "Popup enable button label"
+  },
+  "popupActive": {
+    "message": "Активен",
+    "description": "Popup active state label"
+  },
+  "popupProtections": {
+    "message": "$COUNT$ защити премахнати",
+    "description": "Number of protections removed",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "modeAuto": {
+    "message": "Авто",
+    "description": "Auto mode label"
+  },
+  "modeSafe": {
+    "message": "Безопасен",
+    "description": "Safe mode label"
+  },
+  "modeAggressive": {
+    "message": "Агресивен",
+    "description": "Aggressive mode label"
+  },
+  "recentCopies": {
+    "message": "Последни копия",
+    "description": "Recent clipboard items header"
+  },
+  "noHistory": {
+    "message": "Няма история на клипборда",
+    "description": "Empty clipboard state"
+  },
+  "clipboardHistory": {
+    "message": "История на клипборда",
+    "description": "Clipboard history title"
+  },
+  "settings": {
+    "message": "Настройки",
+    "description": "Settings page title"
+  },
+  "searchPlaceholder": {
+    "message": "Търсене в историята на клипборда...",
+    "description": "Search input placeholder"
+  },
+  "filterAll": {
+    "message": "Всички",
+    "description": "Filter all items"
+  },
+  "filterPinned": {
+    "message": "Закачени",
+    "description": "Filter pinned items"
+  },
+  "filterUrls": {
+    "message": "URL адреси",
+    "description": "Filter URL items"
+  },
+  "filterCode": {
+    "message": "Код",
+    "description": "Filter code items"
+  },
+  "filterText": {
+    "message": "Текст",
+    "description": "Filter text items"
+  },
+  "copy": {
+    "message": "Копирай",
+    "description": "Copy action"
+  },
+  "copied": {
+    "message": "Копирано!",
+    "description": "Copy confirmation"
+  },
+  "pin": {
+    "message": "Закачи",
+    "description": "Pin action"
+  },
+  "unpin": {
+    "message": "Откачи",
+    "description": "Unpin action"
+  },
+  "delete": {
+    "message": "Изтрий",
+    "description": "Delete action"
+  },
+  "clearAll": {
+    "message": "Изчисти всичко",
+    "description": "Clear all items"
+  },
+  "clearConfirm": {
+    "message": "Изчистване на цялата история? Това не може да бъде отменено.",
+    "description": "Clear confirmation dialog"
+  },
+  "items": {
+    "message": "$COUNT$ елемента",
+    "description": "Item count display",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "42"
+      }
+    }
+  },
+  "justNow": {
+    "message": "Току-що",
+    "description": "Time ago - just now"
+  },
+  "minutesAgo": {
+    "message": "преди $MINUTES$ мин",
+    "description": "Time ago - minutes",
+    "placeholders": {
+      "MINUTES": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "hoursAgo": {
+    "message": "преди $HOURS$ ч",
+    "description": "Time ago - hours",
+    "placeholders": {
+      "HOURS": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "daysAgo": {
+    "message": "преди $DAYS$ дни",
+    "description": "Time ago - days",
+    "placeholders": {
+      "DAYS": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "watermarkNotice": {
+    "message": "Символите на водния знак бяха премахнати от копирания текст.",
+    "description": "Watermark stripping notification"
+  },
+  "settingsSaved": {
+    "message": "Настройките са запазени",
+    "description": "Settings save confirmation"
+  },
+  "exportSuccess": {
+    "message": "Данните са експортирани успешно",
+    "description": "Export success message"
+  },
+  "protectionActive": {
+    "message": "Защитата е активна",
+    "description": "Popup label when unlock is active"
+  },
+  "tapToEnable": {
+    "message": "Натиснете за включване",
+    "description": "Popup label when unlock is inactive"
+  },
+  "statusActive": {
+    "message": "Активен",
+    "description": "Popup status pill when active"
+  },
+  "statusOff": {
+    "message": "Изключен",
+    "description": "Popup status pill when off"
+  },
+  "noRecentCopies": {
+    "message": "Няма последни копия",
+    "description": "Popup empty clipboard state"
+  },
+  "timeNow": {
+    "message": "сега",
+    "description": "Popup time ago - just now short form"
+  },
+  "removed": {
+    "message": "$COUNT$ премахнати",
+    "description": "Popup protection count label",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "history": {
+    "message": "История",
+    "description": "Popup button to open clipboard history"
+  },
+  "recentLabel": {
+    "message": "Последни",
+    "description": "Popup section header for recent clipboard items"
+  },
+  "allCollections": {
+    "message": "Всички колекции",
+    "description": "Sidepanel collection filter default option"
+  },
+  "none": {
+    "message": "Няма",
+    "description": "Sidepanel collection select no-collection option"
+  },
+  "saving": {
+    "message": "Запазване...",
+    "description": "Sidepanel add overlay saving indicator"
+  },
+  "save": {
+    "message": "Запази",
+    "description": "Sidepanel add overlay save button"
+  },
+  "addTitle": {
+    "message": "Добави към историята на клипборда",
+    "description": "Sidepanel add overlay title"
+  },
+  "addPlaceholder": {
+    "message": "Поставете или напишете нещо — URL адреси, текст, код...",
+    "description": "Sidepanel add overlay placeholder"
+  },
+  "addButton": {
+    "message": "+ Добави",
+    "description": "Sidepanel footer add button label"
+  },
+  "back": {
+    "message": "Назад",
+    "description": "Detail panel back button"
+  },
+  "cite": {
+    "message": "+ Цитат",
+    "description": "Detail panel copy with citation button"
+  },
+  "open": {
+    "message": "Отвори",
+    "description": "Detail panel open source URL button"
+  },
+  "emptyUrlIcon": {
+    "message": "&#128279;",
+    "description": "Empty state icon for URLs filter"
+  },
+  "emptyUrlText": {
+    "message": "Няма запазени URL адреси",
+    "description": "Empty state text for URLs filter"
+  },
+  "emptyUrlHint": {
+    "message": "Копирайте URL от браузъра, за да го запазите тук, или натиснете + Добави по-долу.",
+    "description": "Empty state hint for URLs filter"
+  },
+  "emptyCodeText": {
+    "message": "Няма код фрагменти",
+    "description": "Empty state text for Code filter"
+  },
+  "emptyCodeHint": {
+    "message": "Копирайте код от всеки редактор или уебсайт, за да го запазите тук.",
+    "description": "Empty state hint for Code filter"
+  },
+  "emptyTextText": {
+    "message": "Няма текстови клипове",
+    "description": "Empty state text for Text filter"
+  },
+  "emptyTextHint": {
+    "message": "Копирайте текст от всяка страница, за да започнете да изграждате историята си.",
+    "description": "Empty state hint for Text filter"
+  },
+  "emptyPinnedText": {
+    "message": "Няма закачени елементи",
+    "description": "Empty state text for Pinned filter"
+  },
+  "emptyPinnedHint": {
+    "message": "Отворете елемент и натиснете Закачи, за да го задържите отгоре.",
+    "description": "Empty state hint for Pinned filter"
+  },
+  "emptyDefaultHint": {
+    "message": "Копирайте нещо в уеб — появява се тук автоматично.",
+    "description": "Empty state hint for All filter"
+  },
+  "words": {
+    "message": "$COUNT$ думи",
+    "description": "Word count display in clip items",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "42"
+      }
+    }
+  },
+  "pdfCleaned": {
+    "message": "PDF почистен",
+    "description": "PDF cleaned indicator in detail view"
+  },
+  "type": {
+    "message": "Тип",
+    "description": "Type label in detail view"
+  },
+  "source": {
+    "message": "Източник",
+    "description": "Source label in detail view"
+  },
+  "optGeneralSettings": {
+    "message": "Общи настройки",
+    "description": "Options page general settings header"
+  },
+  "optGeneralDesc": {
+    "message": "Конфигурирайте основното поведение на CopyUnlock.",
+    "description": "Options page general settings description"
+  },
+  "optEnableCopyUnlock": {
+    "message": "Включи CopyUnlock",
+    "description": "Options enable toggle label"
+  },
+  "optEnableHint": {
+    "message": "Главен превключвател за всички функции",
+    "description": "Options enable toggle hint"
+  },
+  "optDefaultMode": {
+    "message": "Режим по подразбиране",
+    "description": "Options default mode label"
+  },
+  "optDefaultModeHint": {
+    "message": "Колко агресивно да се премахват защитите",
+    "description": "Options default mode hint"
+  },
+  "optShowNotifications": {
+    "message": "Показване на известия",
+    "description": "Options notifications toggle label"
+  },
+  "optNotificationsHint": {
+    "message": "Показване на известие при премахване на защити",
+    "description": "Options notifications hint"
+  },
+  "optContextMenu": {
+    "message": "Контекстно меню",
+    "description": "Options context menu toggle label"
+  },
+  "optContextMenuHint": {
+    "message": "Показване на CopyUnlock в менюто с десен бутон",
+    "description": "Options context menu hint"
+  },
+  "optKeyboardShortcuts": {
+    "message": "Клавишни комбинации",
+    "description": "Options keyboard shortcuts header"
+  },
+  "optToggleCopyUnlock": {
+    "message": "Превключване на CopyUnlock",
+    "description": "Options shortcut action label"
+  },
+  "optOpenClipboardHistory": {
+    "message": "Отвори историята на клипборда",
+    "description": "Options shortcut action label"
+  },
+  "optSearchClipboard": {
+    "message": "Търсене в клипборда",
+    "description": "Options shortcut action label"
+  },
+  "optQuickPaste": {
+    "message": "Бързо поставяне",
+    "description": "Options shortcut action label"
+  },
+  "optConfigureShortcuts": {
+    "message": "Конфигуриране в настройките на Chrome",
+    "description": "Options link to chrome shortcuts page"
+  },
+  "optClipboardHistory": {
+    "message": "История на клипборда",
+    "description": "Options clipboard section header"
+  },
+  "optClipboardDesc": {
+    "message": "Управление на съхранението на клипборда.",
+    "description": "Options clipboard section description"
+  },
+  "optEnableClipboard": {
+    "message": "Включи историята на клипборда",
+    "description": "Options clipboard enable label"
+  },
+  "optEnableClipboardHint": {
+    "message": "Автоматично запазване на съдържанието",
+    "description": "Options clipboard enable hint"
+  },
+  "optMaxItems": {
+    "message": "Макс. елементи",
+    "description": "Options max items label"
+  },
+  "optMaxItemsHint": {
+    "message": "Максимален брой записи",
+    "description": "Options max items hint"
+  },
+  "optRetentionPeriod": {
+    "message": "Период на задържане",
+    "description": "Options retention period label"
+  },
+  "optRetentionHint": {
+    "message": "Дни преди автоматично изтриване на стари записи",
+    "description": "Options retention hint"
+  },
+  "optDays": {
+    "message": "дни",
+    "description": "Options retention days suffix"
+  },
+  "optWatermarkStripping": {
+    "message": "Премахване на водни знаци",
+    "description": "Options watermark stripping label"
+  },
+  "optWatermarkHint": {
+    "message": "Премахване на невидими символи от копиран текст",
+    "description": "Options watermark hint"
+  },
+  "optAutoCitation": {
+    "message": "Автоматичен цитат",
+    "description": "Options auto citation label"
+  },
+  "optAutoCitationHint": {
+    "message": "Автоматично генериране на цитат за копиран текст",
+    "description": "Options auto citation hint"
+  },
+  "optCitationOff": {
+    "message": "Изключен",
+    "description": "Options citation mode off"
+  },
+  "optCitationUrl": {
+    "message": "Само URL (Безплатен)",
+    "description": "Options citation mode url"
+  },
+  "optCitationFormatted": {
+    "message": "Форматиран (Pro)",
+    "description": "Options citation mode formatted"
+  },
+  "optDefaultPasteFormat": {
+    "message": "Формат за поставяне",
+    "description": "Options paste format label"
+  },
+  "optPasteFormatHint": {
+    "message": "Формат при поставяне от историята",
+    "description": "Options paste format hint"
+  },
+  "optPastePlain": {
+    "message": "Обикновен текст",
+    "description": "Options paste format plain"
+  },
+  "optPasteRich": {
+    "message": "Форматиран текст",
+    "description": "Options paste format rich"
+  },
+  "optPasteClean": {
+    "message": "Чист (свий интервали)",
+    "description": "Options paste format clean"
+  },
+  "optPasteCitation": {
+    "message": "С цитат",
+    "description": "Options paste format with citation"
+  },
+  "optPdfCleanup": {
+    "message": "PDF почистване",
+    "description": "Options PDF cleanup label"
+  },
+  "optPdfCleanupHint": {
+    "message": "Поправяне на прекъсвания в PDF текст",
+    "description": "Options PDF cleanup hint"
+  },
+  "optSiteOverrides": {
+    "message": "Настройки за сайтове",
+    "description": "Options site overrides header"
+  },
+  "optSiteOverridesDesc": {
+    "message": "Задаване на режими за конкретни сайтове.",
+    "description": "Options site overrides description"
+  },
+  "optNoOverrides": {
+    "message": "Няма настройки за сайтове.",
+    "description": "Options empty overrides state"
+  },
+  "optDisabled": {
+    "message": "Деактивиран",
+    "description": "Options override mode disabled"
+  },
+  "optAdd": {
+    "message": "Добави",
+    "description": "Options add override button"
+  },
+  "optProTitle": {
+    "message": "CopyUnlock Pro",
+    "description": "Options pro section header"
+  },
+  "optProLicenseActive": {
+    "message": "Pro лицензът е активен",
+    "description": "Options pro active status"
+  },
+  "optProPlan": {
+    "message": "План",
+    "description": "Options pro plan label"
+  },
+  "optRefresh": {
+    "message": "Обнови",
+    "description": "Options refresh license button"
+  },
+  "optManageSubscription": {
+    "message": "Управление на абонамент",
+    "description": "Options manage subscription label"
+  },
+  "optManageHint": {
+    "message": "Актуализиране на плащане, промяна на план или отказ",
+    "description": "Options manage subscription hint"
+  },
+  "optManage": {
+    "message": "Управление",
+    "description": "Options manage button"
+  },
+  "optPrioritySupport": {
+    "message": "Приоритетна поддръжка",
+    "description": "Options priority support label"
+  },
+  "optPrioritySupportHint": {
+    "message": "Pro членовете получават бърз отговор",
+    "description": "Options priority support hint"
+  },
+  "optEmailUs": {
+    "message": "Пишете ни",
+    "description": "Options email support button"
+  },
+  "optUnlockPower": {
+    "message": "Отключете пълната мощност",
+    "description": "Options pro hero title"
+  },
+  "optUnlockDesc": {
+    "message": "Пълен механизъм, неограничен клипборд, колекции, PDF почистване, цитати и приоритетна поддръжка.",
+    "description": "Options pro hero description"
+  },
+  "optProFeatureItems": {
+    "message": "100 000 елемента",
+    "description": "Options pro feature"
+  },
+  "optProFeatureItemsSub": {
+    "message": "срещу 500 в безплатния",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureRetention": {
+    "message": "10 години",
+    "description": "Options pro feature"
+  },
+  "optProFeatureRetentionSub": {
+    "message": "срещу 30 дни в безплатния",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureCollections": {
+    "message": "1 000 колекции",
+    "description": "Options pro feature"
+  },
+  "optProFeatureCollectionsSub": {
+    "message": "срещу 3 в безплатния",
+    "description": "Options pro feature sub"
+  },
+  "optProFeaturePdf": {
+    "message": "PDF почистване",
+    "description": "Options pro feature"
+  },
+  "optProFeaturePdfSub": {
+    "message": "Поправяне на PDF текст",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureCitations": {
+    "message": "Форматирани цитати",
+    "description": "Options pro feature"
+  },
+  "optProFeatureCitationsSub": {
+    "message": "Автоматично цитиране",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureSupport": {
+    "message": "Приоритетна поддръжка",
+    "description": "Options pro feature"
+  },
+  "optProFeatureSupportSub": {
+    "message": "Бърз отговор по имейл",
+    "description": "Options pro feature sub"
+  },
+  "optMonthly": {
+    "message": "Месечен",
+    "description": "Options plan monthly"
+  },
+  "optAnnual": {
+    "message": "Годишен",
+    "description": "Options plan annual"
+  },
+  "optLifetime": {
+    "message": "Доживотен",
+    "description": "Options plan lifetime"
+  },
+  "optBestValue": {
+    "message": "Най-добра стойност",
+    "description": "Options plan best value badge"
+  },
+  "optSave44": {
+    "message": "Спести 44%",
+    "description": "Options annual savings"
+  },
+  "optOneTime": {
+    "message": "Еднократно",
+    "description": "Options lifetime one-time label"
+  },
+  "optProLegal": {
+    "message": "Powered by Stripe. Откажете по всяко време. Лицензът е свързан с вашия Chrome имейл.",
+    "description": "Options pro legal text"
+  },
+  "optAlreadyPurchased": {
+    "message": "Вече сте закупили? Обновете лиценза",
+    "description": "Options refresh license link"
+  },
+  "optDataManagement": {
+    "message": "Управление на данни",
+    "description": "Options data section header"
+  },
+  "optDataDesc": {
+    "message": "Експортиране, импортиране или изчистване на данните.",
+    "description": "Options data section description"
+  },
+  "optExportData": {
+    "message": "Експорт на данни",
+    "description": "Options export label"
+  },
+  "optExportHint": {
+    "message": "Изтеглете всички настройки и история като JSON",
+    "description": "Options export hint"
+  },
+  "optExport": {
+    "message": "Експорт",
+    "description": "Options export button"
+  },
+  "optImportData": {
+    "message": "Импорт на данни",
+    "description": "Options import label"
+  },
+  "optImportHint": {
+    "message": "Възстановяване от предишен JSON файл",
+    "description": "Options import hint"
+  },
+  "optImport": {
+    "message": "Импорт",
+    "description": "Options import button"
+  },
+  "optClearAllData": {
+    "message": "Изчисти всички данни",
+    "description": "Options clear data label"
+  },
+  "optClearHint": {
+    "message": "Окончателно изтриване на всички данни",
+    "description": "Options clear data hint"
+  },
+  "optClear": {
+    "message": "Изчисти",
+    "description": "Options clear button"
+  },
+  "optStatistics": {
+    "message": "Статистика",
+    "description": "Options statistics header"
+  },
+  "optUnlocks": {
+    "message": "Отключвания",
+    "description": "Options stat unlocks label"
+  },
+  "optCopiesSaved": {
+    "message": "Запазени копия",
+    "description": "Options stat copies label"
+  },
+  "optWatermarksStripped": {
+    "message": "Премахнати водни знаци",
+    "description": "Options stat watermarks label"
+  },
+  "optNavGeneral": {
+    "message": "Общи",
+    "description": "Options nav general tab"
+  },
+  "optNavClipboard": {
+    "message": "Клипборд",
+    "description": "Options nav clipboard tab"
+  },
+  "optNavSites": {
+    "message": "Сайтове",
+    "description": "Options nav sites tab"
+  },
+  "optNavPro": {
+    "message": "Pro",
+    "description": "Options nav pro tab"
+  },
+  "optNavData": {
+    "message": "Данни",
+    "description": "Options nav data tab"
+  },
+  "optSaveFailed": {
+    "message": "Грешка при запазване",
+    "description": "Options save error toast"
+  },
+  "optImportSuccess": {
+    "message": "Данните са импортирани успешно",
+    "description": "Options import success toast"
+  },
+  "optImportFailed": {
+    "message": "Импортът е неуспешен — невалиден файл",
+    "description": "Options import error toast"
+  },
+  "optClearConfirm": {
+    "message": "Сигурни ли сте, че искате да изчистите всички данни? Това не може да бъде отменено.",
+    "description": "Options clear data confirm dialog"
+  },
+  "optAllDataCleared": {
+    "message": "Всички данни са изчистени",
+    "description": "Options clear success toast"
+  },
+  "optClearFailed": {
+    "message": "Грешка при изчистване",
+    "description": "Options clear error toast"
+  },
+  "optCheckingLicense": {
+    "message": "Проверка на лиценза...",
+    "description": "Options license check toast"
+  },
+  "optProVerified": {
+    "message": "Pro лицензът е потвърден!",
+    "description": "Options license verified toast"
+  },
+  "optNoLicense": {
+    "message": "Не е намерен активен лиценз",
+    "description": "Options no license toast"
+  },
+  "optLicenseCheckFailed": {
+    "message": "Грешка при проверка",
+    "description": "Options license check error toast"
+  },
+  "optOpening": {
+    "message": "Отваряне...",
+    "description": "Options manage subscription opening state"
+  },
+  "optOpeningPortal": {
+    "message": "Отваряне на портала...",
+    "description": "Options billing portal opening toast"
+  },
+  "optPortalFailed": {
+    "message": "Порталът не може да се отвори. Свържете се с поддръжката.",
+    "description": "Options billing portal error toast"
+  },
+  "optPortalError": {
+    "message": "Грешка при отваряне на портала",
+    "description": "Options billing portal error toast"
+  },
+  "optExportFailed": {
+    "message": "Експортът е неуспешен",
+    "description": "Options export error toast"
+  },
+  "optRenews": {
+    "message": "Подновява се $DATE$",
+    "description": "Options pro renewal date",
+    "placeholders": {
+      "DATE": {
+        "content": "$1",
+        "example": "Jan 15, 2026"
+      }
+    }
+  }
+}

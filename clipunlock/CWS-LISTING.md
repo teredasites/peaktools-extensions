@@ -32,7 +32,7 @@ Store Icon: assets/store-icon-128.png (128x128)
    Overlay text: "Enable Copy & Paste on Any Website"
 
 2. DETECTION — Popup showing detected protections with green checkmarks
-   Overlay text: "Detects & Removes 29 Types of Copy Protection"
+   Overlay text: "Detects & Removes 39 Types of Copy Protection"
 
 3. CLIPBOARD — Side panel with clipboard history and search bar
    Overlay text: "Built-in Clipboard Manager — Search, Tag, Pin"

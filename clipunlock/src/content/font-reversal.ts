@@ -106,7 +106,7 @@ export function buildCharMap(fontFamily: string): FontMapping {
   ctx.fillStyle = '#000';
   ctx.textBaseline = 'top';
   for (let i = 0; i < charCount; i++) {
-    ctx.fillText(chars[i], i * cellW + 4, 10);
+    ctx.fillText(chars[i]!, i * cellW + 4, 10);
   }
   const refData = ctx.getImageData(0, 0, canvasW, cellH).data;
 
@@ -116,7 +116,7 @@ export function buildCharMap(fontFamily: string): FontMapping {
   ctx.fillStyle = '#000';
   ctx.textBaseline = 'top';
   for (let i = 0; i < charCount; i++) {
-    ctx.fillText(chars[i], i * cellW + 4, 10);
+    ctx.fillText(chars[i]!, i * cellW + 4, 10);
   }
   const testData = ctx.getImageData(0, 0, canvasW, cellH).data;
 
@@ -127,7 +127,7 @@ export function buildCharMap(fontFamily: string): FontMapping {
     for (let y = 0; y < cellH; y++) {
       for (let x = xStart; x < xStart + cellW; x++) {
         const idx = (y * canvasW + x) * 4 + 3; // alpha channel
-        if (data[idx] > 0) hash += idx * data[idx];
+        if (data[idx]! > 0) hash += idx * data[idx]!;
       }
     }
     return String(hash);
@@ -138,7 +138,7 @@ export function buildCharMap(fontFamily: string): FontMapping {
   const refCellHashes: string[] = [];
   for (let i = 0; i < charCount; i++) {
     const h = hashCell(refData, i);
-    refHashes.set(h, chars[i]);
+    refHashes.set(h, chars[i]!);
     refCellHashes.push(h);
   }
 
@@ -148,8 +148,8 @@ export function buildCharMap(fontFamily: string): FontMapping {
     const customHash = hashCell(testData, i);
     if (customHash !== refCellHashes[i]) {
       const matchedChar = refHashes.get(customHash);
-      if (matchedChar && matchedChar !== chars[i]) {
-        charMap.set(chars[i], matchedChar);
+      if (matchedChar && matchedChar !== chars[i]!) {
+        charMap.set(chars[i]!, matchedChar);
         mismatches++;
       }
     }

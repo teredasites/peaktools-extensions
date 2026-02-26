@@ -1,4 +1,4 @@
-Enable copy and paste on any website that blocks it. CopyUnlock detects and removes 29 types of copy restrictions instantly — CSS blocks, JavaScript handlers, overlay blockers, clipboard interception, and right-click disabling. One click. Under 10ms.
+Enable copy and paste on any website that blocks it. CopyUnlock detects and removes 39 types of copy restrictions instantly — CSS blocks, JavaScript handlers, overlay blockers, clipboard hijacking, debugger traps, print blocking, and right-click disabling. One click. Under 10ms.
 
 800,000+ users just lost their copy/paste extensions to Chrome's Manifest V3 migration. CopyUnlock is built from scratch on MV3 — it's not going anywhere.
 
@@ -13,32 +13,44 @@ HOW IT WORKS
 
 FREE FEATURES (Free Forever — No Trial, No Credit Card)
 
-✓ Enable copy paste on any website — 29 unlock methods
+✓ Enable copy paste on any website — 39 unlock methods across 5 categories
 ✓ Enable right-click context menu on pages that block it
 ✓ Unblock text selection on protected web pages
-✓ Smart Mode — auto-detects and removes copy protection on page load
+✓ 3 unlock modes: Auto (smart detection), Safe (won't break apps), Aggressive (defeats everything)
 ✓ Strip hidden watermarks — removes invisible tracking characters from copied text
+✓ Normalize homoglyph characters — converts Cyrillic/Greek lookalikes to real Latin text
+✓ Neutralize alert dialogs that block right-click
+✓ Defeat clipboard hijacking / pastejacking attacks
+✓ Bypass debugger traps that freeze DevTools
+✓ Unblock Ctrl+P printing and screenshot blocking
 ✓ Extract text from CSS pseudo-elements (::before/::after)
+✓ Extract text from images, background images, and SVG paths
+✓ Reverse custom font cipher substitutions
 ✓ Neutralize transparent overlay blockers
 ✓ Counter-observer — when sites re-apply copy protection, CopyUnlock fights back automatically
 ✓ Safe Mode — won't break Google Docs, YouTube, Netflix, Figma, or other web apps
-✓ Keyboard shortcuts: Alt+Shift+U (unlock), Alt+Shift+C (clipboard), Alt+Shift+S (search)
-✓ Clipboard history — 200 items with instant search
+✓ Keyboard shortcuts: Alt+Shift+U (unlock), Alt+Shift+C (clipboard), Alt+Shift+S (search), Ctrl+Shift+V (quick paste)
+✓ Clipboard history — 500 items with instant search
+✓ 3 collections for organizing copied items
+✓ URL auto-citation on every copy
+✓ Quick Paste popup (Ctrl+Shift+V) with keyboard navigation
 ✓ 5 languages: English, Spanish, Portuguese, Chinese, French
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 PRO FEATURES
 
-⚡ Unlimited clipboard history (100,000+ items)
-⚡ Permanent retention — copied items never expire
-⚡ Fuzzy search across your entire clipboard history
-⚡ Tags and pinned favorites for quick access
+⚡ 100,000 clipboard items with 10-year retention
+⚡ 1,000 color-coded collections
+⚡ Formatted auto-citation (Title — Domain — Date)
+⚡ PDF Line Break Cleanup — fixes broken line breaks and hyphenated words from PDF copies
+⚡ Smart Paste in 4 formats: plain, rich, clean, or with citation
+⚡ Fuzzy search, tags, and pinned favorites
 ⚡ Export and import clipboard history (JSON)
-⚡ Dark mode side panel
-⚡ Per-site unlock profiles — save custom settings for specific websites
+⚡ Per-site unlock profiles — save custom settings per domain
+⚡ Priority support
 
-Pro: $3.99/month · $29.99/year (save 37%) · $49.99 lifetime
+Pro: $2.99/month · $19.99/year (save 44%) · $49.99 lifetime
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -46,13 +58,23 @@ WHY COPYUNLOCK?
 
 Unlike simple copy unlockers that only remove CSS user-select, CopyUnlock detects restrictions across 5 categories:
 
-1. CSS blocks — user-select:none, pointer-events:none, -webkit-touch-callout
-2. JavaScript handlers — oncopy, onpaste, oncut, oncontextmenu, onselectstart, onkeydown
-3. DOM watchers — MutationObserver re-blockers, copy event overrides
-4. Clipboard API interception — document.execCommand, navigator.clipboard.writeText
-5. Visual overlays — transparent divs, fixed-position elements blocking text selection
+1. CSS blocks — user-select:none, pointer-events:none, -webkit-touch-callout, ::selection hiding
+2. JavaScript handlers — oncopy, onpaste, oncut, oncontextmenu, onselectstart, onkeydown, alert() traps
+3. DOM manipulation — MutationObserver re-blockers, overlay divs, inert attributes, Shadow DOM
+4. Clipboard API interception — pastejacking, clipboardData.setData hijacking, getSelection override
+5. Server-side protections — watermark injection, homoglyph substitution, custom font ciphers, image-based text, SVG path rendering, debugger traps, print blocking
 
-Most copy protection uses 3-5 of these simultaneously. Other extensions only handle 1-2 categories and fail on heavily protected pages. CopyUnlock handles all 29 methods across all 5 categories.
+Most copy protection uses 3-5 of these simultaneously. Other extensions only handle 1-2 categories and fail on heavily protected pages. CopyUnlock handles all 39 methods across all 5 categories.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+3 UNLOCK MODES
+
+Auto Mode (default) — Scans the page, detects what's blocked, applies targeted fixes. Proactively adds core protections when any restriction is found. Works on ~95% of sites.
+
+Safe Mode — CSS and inline attribute fixes only. Won't patch JavaScript prototypes or intercept events. Use this on web apps where you want minimal interference.
+
+Aggressive Mode — Applies all 18 bypass actions regardless of detection. Patches Function constructor, eval, setInterval, setTimeout. Use this on the most locked-down sites.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -94,6 +116,7 @@ KEYBOARD SHORTCUTS
 Alt+Shift+U — Toggle copy/paste unlock on current page
 Alt+Shift+C — Open clipboard history panel
 Alt+Shift+S — Search clipboard history
+Ctrl+Shift+V — Quick Paste popup with keyboard navigation
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 

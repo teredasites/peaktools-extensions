@@ -322,6 +322,142 @@ const METHODS: BlockingMethodDef[] = [
     } catch { /* ignore */ }
     return null;
   }),
+
+  // ─── Method 33: alert() interception on right-click ───
+  makeMethod(33, 'js-event', 'alert interception on contextmenu', (root, _mw) => {
+    const body = root instanceof Document ? root.body : root;
+    const html = root instanceof Document ? root.documentElement : null;
+    const targets = [body, html].filter(Boolean) as Element[];
+    for (const el of targets) {
+      const handler = el.getAttribute('oncontextmenu');
+      if (handler && /alert\s*\(/.test(handler)) {
+        return { id: 33, category: 'js-event', name: 'alert interception on contextmenu', elementsAffected: 1, confidence: 0.95, bypassable: true, bypassMethod: 'neutralize-alert' };
+      }
+    }
+    return null;
+  }),
+
+  // ─── Method 34: Clipboard hijacking / pastejacking ───
+  // Detected via MAIN world data — copy event listener that modifies clipboardData
+  makeMethod(34, 'js-advanced', 'clipboard hijacking', (_root, mw) => {
+    const copyListeners = mw.trackedListeners.filter((l) => l.type === 'copy');
+    // If there are copy event listeners, there's a chance of clipboard hijacking
+    // We flag this so the user gets protection at copy time
+    if (copyListeners.length > 0) {
+      return { id: 34, category: 'js-advanced', name: 'clipboard hijacking', elementsAffected: copyListeners.length, confidence: 0.7, bypassable: true, bypassMethod: 'anti-hijack' };
+    }
+    return null;
+  }),
+
+  // ─── Method 35: Homoglyph / lookalike character substitution ───
+  makeMethod(35, 'server', 'homoglyph substitution', (_root, _mw) => {
+    // Sample visible text from the page and check for non-Latin lookalikes mixed with Latin
+    const body = document.body;
+    if (!body) return null;
+    const walker = document.createTreeWalker(body, NodeFilter.SHOW_TEXT, null);
+    let sampled = 0;
+    let homoglyphs = 0;
+    // Cyrillic, Greek, and other Unicode ranges commonly used as Latin lookalikes
+    const homoglyphPattern = /[\u0400-\u04FF\u0370-\u03FF\u2100-\u214F\uFF01-\uFF5E]/;
+    const latinPattern = /[a-zA-Z]/;
+    while (sampled < 20) {
+      const node = walker.nextNode();
+      if (!node) break;
+      const text = node.textContent ?? '';
+      if (text.trim().length < 5) continue;
+      sampled++;
+      // If text contains BOTH Latin and Cyrillic/Greek chars, likely homoglyph substitution
+      if (latinPattern.test(text) && homoglyphPattern.test(text)) {
+        homoglyphs++;
+      }
+    }
+    if (homoglyphs >= 2) {
+      return { id: 35, category: 'server', name: 'homoglyph substitution', elementsAffected: homoglyphs, confidence: 0.75, bypassable: true, bypassMethod: 'strip-homoglyphs' };
+    }
+    return null;
+  }),
+
+  // ─── Method 36: Debugger infinite loop ───
+  makeMethod(36, 'js-advanced', 'debugger trap', (_root, _mw) => {
+    // Can't detect this synchronously without triggering it.
+    // Instead check for common patterns: setInterval with debugger, Function('debugger')
+    const scripts = Array.from(document.querySelectorAll('script'));
+    for (const script of scripts.slice(0, 20)) {
+      const src = script.textContent || '';
+      if (/debugger/.test(src) && (/setInterval|setTimeout|while\s*\(/.test(src) || /Function\s*\(\s*['"]debugger/.test(src))) {
+        return { id: 36, category: 'js-advanced', name: 'debugger trap', elementsAffected: 1, confidence: 0.8, bypassable: true, bypassMethod: 'neutralize-debugger' };
+      }
+    }
+    return null;
+  }),
+
+  // ─── Method 37: PrintScreen / Ctrl+P blocking ───
+  makeMethod(37, 'js-event', 'print/screenshot blocking', (_root, mw) => {
+    // Detect keydown listeners that block F12, PrintScreen, Ctrl+P
+    const keyListeners = mw.trackedListeners.filter((l) => l.type === 'keydown' || l.type === 'keyup' || l.type === 'keypress');
+    // Also check for @media print hiding rules
+    let printHide = false;
+    try {
+      for (const sheet of Array.from(document.styleSheets)) {
+        for (const rule of Array.from(sheet.cssRules)) {
+          if (rule instanceof CSSMediaRule && rule.conditionText === 'print') {
+            if (rule.cssText.includes('display: none') || rule.cssText.includes('visibility: hidden')) {
+              printHide = true;
+              break;
+            }
+          }
+        }
+        if (printHide) break;
+      }
+    } catch { /* cross-origin */ }
+
+    if (keyListeners.length > 0 || printHide) {
+      return { id: 37, category: 'js-event', name: 'print/screenshot blocking', elementsAffected: keyListeners.length + (printHide ? 1 : 0), confidence: 0.65, bypassable: true, bypassMethod: 'unblock-print' };
+    }
+    return null;
+  }),
+
+  // ─── Method 38: Background-image text ───
+  makeMethod(38, 'server', 'background-image text', (root, _mw) => {
+    const body = root instanceof Document ? root.body : root;
+    const els = Array.from(body.querySelectorAll('*'));
+    let count = 0;
+    for (const el of els.slice(0, 200)) {
+      const style = window.getComputedStyle(el);
+      const bg = style.backgroundImage;
+      if (bg && bg !== 'none') {
+        // Check if element has bg-image but no text content (text is in the image)
+        const text = el.textContent?.trim() ?? '';
+        const rect = el.getBoundingClientRect();
+        if (text.length === 0 && rect.width > 50 && rect.height > 15) {
+          count++;
+        }
+      }
+    }
+    if (count >= 3) {
+      return { id: 38, category: 'server', name: 'background-image text', elementsAffected: count, confidence: 0.6, bypassable: true, bypassMethod: 'ocr' };
+    }
+    return null;
+  }),
+
+  // ─── Method 39: SVG path text rendering ───
+  makeMethod(39, 'server', 'SVG path text', (root, _mw) => {
+    const body = root instanceof Document ? root.body : root;
+    const svgs = Array.from(body.querySelectorAll('svg'));
+    let pathTextCount = 0;
+    for (const svg of svgs.slice(0, 20)) {
+      // SVG paths used as text have lots of path elements but no <text> elements
+      const paths = svg.querySelectorAll('path');
+      const texts = svg.querySelectorAll('text');
+      if (paths.length > 10 && texts.length === 0) {
+        pathTextCount++;
+      }
+    }
+    if (pathTextCount > 0) {
+      return { id: 39, category: 'server', name: 'SVG path text', elementsAffected: pathTextCount, confidence: 0.65, bypassable: true, bypassMethod: 'ocr' };
+    }
+    return null;
+  }),
 ];
 
 async function detectTimerClear(): Promise<DetectedMethod | null> {
@@ -392,6 +528,9 @@ function buildStrategy(methods: DetectedMethod[], mode: UnlockMode): UnlockStrat
       { action: 'force-enable-paste', target: 'paste re-enable', risk: 'low' },
       { action: 'force-input-override', target: 'input validation bypass', risk: 'low' },
       { action: 'prototype-restore', target: 'native function restore', risk: 'medium' },
+      { action: 'neutralize-alert', target: 'alert dialog suppression', risk: 'low' },
+      { action: 'anti-hijack', target: 'clipboard hijack protection', risk: 'low' },
+      { action: 'unblock-print', target: 'print/screenshot unblock', risk: 'low' },
     ];
     for (const cs of coreAutoSteps) {
       if (!addedActions.has(cs.action)) {
@@ -414,6 +553,10 @@ function buildStrategy(methods: DetectedMethod[], mode: UnlockMode): UnlockStrat
       { action: 'overlay-remove', target: 'overlay click-through', risk: 'low' },
       { action: 'override-removeAllRanges', target: 'selection protection', risk: 'low' },
       { action: 'prototype-restore', target: 'native function restore', risk: 'medium' },
+      { action: 'neutralize-alert', target: 'alert dialog suppression', risk: 'low' },
+      { action: 'anti-hijack', target: 'clipboard hijack protection', risk: 'low' },
+      { action: 'neutralize-debugger', target: 'debugger trap neutralization', risk: 'medium' },
+      { action: 'unblock-print', target: 'print/screenshot unblock', risk: 'low' },
     ];
     for (const as_ of allSteps) {
       if (!addedActions.has(as_.action)) {

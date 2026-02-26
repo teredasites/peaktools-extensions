@@ -1,0 +1,830 @@
+{
+  "extensionName": {
+    "message": "CopyUnlock",
+    "description": "Extension name"
+  },
+  "extensionDescription": {
+    "message": "복사 제한을 해제하고 클립보드 기록을 쉽게 관리하세요.",
+    "description": "Extension description"
+  },
+  "commandToggle": {
+    "message": "CopyUnlock 전환",
+    "description": "Keyboard command to toggle the extension"
+  },
+  "commandClipboard": {
+    "message": "클립보드 기록 열기",
+    "description": "Keyboard command to open clipboard history"
+  },
+  "commandSearch": {
+    "message": "클립보드 검색",
+    "description": "Keyboard command to search clipboard"
+  },
+  "contextMenuUnlock": {
+    "message": "페이지 잠금 해제",
+    "description": "Context menu toggle unlock"
+  },
+  "contextMenuLock": {
+    "message": "페이지 잠금 (되돌리기)",
+    "description": "Context menu toggle lock"
+  },
+  "contextMenuCopy": {
+    "message": "기록에 복사",
+    "description": "Context menu copy option"
+  },
+  "contextMenuCopyClean": {
+    "message": "깨끗한 복사 (워터마크 제거)",
+    "description": "Context menu copy without watermarks"
+  },
+  "contextMenuCopyCitation": {
+    "message": "인용과 함께 복사",
+    "description": "Context menu copy with source citation"
+  },
+  "contextMenuPin": {
+    "message": "선택 고정",
+    "description": "Context menu pin option"
+  },
+  "contextMenuSaveCollection": {
+    "message": "컬렉션에 저장",
+    "description": "Context menu save to collection parent"
+  },
+  "contextMenuNewCollection": {
+    "message": "+ 새 컬렉션...",
+    "description": "Context menu create new collection"
+  },
+  "contextMenuMode": {
+    "message": "모드",
+    "description": "Context menu mode parent"
+  },
+  "contextMenuClipboardHistory": {
+    "message": "클립보드 기록",
+    "description": "Context menu open clipboard history"
+  },
+  "contextMenuQuickPaste": {
+    "message": "빠른 붙여넣기",
+    "description": "Context menu quick paste overlay"
+  },
+  "contextMenuSettings": {
+    "message": "설정",
+    "description": "Context menu open settings"
+  },
+  "popupEnable": {
+    "message": "활성화",
+    "description": "Popup enable button label"
+  },
+  "popupActive": {
+    "message": "활성",
+    "description": "Popup active state label"
+  },
+  "popupProtections": {
+    "message": "$COUNT$개 보호 제거됨",
+    "description": "Number of protections removed",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "modeAuto": {
+    "message": "자동",
+    "description": "Auto mode label"
+  },
+  "modeSafe": {
+    "message": "안전",
+    "description": "Safe mode label"
+  },
+  "modeAggressive": {
+    "message": "강력",
+    "description": "Aggressive mode label"
+  },
+  "recentCopies": {
+    "message": "최근 복사",
+    "description": "Recent clipboard items header"
+  },
+  "noHistory": {
+    "message": "클립보드 기록이 아직 없습니다",
+    "description": "Empty clipboard state"
+  },
+  "clipboardHistory": {
+    "message": "클립보드 기록",
+    "description": "Clipboard history title"
+  },
+  "settings": {
+    "message": "설정",
+    "description": "Settings page title"
+  },
+  "searchPlaceholder": {
+    "message": "클립보드 기록 검색...",
+    "description": "Search input placeholder"
+  },
+  "filterAll": {
+    "message": "전체",
+    "description": "Filter all items"
+  },
+  "filterPinned": {
+    "message": "고정됨",
+    "description": "Filter pinned items"
+  },
+  "filterUrls": {
+    "message": "URL",
+    "description": "Filter URL items"
+  },
+  "filterCode": {
+    "message": "코드",
+    "description": "Filter code items"
+  },
+  "filterText": {
+    "message": "텍스트",
+    "description": "Filter text items"
+  },
+  "typeAuto": {
+    "message": "Auto-detect",
+    "description": "Auto-detect content type option in add overlay"
+  },
+  "copy": {
+    "message": "복사",
+    "description": "Copy action"
+  },
+  "copied": {
+    "message": "복사됨!",
+    "description": "Copy confirmation"
+  },
+  "pin": {
+    "message": "고정",
+    "description": "Pin action"
+  },
+  "unpin": {
+    "message": "고정 해제",
+    "description": "Unpin action"
+  },
+  "delete": {
+    "message": "삭제",
+    "description": "Delete action"
+  },
+  "clearAll": {
+    "message": "모두 지우기",
+    "description": "Clear all items"
+  },
+  "clearConfirm": {
+    "message": "모든 클립보드 기록을 지우시겠습니까? 되돌릴 수 없습니다.",
+    "description": "Clear confirmation dialog"
+  },
+  "items": {
+    "message": "$COUNT$개 항목",
+    "description": "Item count display",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "42"
+      }
+    }
+  },
+  "justNow": {
+    "message": "방금",
+    "description": "Time ago - just now"
+  },
+  "minutesAgo": {
+    "message": "$MINUTES$분 전",
+    "description": "Time ago - minutes",
+    "placeholders": {
+      "MINUTES": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "hoursAgo": {
+    "message": "$HOURS$시간 전",
+    "description": "Time ago - hours",
+    "placeholders": {
+      "HOURS": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "daysAgo": {
+    "message": "$DAYS$일 전",
+    "description": "Time ago - days",
+    "placeholders": {
+      "DAYS": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "watermarkNotice": {
+    "message": "복사된 텍스트에서 워터마크 문자가 제거되었습니다.",
+    "description": "Watermark stripping notification"
+  },
+  "settingsSaved": {
+    "message": "설정이 저장되었습니다",
+    "description": "Settings save confirmation"
+  },
+  "exportSuccess": {
+    "message": "데이터를 성공적으로 내보냈습니다",
+    "description": "Export success message"
+  },
+  "protectionActive": {
+    "message": "보호 활성화됨",
+    "description": "Popup label when unlock is active"
+  },
+  "tapToEnable": {
+    "message": "탭하여 활성화",
+    "description": "Popup label when unlock is inactive"
+  },
+  "statusActive": {
+    "message": "활성",
+    "description": "Popup status pill when active"
+  },
+  "statusOff": {
+    "message": "꺼짐",
+    "description": "Popup status pill when off"
+  },
+  "noRecentCopies": {
+    "message": "최근 복사 없음",
+    "description": "Popup empty clipboard state"
+  },
+  "timeNow": {
+    "message": "지금",
+    "description": "Popup time ago - just now short form"
+  },
+  "removed": {
+    "message": "$COUNT$개 제거됨",
+    "description": "Popup protection count label",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "history": {
+    "message": "기록",
+    "description": "Popup button to open clipboard history"
+  },
+  "recentLabel": {
+    "message": "최근",
+    "description": "Popup section header for recent clipboard items"
+  },
+  "allCollections": {
+    "message": "모든 컬렉션",
+    "description": "Sidepanel collection filter default option"
+  },
+  "none": {
+    "message": "없음",
+    "description": "Sidepanel collection select no-collection option"
+  },
+  "saving": {
+    "message": "저장 중...",
+    "description": "Sidepanel add overlay saving indicator"
+  },
+  "save": {
+    "message": "저장",
+    "description": "Sidepanel add overlay save button"
+  },
+  "addTitle": {
+    "message": "클립보드 기록에 추가",
+    "description": "Sidepanel add overlay title"
+  },
+  "addPlaceholder": {
+    "message": "무엇이든 붙여넣기 또는 입력 — URL, 텍스트, 코드...",
+    "description": "Sidepanel add overlay placeholder"
+  },
+  "addButton": {
+    "message": "+ 추가",
+    "description": "Sidepanel footer add button label"
+  },
+  "back": {
+    "message": "뒤로",
+    "description": "Detail panel back button"
+  },
+  "cite": {
+    "message": "+ 인용",
+    "description": "Detail panel copy with citation button"
+  },
+  "open": {
+    "message": "열기",
+    "description": "Detail panel open source URL button"
+  },
+  "emptyUrlIcon": {
+    "message": "&#128279;",
+    "description": "Empty state icon for URLs filter"
+  },
+  "emptyUrlText": {
+    "message": "저장된 URL이 아직 없습니다",
+    "description": "Empty state text for URLs filter"
+  },
+  "emptyUrlHint": {
+    "message": "브라우저에서 URL을 복사하여 여기에 저장하거나 아래 + 추가를 클릭하세요.",
+    "description": "Empty state hint for URLs filter"
+  },
+  "emptyCodeText": {
+    "message": "코드 스니펫이 아직 없습니다",
+    "description": "Empty state text for Code filter"
+  },
+  "emptyCodeHint": {
+    "message": "에디터나 웹사이트에서 코드를 복사하여 저장하세요.",
+    "description": "Empty state hint for Code filter"
+  },
+  "emptyTextText": {
+    "message": "텍스트 클립이 아직 없습니다",
+    "description": "Empty state text for Text filter"
+  },
+  "emptyTextHint": {
+    "message": "페이지에서 텍스트를 복사하여 기록을 시작하세요.",
+    "description": "Empty state hint for Text filter"
+  },
+  "emptyPinnedText": {
+    "message": "고정된 항목이 없습니다",
+    "description": "Empty state text for Pinned filter"
+  },
+  "emptyPinnedHint": {
+    "message": "항목을 열고 고정을 클릭하면 상단에 유지됩니다.",
+    "description": "Empty state hint for Pinned filter"
+  },
+  "emptyDefaultHint": {
+    "message": "웹에서 무엇이든 복사하면 자동으로 여기에 표시됩니다.",
+    "description": "Empty state hint for All filter"
+  },
+  "words": {
+    "message": "$COUNT$단어",
+    "description": "Word count display in clip items",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "42"
+      }
+    }
+  },
+  "pdfCleaned": {
+    "message": "PDF 정리됨",
+    "description": "PDF cleaned indicator in detail view"
+  },
+  "type": {
+    "message": "유형",
+    "description": "Type label in detail view"
+  },
+  "source": {
+    "message": "소스",
+    "description": "Source label in detail view"
+  },
+  "optGeneralSettings": {
+    "message": "일반 설정",
+    "description": "Options page general settings header"
+  },
+  "optGeneralDesc": {
+    "message": "CopyUnlock의 핵심 동작을 구성합니다.",
+    "description": "Options page general settings description"
+  },
+  "optEnableCopyUnlock": {
+    "message": "CopyUnlock 활성화",
+    "description": "Options enable toggle label"
+  },
+  "optEnableHint": {
+    "message": "모든 복사 해제 기능의 마스터 토글",
+    "description": "Options enable toggle hint"
+  },
+  "optDefaultMode": {
+    "message": "기본 모드",
+    "description": "Options default mode label"
+  },
+  "optDefaultModeHint": {
+    "message": "복사 보호를 제거하는 강도",
+    "description": "Options default mode hint"
+  },
+  "optShowNotifications": {
+    "message": "알림 표시",
+    "description": "Options notifications toggle label"
+  },
+  "optNotificationsHint": {
+    "message": "보호가 제거될 때 토스트 표시",
+    "description": "Options notifications hint"
+  },
+  "optContextMenu": {
+    "message": "컨텍스트 메뉴",
+    "description": "Options context menu toggle label"
+  },
+  "optContextMenuHint": {
+    "message": "우클릭 메뉴에 CopyUnlock 표시",
+    "description": "Options context menu hint"
+  },
+  "optKeyboardShortcuts": {
+    "message": "키보드 단축키",
+    "description": "Options keyboard shortcuts header"
+  },
+  "optToggleCopyUnlock": {
+    "message": "CopyUnlock 전환",
+    "description": "Options shortcut action label"
+  },
+  "optOpenClipboardHistory": {
+    "message": "클립보드 기록 열기",
+    "description": "Options shortcut action label"
+  },
+  "optSearchClipboard": {
+    "message": "클립보드 검색",
+    "description": "Options shortcut action label"
+  },
+  "optQuickPaste": {
+    "message": "빠른 붙여넣기",
+    "description": "Options shortcut action label"
+  },
+  "optConfigureShortcuts": {
+    "message": "Chrome 설정에서 구성",
+    "description": "Options link to chrome shortcuts page"
+  },
+  "optClipboardHistory": {
+    "message": "클립보드 기록",
+    "description": "Options clipboard section header"
+  },
+  "optClipboardDesc": {
+    "message": "클립보드 항목 저장 방식을 관리합니다.",
+    "description": "Options clipboard section description"
+  },
+  "optEnableClipboard": {
+    "message": "클립보드 기록 활성화",
+    "description": "Options clipboard enable label"
+  },
+  "optEnableClipboardHint": {
+    "message": "클립보드 내용 자동 저장",
+    "description": "Options clipboard enable hint"
+  },
+  "optMaxItems": {
+    "message": "최대 항목 수",
+    "description": "Options max items label"
+  },
+  "optMaxItemsHint": {
+    "message": "저장할 최대 클립보드 항목 수",
+    "description": "Options max items hint"
+  },
+  "optRetentionPeriod": {
+    "message": "보관 기간",
+    "description": "Options retention period label"
+  },
+  "optRetentionHint": {
+    "message": "오래된 항목이 자동 삭제되기까지의 일수",
+    "description": "Options retention hint"
+  },
+  "optDays": {
+    "message": "일",
+    "description": "Options retention days suffix"
+  },
+  "optWatermarkStripping": {
+    "message": "워터마크 제거",
+    "description": "Options watermark stripping label"
+  },
+  "optWatermarkHint": {
+    "message": "복사된 텍스트에서 보이지 않는 추적 문자 제거",
+    "description": "Options watermark hint"
+  },
+  "optAutoCitation": {
+    "message": "자동 인용",
+    "description": "Options auto citation label"
+  },
+  "optAutoCitationHint": {
+    "message": "복사된 텍스트의 소스 인용을 자동 생성",
+    "description": "Options auto citation hint"
+  },
+  "optCitationOff": {
+    "message": "꺼짐",
+    "description": "Options citation mode off"
+  },
+  "optCitationUrl": {
+    "message": "URL만 (무료)",
+    "description": "Options citation mode url"
+  },
+  "optCitationFormatted": {
+    "message": "서식 있음 (Pro)",
+    "description": "Options citation mode formatted"
+  },
+  "optDefaultPasteFormat": {
+    "message": "기본 붙여넣기 형식",
+    "description": "Options paste format label"
+  },
+  "optPasteFormatHint": {
+    "message": "기록에서 붙여넣기 시 사용되는 형식",
+    "description": "Options paste format hint"
+  },
+  "optPastePlain": {
+    "message": "일반 텍스트",
+    "description": "Options paste format plain"
+  },
+  "optPasteRich": {
+    "message": "서식 있는 텍스트",
+    "description": "Options paste format rich"
+  },
+  "optPasteClean": {
+    "message": "깨끗하게 (공백 축소)",
+    "description": "Options paste format clean"
+  },
+  "optPasteCitation": {
+    "message": "인용 포함",
+    "description": "Options paste format with citation"
+  },
+  "optPdfCleanup": {
+    "message": "PDF 줄 바꿈 정리",
+    "description": "Options PDF cleanup label"
+  },
+  "optPdfCleanupHint": {
+    "message": "PDF에서 복사한 텍스트의 인위적인 줄 바꿈 수정",
+    "description": "Options PDF cleanup hint"
+  },
+  "optSiteOverrides": {
+    "message": "사이트 재정의",
+    "description": "Options site overrides header"
+  },
+  "optSiteOverridesDesc": {
+    "message": "특정 웹사이트에 대한 사용자 지정 해제 모드 설정.",
+    "description": "Options site overrides description"
+  },
+  "optNoOverrides": {
+    "message": "구성된 사이트 재정의가 없습니다.",
+    "description": "Options empty overrides state"
+  },
+  "optDisabled": {
+    "message": "비활성화됨",
+    "description": "Options override mode disabled"
+  },
+  "optAdd": {
+    "message": "추가",
+    "description": "Options add override button"
+  },
+  "optProTitle": {
+    "message": "CopyUnlock Pro",
+    "description": "Options pro section header"
+  },
+  "optProLicenseActive": {
+    "message": "Pro 라이선스 활성",
+    "description": "Options pro active status"
+  },
+  "optProPlan": {
+    "message": "플랜",
+    "description": "Options pro plan label"
+  },
+  "optRefresh": {
+    "message": "새로고침",
+    "description": "Options refresh license button"
+  },
+  "optManageSubscription": {
+    "message": "구독 관리",
+    "description": "Options manage subscription label"
+  },
+  "optManageHint": {
+    "message": "결제 방법 업데이트, 플랜 변경 또는 취소",
+    "description": "Options manage subscription hint"
+  },
+  "optManage": {
+    "message": "관리",
+    "description": "Options manage button"
+  },
+  "optPrioritySupport": {
+    "message": "우선 지원",
+    "description": "Options priority support label"
+  },
+  "optPrioritySupportHint": {
+    "message": "Pro 회원은 빠른 응답을 받습니다",
+    "description": "Options priority support hint"
+  },
+  "optEmailUs": {
+    "message": "이메일 보내기",
+    "description": "Options email support button"
+  },
+  "optUnlockPower": {
+    "message": "전체 기능 해제",
+    "description": "Options pro hero title"
+  },
+  "optUnlockDesc": {
+    "message": "완전한 해제 엔진, 무제한 클립보드, 컬렉션, PDF 정리, 서식 있는 인용 및 우선 지원.",
+    "description": "Options pro hero description"
+  },
+  "optProFeatureItems": {
+    "message": "100,000 클립보드 항목",
+    "description": "Options pro feature"
+  },
+  "optProFeatureItemsSub": {
+    "message": "무료 버전 500개 대비",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureRetention": {
+    "message": "10년 보관",
+    "description": "Options pro feature"
+  },
+  "optProFeatureRetentionSub": {
+    "message": "무료 버전 30일 대비",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureCollections": {
+    "message": "1,000 컬렉션",
+    "description": "Options pro feature"
+  },
+  "optProFeatureCollectionsSub": {
+    "message": "무료 버전 3개 대비",
+    "description": "Options pro feature sub"
+  },
+  "optProFeaturePdf": {
+    "message": "PDF 줄 바꿈 정리",
+    "description": "Options pro feature"
+  },
+  "optProFeaturePdfSub": {
+    "message": "깨진 PDF 텍스트 수정",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureCitations": {
+    "message": "서식 있는 인용",
+    "description": "Options pro feature"
+  },
+  "optProFeatureCitationsSub": {
+    "message": "자동으로 소스 인용",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureSupport": {
+    "message": "우선 지원",
+    "description": "Options pro feature"
+  },
+  "optProFeatureSupportSub": {
+    "message": "이메일로 빠른 응답",
+    "description": "Options pro feature sub"
+  },
+  "optMonthly": {
+    "message": "월간",
+    "description": "Options plan monthly"
+  },
+  "optAnnual": {
+    "message": "연간",
+    "description": "Options plan annual"
+  },
+  "optLifetime": {
+    "message": "평생",
+    "description": "Options plan lifetime"
+  },
+  "optBestValue": {
+    "message": "최고의 가치",
+    "description": "Options plan best value badge"
+  },
+  "optSave44": {
+    "message": "44% 절약",
+    "description": "Options annual savings"
+  },
+  "optOneTime": {
+    "message": "일회성",
+    "description": "Options lifetime one-time label"
+  },
+  "optProLegal": {
+    "message": "Stripe로 안전 결제. 언제든 취소 가능. 라이선스는 Chrome 프로필 이메일에 연결됩니다.",
+    "description": "Options pro legal text"
+  },
+  "optAlreadyPurchased": {
+    "message": "이미 구매하셨나요? 라이선스 새로고침",
+    "description": "Options refresh license link"
+  },
+  "optDataManagement": {
+    "message": "데이터 관리",
+    "description": "Options data section header"
+  },
+  "optDataDesc": {
+    "message": "확장 프로그램 데이터를 내보내기, 가져오기 또는 지우기.",
+    "description": "Options data section description"
+  },
+  "optExportData": {
+    "message": "데이터 내보내기",
+    "description": "Options export label"
+  },
+  "optExportHint": {
+    "message": "모든 설정과 기록을 JSON으로 다운로드",
+    "description": "Options export hint"
+  },
+  "optExport": {
+    "message": "내보내기",
+    "description": "Options export button"
+  },
+  "optImportData": {
+    "message": "데이터 가져오기",
+    "description": "Options import label"
+  },
+  "optImportHint": {
+    "message": "이전에 내보낸 JSON 파일에서 복원",
+    "description": "Options import hint"
+  },
+  "optImport": {
+    "message": "가져오기",
+    "description": "Options import button"
+  },
+  "optClearAllData": {
+    "message": "모든 데이터 지우기",
+    "description": "Options clear data label"
+  },
+  "optClearHint": {
+    "message": "모든 설정, 기록 및 재정의를 영구적으로 삭제",
+    "description": "Options clear data hint"
+  },
+  "optClear": {
+    "message": "지우기",
+    "description": "Options clear button"
+  },
+  "optStatistics": {
+    "message": "통계",
+    "description": "Options statistics header"
+  },
+  "optUnlocks": {
+    "message": "해제 횟수",
+    "description": "Options stat unlocks label"
+  },
+  "optCopiesSaved": {
+    "message": "저장된 복사",
+    "description": "Options stat copies label"
+  },
+  "optWatermarksStripped": {
+    "message": "제거된 워터마크",
+    "description": "Options stat watermarks label"
+  },
+  "optNavGeneral": {
+    "message": "일반",
+    "description": "Options nav general tab"
+  },
+  "optNavClipboard": {
+    "message": "클립보드",
+    "description": "Options nav clipboard tab"
+  },
+  "optNavSites": {
+    "message": "사이트",
+    "description": "Options nav sites tab"
+  },
+  "optNavPro": {
+    "message": "Pro",
+    "description": "Options nav pro tab"
+  },
+  "optNavData": {
+    "message": "데이터",
+    "description": "Options nav data tab"
+  },
+  "optSaveFailed": {
+    "message": "설정 저장 실패",
+    "description": "Options save error toast"
+  },
+  "optImportSuccess": {
+    "message": "데이터를 성공적으로 가져왔습니다",
+    "description": "Options import success toast"
+  },
+  "optImportFailed": {
+    "message": "가져오기 실패 — 잘못된 파일",
+    "description": "Options import error toast"
+  },
+  "optClearConfirm": {
+    "message": "모든 CopyUnlock 데이터를 지우시겠습니까? 되돌릴 수 없습니다.",
+    "description": "Options clear data confirm dialog"
+  },
+  "optAllDataCleared": {
+    "message": "모든 데이터가 지워졌습니다",
+    "description": "Options clear success toast"
+  },
+  "optClearFailed": {
+    "message": "데이터 지우기 실패",
+    "description": "Options clear error toast"
+  },
+  "optCheckingLicense": {
+    "message": "라이선스 확인 중...",
+    "description": "Options license check toast"
+  },
+  "optProVerified": {
+    "message": "Pro 라이선스가 확인되었습니다!",
+    "description": "Options license verified toast"
+  },
+  "optNoLicense": {
+    "message": "활성 라이선스를 찾을 수 없습니다",
+    "description": "Options no license toast"
+  },
+  "optLicenseCheckFailed": {
+    "message": "라이선스 확인 실패",
+    "description": "Options license check error toast"
+  },
+  "optOpening": {
+    "message": "열는 중...",
+    "description": "Options manage subscription opening state"
+  },
+  "optOpeningPortal": {
+    "message": "결제 포털 열는 중...",
+    "description": "Options billing portal opening toast"
+  },
+  "optPortalFailed": {
+    "message": "결제 포털을 열 수 없습니다. 지원팀에 문의하세요.",
+    "description": "Options billing portal error toast"
+  },
+  "optPortalError": {
+    "message": "결제 포털 열기 실패",
+    "description": "Options billing portal error toast"
+  },
+  "optExportFailed": {
+    "message": "내보내기 실패",
+    "description": "Options export error toast"
+  },
+  "optRenews": {
+    "message": "$DATE$에 갱신",
+    "description": "Options pro renewal date",
+    "placeholders": {
+      "DATE": {
+        "content": "$1",
+        "example": "Jan 15, 2026"
+      }
+    }
+  }
+}

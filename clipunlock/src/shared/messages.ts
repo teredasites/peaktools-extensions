@@ -9,6 +9,7 @@ export type MessageType =
   | 'UNLOCK_APPLIED'
   | 'CLIPBOARD_CAPTURE'
   | 'COPY_ITEM'
+  | 'PASTE_ITEM'
   | 'GET_CLIPBOARD_HISTORY'
   | 'DELETE_CLIPBOARD_ITEM'
   | 'PIN_CLIPBOARD_ITEM'
@@ -24,8 +25,23 @@ export type MessageType =
   | 'CHECK_LICENSE'
   | 'OPEN_SIDEPANEL'
   | 'OPEN_CHECKOUT'
+  | 'OPEN_BILLING_PORTAL'
   | 'OFFSCREEN_COPY'
-  | 'OFFSCREEN_READ_CLIPBOARD';
+  | 'OFFSCREEN_READ_CLIPBOARD'
+  // Collections
+  | 'GET_COLLECTIONS'
+  | 'CREATE_COLLECTION'
+  | 'DELETE_COLLECTION'
+  | 'RENAME_COLLECTION'
+  | 'SET_ITEM_COLLECTION'
+  // Projects
+  | 'CREATE_PROJECT'
+  | 'UPDATE_PROJECT'
+  | 'EXPORT_PROJECT'
+  // Quick-paste
+  | 'QUICK_PASTE_ITEMS'
+  // Citation
+  | 'GET_CITATION';
 
 export interface Message<T = unknown> {
   type: MessageType;
@@ -51,6 +67,9 @@ export interface ClipboardCapturePayload {
   sourceTitle: string;
   wasUnlocked: boolean;
   watermarkStripped: boolean;
+  citation?: string;
+  pdfCleaned?: boolean;
+  contentTypeOverride?: string;
 }
 
 export interface ClipboardSearchPayload {

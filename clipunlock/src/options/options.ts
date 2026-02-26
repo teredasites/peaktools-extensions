@@ -1,3 +1,5 @@
+import { applyI18n } from '../shared/i18n';
+
 // Storage keys must match shared/constants.ts
 const STORAGE_KEY = 'copyunlock_settings';
 const STATS_KEY = 'copyunlock_stats';
@@ -13,6 +15,10 @@ interface Settings {
   retentionDays: number;
   watermarkStripping: boolean;
   siteOverrides: Record<string, { enabled: boolean; mode: string }>;
+  autoCitation: string;
+  pdfCleanup: boolean;
+  defaultPasteFormat: string;
+  contextMenuEnabled: boolean;
 }
 
 interface Stats {
@@ -30,6 +36,10 @@ const clipboardEnabledCheckbox = document.getElementById('clipboard-enabled') as
 const maxItemsInput = document.getElementById('max-items') as HTMLInputElement;
 const retentionDaysInput = document.getElementById('retention-days') as HTMLInputElement;
 const watermarkStrippingCheckbox = document.getElementById('watermark-stripping') as HTMLInputElement;
+const autoCitationSelect = document.getElementById('auto-citation') as HTMLSelectElement;
+const pdfCleanupCheckbox = document.getElementById('pdf-cleanup') as HTMLInputElement;
+const defaultPasteFormatSelect = document.getElementById('default-paste-format') as HTMLSelectElement;
+const contextMenuEnabledCheckbox = document.getElementById('context-menu-enabled') as HTMLInputElement;
 const overridesList = document.getElementById('overrides-list') as HTMLDivElement;
 const overrideDomainInput = document.getElementById('override-domain') as HTMLInputElement;
 const overrideModeSelect = document.getElementById('override-mode') as HTMLSelectElement;
@@ -46,7 +56,9 @@ const proPlanName = document.getElementById('pro-plan-name') as HTMLElement;
 const planButtons = document.querySelectorAll('.plan-card') as NodeListOf<HTMLButtonElement>;
 const refreshLicenseBtn = document.getElementById('refresh-license-btn') as HTMLButtonElement;
 const refreshLicenseBtnFree = document.getElementById('refresh-license-btn-free') as HTMLButtonElement;
-const proSupportSection = document.getElementById('pro-support-section') as HTMLDivElement;
+const proManageSection = document.getElementById('pro-manage-section') as HTMLDivElement;
+const manageSubscriptionBtn = document.getElementById('manage-subscription') as HTMLButtonElement;
+const proRenewsAt = document.getElementById('pro-renews-at') as HTMLSpanElement;
 const versionEl = document.getElementById('version') as HTMLSpanElement;
 const statUnlocks = document.getElementById('stat-unlocks') as HTMLSpanElement;
 const statCopies = document.getElementById('stat-copies') as HTMLSpanElement;
@@ -65,6 +77,10 @@ let currentSettings: Settings = {
   retentionDays: 90,
   watermarkStripping: true,
   siteOverrides: {},
+  autoCitation: 'url',
+  pdfCleanup: false,
+  defaultPasteFormat: 'plain',
+  contextMenuEnabled: true,
 };
 
 // ── Tab Navigation ──
@@ -120,6 +136,10 @@ async function loadSettings(): Promise<void> {
     maxItemsInput.value = String(currentSettings.maxItems);
     retentionDaysInput.value = String(currentSettings.retentionDays);
     watermarkStrippingCheckbox.checked = currentSettings.watermarkStripping;
+    autoCitationSelect.value = currentSettings.autoCitation || 'url';
+    pdfCleanupCheckbox.checked = currentSettings.pdfCleanup || false;
+    defaultPasteFormatSelect.value = currentSettings.defaultPasteFormat || 'plain';
+    contextMenuEnabledCheckbox.checked = currentSettings.contextMenuEnabled !== false;
 
     renderOverrides();
   } catch {
@@ -131,7 +151,7 @@ async function loadSettings(): Promise<void> {
 function renderOverrides(): void {
   const domains = Object.keys(currentSettings.siteOverrides);
   if (domains.length === 0) {
-    overridesList.innerHTML = '<div class="no-overrides">No site overrides configured.</div>';
+    overridesList.innerHTML = `<div class="no-overrides">${chrome.i18n.getMessage('optNoOverrides') || 'No site overrides configured.'}</div>`;
     return;
   }
 
@@ -178,7 +198,7 @@ async function loadProStatus(): Promise<void> {
       proBadge.classList.remove('hidden');
       proActiveInfo.classList.remove('hidden');
       proUpgradeSection.classList.add('hidden');
-      if (proSupportSection) proSupportSection.classList.remove('hidden');
+      if (proManageSection) proManageSection.classList.remove('hidden');
       // Pro users get full limits
       maxItemsInput.max = '100000';
       retentionDaysInput.max = '3650';
@@ -189,22 +209,36 @@ async function loadProStatus(): Promise<void> {
       } else {
         proPlanName.textContent = 'Active';
       }
+      // Show renewal date if available
+      if (cached?.expiresAt && proRenewsAt) {
+        const renewDate = new Date(cached.expiresAt);
+        if (!isNaN(renewDate.getTime())) {
+          proRenewsAt.textContent = `Renews ${renewDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}`;
+        }
+      }
     } else {
       proActiveInfo.classList.add('hidden');
       proUpgradeSection.classList.remove('hidden');
-      if (proSupportSection) proSupportSection.classList.add('hidden');
+      if (proManageSection) proManageSection.classList.add('hidden');
       // Free users get capped limits
-      maxItemsInput.max = '200';
+      maxItemsInput.max = '500';
       retentionDaysInput.max = '30';
       // Clamp values down if needed
-      if (parseInt(maxItemsInput.value, 10) > 200) maxItemsInput.value = '200';
+      if (parseInt(maxItemsInput.value, 10) > 500) maxItemsInput.value = '500';
       if (parseInt(retentionDaysInput.value, 10) > 30) retentionDaysInput.value = '30';
+      // Disable Pro-only features
+      pdfCleanupCheckbox.disabled = true;
+      pdfCleanupCheckbox.checked = false;
+      // Formatted citation is Pro-only
+      const formattedOpt = autoCitationSelect.querySelector('option[value="formatted"]') as HTMLOptionElement;
+      if (formattedOpt) formattedOpt.disabled = true;
+      if (autoCitationSelect.value === 'formatted') autoCitationSelect.value = 'url';
     }
   } catch {
     proActiveInfo.classList.add('hidden');
     proUpgradeSection.classList.remove('hidden');
-    if (proSupportSection) proSupportSection.classList.add('hidden');
-    maxItemsInput.max = '200';
+    if (proManageSection) proManageSection.classList.add('hidden');
+    maxItemsInput.max = '500';
     retentionDaysInput.max = '30';
   }
 }
@@ -219,13 +253,17 @@ async function save(): Promise<void> {
   currentSettings.maxItems = parseInt(maxItemsInput.value, 10) || 5000;
   currentSettings.retentionDays = parseInt(retentionDaysInput.value, 10) || 90;
   currentSettings.watermarkStripping = watermarkStrippingCheckbox.checked;
+  currentSettings.autoCitation = autoCitationSelect.value;
+  currentSettings.pdfCleanup = pdfCleanupCheckbox.checked;
+  currentSettings.defaultPasteFormat = defaultPasteFormatSelect.value;
+  currentSettings.contextMenuEnabled = contextMenuEnabledCheckbox.checked;
 
   try {
     await chrome.storage.sync.set({ [STORAGE_KEY]: currentSettings });
     showToast(chrome.i18n.getMessage('settingsSaved') || 'Settings saved');
     chrome.runtime.sendMessage({ type: 'UPDATE_SETTINGS', payload: currentSettings }).catch(() => {});
   } catch {
-    showToast('Failed to save settings', true);
+    showToast(chrome.i18n.getMessage('optSaveFailed') || 'Failed to save settings', true);
   }
 }
 
@@ -238,6 +276,10 @@ clipboardEnabledCheckbox.addEventListener('change', save);
 maxItemsInput.addEventListener('change', save);
 retentionDaysInput.addEventListener('change', save);
 watermarkStrippingCheckbox.addEventListener('change', save);
+autoCitationSelect.addEventListener('change', save);
+pdfCleanupCheckbox.addEventListener('change', save);
+defaultPasteFormatSelect.addEventListener('change', save);
+contextMenuEnabledCheckbox.addEventListener('change', save);
 
 // Add override
 addOverrideBtn.addEventListener('click', () => {
@@ -265,9 +307,9 @@ exportDataBtn.addEventListener('click', async () => {
     a.download = `copyunlock-export-${new Date().toISOString().slice(0, 10)}.json`;
     a.click();
     URL.revokeObjectURL(url);
-    showToast(chrome.i18n.getMessage('exportSuccess') || 'Data exported');
+    showToast(chrome.i18n.getMessage('exportSuccess') || 'Data exported successfully');
   } catch {
-    showToast('Export failed', true);
+    showToast(chrome.i18n.getMessage('optExportFailed') || 'Export failed', true);
   }
 });
 
@@ -291,11 +333,11 @@ importFileInput.addEventListener('change', async () => {
       await chrome.storage.local.set(data.local);
     }
 
-    showToast('Data imported successfully');
+    showToast(chrome.i18n.getMessage('optImportSuccess') || 'Data imported successfully');
     loadSettings();
     loadStats();
   } catch {
-    showToast('Import failed — invalid file', true);
+    showToast(chrome.i18n.getMessage('optImportFailed') || 'Import failed — invalid file', true);
   }
 
   importFileInput.value = '';
@@ -303,7 +345,7 @@ importFileInput.addEventListener('change', async () => {
 
 // Clear
 clearDataBtn.addEventListener('click', async () => {
-  if (!confirm('Are you sure you want to clear all CopyUnlock data? This cannot be undone.')) return;
+  if (!confirm(chrome.i18n.getMessage('optClearConfirm') || 'Are you sure you want to clear all CopyUnlock data? This cannot be undone.')) return;
 
   try {
     // Clear clipboard history (IndexedDB) via service worker
@@ -311,11 +353,11 @@ clearDataBtn.addEventListener('click', async () => {
     // Clear settings and stats (chrome.storage)
     await chrome.storage.local.clear();
     await chrome.storage.sync.clear();
-    showToast('All data cleared');
+    showToast(chrome.i18n.getMessage('optAllDataCleared') || 'All data cleared');
     loadSettings();
     loadStats();
   } catch {
-    showToast('Failed to clear data', true);
+    showToast(chrome.i18n.getMessage('optClearFailed') || 'Failed to clear data', true);
   }
 });
 
@@ -340,18 +382,39 @@ planButtons.forEach((btn) => {
   });
 });
 
+// Manage subscription
+manageSubscriptionBtn.addEventListener('click', () => {
+  manageSubscriptionBtn.textContent = chrome.i18n.getMessage('optOpening') || 'Opening...';
+  manageSubscriptionBtn.style.opacity = '0.6';
+  chrome.runtime.sendMessage({ type: 'OPEN_BILLING_PORTAL', payload: {} }).then((result) => {
+    if (result?.ok) {
+      showToast(chrome.i18n.getMessage('optOpeningPortal') || 'Opening billing portal...');
+    } else {
+      showToast(chrome.i18n.getMessage('optPortalFailed') || 'Could not open billing portal. Contact support.', true);
+    }
+    setTimeout(() => {
+      manageSubscriptionBtn.textContent = chrome.i18n.getMessage('optManage') || 'Manage';
+      manageSubscriptionBtn.style.opacity = '';
+    }, 2000);
+  }).catch(() => {
+    showToast(chrome.i18n.getMessage('optPortalError') || 'Failed to open billing portal', true);
+    manageSubscriptionBtn.textContent = chrome.i18n.getMessage('optManage') || 'Manage';
+    manageSubscriptionBtn.style.opacity = '';
+  });
+});
+
 // Refresh license buttons
 function handleRefreshLicense(): void {
-  showToast('Checking license...');
+  showToast(chrome.i18n.getMessage('optCheckingLicense') || 'Checking license...');
   chrome.runtime.sendMessage({ type: 'CHECK_LICENSE', payload: {} }).then((result) => {
     if (result?.isPro) {
-      showToast('Pro license verified!');
+      showToast(chrome.i18n.getMessage('optProVerified') || 'Pro license verified!');
     } else {
-      showToast('No active license found', true);
+      showToast(chrome.i18n.getMessage('optNoLicense') || 'No active license found', true);
     }
     loadProStatus();
   }).catch(() => {
-    showToast('License check failed', true);
+    showToast(chrome.i18n.getMessage('optLicenseCheckFailed') || 'License check failed', true);
   });
 }
 
@@ -368,6 +431,9 @@ function escapeHtml(str: string): string {
 // Set version
 const manifest = chrome.runtime.getManifest();
 versionEl.textContent = manifest.version;
+
+// Apply i18n translations to static HTML elements
+applyI18n();
 
 // Init
 loadSettings();

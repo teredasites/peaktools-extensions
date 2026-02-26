@@ -8,36 +8,151 @@
 </head>
 <body>
   <header class="search-header">
-    <input type="text" id="search-input" class="search-input" placeholder="Search clipboard history..." autocomplete="off">
+    <input type="text" id="search-input" class="search-input" data-i18n-placeholder="searchPlaceholder" placeholder="Search clipboard history..." autocomplete="off">
   </header>
 
   <nav class="filter-bar">
-    <button class="filter-chip active" data-filter="all">All</button>
-    <button class="filter-chip" data-filter="pinned">Pinned</button>
-    <button class="filter-chip" data-filter="url">URLs</button>
-    <button class="filter-chip" data-filter="code">Code</button>
-    <button class="filter-chip" data-filter="text">Text</button>
+    <button class="filter-chip active" data-filter="all" data-i18n="filterAll">All</button>
+    <button class="filter-chip" data-filter="pinned" data-i18n="filterPinned">Pinned</button>
+    <button class="filter-chip" data-filter="url" data-i18n="filterUrls">URLs</button>
+    <button class="filter-chip" data-filter="code" data-i18n="filterCode">Code</button>
+    <button class="filter-chip" data-filter="text" data-i18n="filterText">Text</button>
+    <button id="projects-btn" class="filter-chip projects-chip" data-filter="projects">Projects</button>
+    <select id="collection-filter" class="collection-select" title="Filter by collection">
+      <option value="" data-i18n="allCollections">All Collections</option>
+    </select>
   </nav>
+
+  <!-- Sub-action bars (shown when specific filter is active) -->
+  <div id="url-sub-actions" class="sub-actions hidden">
+    <button id="open-all-urls" class="sub-action-btn">Open All URLs</button>
+    <button id="copy-all-urls" class="sub-action-btn">Copy All URLs</button>
+  </div>
+  <div id="code-sub-actions" class="sub-actions hidden">
+    <button id="copy-all-code" class="sub-action-btn">Copy All Snippets</button>
+  </div>
+
+  <!-- Upgrade banner -->
+  <div id="upgrade-banner" class="upgrade-banner hidden">
+    <span id="upgrade-banner-msg" class="upgrade-banner-msg"></span>
+    <button id="upgrade-banner-btn" class="upgrade-btn">Upgrade &mdash; $1.99/mo</button>
+    <button id="upgrade-banner-close" class="upgrade-close">&times;</button>
+  </div>
 
   <main id="clip-list" class="clip-list"></main>
 
+  <!-- Projects Panel (replaces clip-list when Projects filter active) -->
+  <div id="projects-panel" class="projects-panel hidden">
+    <div class="projects-header">
+      <span class="projects-title">Projects</span>
+      <button id="new-project-btn" class="new-project-btn">+ New Project</button>
+    </div>
+    <div id="projects-list" class="projects-list"></div>
+  </div>
+
+  <!-- Project Detail Panel -->
+  <div id="project-detail" class="project-detail hidden">
+    <div class="project-detail-header">
+      <button id="project-back" class="detail-back-btn">&larr; Projects</button>
+      <div class="project-detail-actions">
+        <button id="project-export-txt" class="detail-action-btn" title="Export as .txt">Export .txt</button>
+        <button id="project-export-html" class="detail-action-btn" title="Export as .html">Export .html</button>
+        <button id="project-edit" class="detail-action-btn">Edit</button>
+        <button id="project-delete-btn" class="detail-action-btn danger">Delete</button>
+      </div>
+    </div>
+    <div id="project-detail-info" class="project-detail-info"></div>
+    <div id="project-items-list" class="clip-list project-items-list"></div>
+  </div>
+
   <div id="detail-panel" class="detail-panel hidden">
     <div class="detail-header">
-      <button id="detail-back" class="detail-back-btn" aria-label="Back">&larr; Back</button>
+      <button id="detail-back" class="detail-back-btn" aria-label="Back">&larr; <span data-i18n="back">Back</span></button>
       <div class="detail-actions">
-        <button id="detail-copy" class="detail-action-btn">Copy</button>
-        <button id="detail-pin" class="detail-action-btn">Pin</button>
-        <button id="detail-delete" class="detail-action-btn danger">Delete</button>
+        <button id="detail-copy" class="detail-action-btn" data-i18n="copy">Copy</button>
+        <button id="detail-copy-citation" class="detail-action-btn" title="Copy with citation" data-i18n="cite">+ Cite</button>
+        <button id="detail-open-url" class="detail-action-btn hidden" title="Open source page" data-i18n="open">Open</button>
+        <button id="detail-copy-url" class="detail-action-btn hidden" title="Copy URL to clipboard">Copy URL</button>
+        <button id="detail-pin" class="detail-action-btn" data-i18n="pin">Pin</button>
+        <button id="detail-delete" class="detail-action-btn danger" data-i18n="delete">Delete</button>
       </div>
     </div>
     <div id="detail-content" class="detail-content"></div>
+    <div id="detail-citation" class="detail-citation hidden"></div>
     <div id="detail-meta" class="detail-meta"></div>
+    <div id="detail-collection" class="detail-collection">
+      <label class="detail-collection-label">Collection:</label>
+      <select id="detail-collection-select" class="collection-select-small" title="Assign to collection">
+        <option value="" data-i18n="none">None</option>
+      </select>
+    </div>
     <div id="detail-tags" class="detail-tags"></div>
+  </div>
+
+  <!-- Quick Add overlay -->
+  <div id="add-overlay" class="add-overlay hidden">
+    <div class="add-overlay-content">
+      <div class="add-overlay-header">
+        <span class="add-overlay-title" data-i18n="addTitle">Add to Clipboard History</span>
+        <button id="add-overlay-close" class="add-overlay-close">&times;</button>
+      </div>
+      <textarea id="add-input" class="add-input" data-i18n-placeholder="addPlaceholder" placeholder="Paste or type anything — URLs, text, code..." rows="5"></textarea>
+      <div class="add-overlay-footer">
+        <select id="add-type-select" class="add-type-select" title="Content type">
+          <option value="auto" data-i18n="typeAuto">Auto-detect</option>
+          <option value="text" data-i18n="filterText">Text</option>
+          <option value="url" data-i18n="filterUrls">URL</option>
+          <option value="code" data-i18n="filterCode">Code</option>
+          <option value="email">Email</option>
+          <option value="html">HTML</option>
+        </select>
+        <span id="add-type-hint" class="add-type-hint">text</span>
+        <button id="add-save" class="add-save-btn" data-i18n="save">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- New Project overlay -->
+  <div id="project-overlay" class="add-overlay hidden">
+    <div class="add-overlay-content project-overlay-content">
+      <div class="add-overlay-header">
+        <span class="add-overlay-title">New Project</span>
+        <button id="project-overlay-close" class="add-overlay-close">&times;</button>
+      </div>
+      <div class="project-form">
+        <div class="project-form-field">
+          <label class="project-form-label">Name</label>
+          <input type="text" id="project-name-input" class="project-form-input" placeholder="e.g. Research Paper, Client Work..." maxlength="50">
+        </div>
+        <div class="project-form-field">
+          <label class="project-form-label">Description</label>
+          <input type="text" id="project-desc-input" class="project-form-input" placeholder="Optional description..." maxlength="200">
+        </div>
+        <div class="project-form-field">
+          <label class="project-form-label">Auto-capture domains</label>
+          <div class="domain-chips-container">
+            <div id="domain-chips" class="domain-chips"></div>
+            <input type="text" id="domain-input" class="domain-input" placeholder="Type domain + Enter (e.g. github.com)">
+          </div>
+          <span class="project-form-hint">Clips from these domains auto-file into this project</span>
+        </div>
+        <div class="project-form-field">
+          <label class="project-form-label">Color</label>
+          <div id="color-picker" class="color-picker"></div>
+        </div>
+      </div>
+      <div class="add-overlay-footer">
+        <button id="project-save" class="add-save-btn">Create Project</button>
+      </div>
+    </div>
   </div>
 
   <footer class="panel-footer">
     <span id="item-count" class="item-count">0 items</span>
-    <button id="clear-all" class="clear-all-btn">Clear All</button>
+    <div class="footer-actions">
+      <button id="add-item" class="add-item-btn" title="Add to clipboard history" data-i18n="addButton">+ Add</button>
+      <button id="clear-all" class="clear-all-btn" data-i18n="clearAll">Clear All</button>
+    </div>
   </footer>
 
   <script src="../../dist/sidepanel/sidepanel.js"></script>

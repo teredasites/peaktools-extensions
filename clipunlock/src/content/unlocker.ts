@@ -171,6 +171,81 @@ const executors: Record<string, (step: UnlockStep) => void> = {
     const result = installFontReversal();
     log.info(`font-reversal: detected ${result.fontsDetected} custom fonts, built ${result.mappingsBuilt} mappings`);
   },
+  'neutralize-alert': (_step) => {
+    // Dispatch to MAIN world — must override window.alert in page's JS context
+    dispatchToPageWorld('neutralize-alert');
+    // Also remove inline oncontextmenu handlers that call alert()
+    const targets = [document.documentElement, document.body, ...Array.from(document.querySelectorAll('[oncontextmenu]'))];
+    for (const el of targets) {
+      if (!el) continue;
+      const handler = el.getAttribute('oncontextmenu');
+      if (handler && /alert\s*\(/.test(handler)) {
+        removedAttributes.push({ el, attr: 'oncontextmenu', value: handler });
+        el.removeAttribute('oncontextmenu');
+      }
+    }
+  },
+  'anti-hijack': (_step) => {
+    // Dispatch to MAIN world — must intercept copy event clipboardData.setData in page's JS context
+    dispatchToPageWorld('anti-hijack');
+  },
+  'strip-homoglyphs': (_step) => {
+    // Homoglyph stripping runs at copy-time via clipboard-interceptor, similar to watermark stripping.
+    // This executor registers a copy event listener that normalizes homoglyphs.
+    document.addEventListener('copy', (e: ClipboardEvent) => {
+      const sel = window.getSelection();
+      if (!sel || sel.rangeCount === 0) return;
+      let text = sel.toString();
+      // Map common Cyrillic/Greek homoglyphs to their Latin equivalents
+      const homoglyphMap: Record<string, string> = {
+        '\u0410': 'A', '\u0412': 'B', '\u0421': 'C', '\u0415': 'E', '\u041D': 'H',
+        '\u041A': 'K', '\u041C': 'M', '\u041E': 'O', '\u0420': 'P', '\u0422': 'T',
+        '\u0425': 'X', '\u0430': 'a', '\u0435': 'e', '\u043E': 'o', '\u0440': 'p',
+        '\u0441': 'c', '\u0443': 'y', '\u0445': 'x', '\u0455': 's', '\u0456': 'i',
+        '\u0458': 'j', '\u0461': 'w',
+        // Greek
+        '\u0391': 'A', '\u0392': 'B', '\u0395': 'E', '\u0396': 'Z', '\u0397': 'H',
+        '\u0399': 'I', '\u039A': 'K', '\u039C': 'M', '\u039D': 'N', '\u039F': 'O',
+        '\u03A1': 'P', '\u03A4': 'T', '\u03A5': 'Y', '\u03A7': 'X',
+        '\u03BF': 'o', '\u03B1': 'a',
+        // Full-width
+        '\uFF21': 'A', '\uFF22': 'B', '\uFF23': 'C', '\uFF24': 'D', '\uFF25': 'E',
+      };
+      let cleaned = false;
+      for (const [homoglyph, latin] of Object.entries(homoglyphMap)) {
+        if (text.includes(homoglyph)) {
+          text = text.split(homoglyph).join(latin);
+          cleaned = true;
+        }
+      }
+      if (cleaned && e.clipboardData) {
+        e.clipboardData.setData('text/plain', text);
+        e.preventDefault();
+        log.info('strip-homoglyphs: cleaned homoglyph characters at copy time');
+      }
+    }, true);
+    log.info('strip-homoglyphs: copy-time homoglyph cleaning active');
+  },
+  'neutralize-debugger': (_step) => {
+    // Dispatch to MAIN world — must patch Function constructor and setInterval in page's JS context
+    dispatchToPageWorld('neutralize-debugger');
+  },
+  'unblock-print': (_step) => {
+    // CSS: override @media print hiding rules
+    injectCSS(`
+      @media print {
+        * {
+          display: revert !important;
+          visibility: visible !important;
+          opacity: 1 !important;
+          color: #000 !important;
+          background: #fff !important;
+        }
+      }
+    `);
+    // Dispatch to MAIN world — must unblock Ctrl+P and PrintScreen key interception
+    dispatchToPageWorld('unblock-print');
+  },
 };
 
 export function applyUnlock(profile: SiteProtectionProfile): { appliedSteps: number; errors: string[] } {

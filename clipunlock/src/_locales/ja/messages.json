@@ -1,0 +1,830 @@
+{
+  "extensionName": {
+    "message": "CopyUnlock",
+    "description": "Extension name"
+  },
+  "extensionDescription": {
+    "message": "コピー制限を解除し、クリップボード履歴を簡単に管理。",
+    "description": "Extension description"
+  },
+  "commandToggle": {
+    "message": "CopyUnlockを切り替え",
+    "description": "Keyboard command to toggle the extension"
+  },
+  "commandClipboard": {
+    "message": "クリップボード履歴を開く",
+    "description": "Keyboard command to open clipboard history"
+  },
+  "commandSearch": {
+    "message": "クリップボードを検索",
+    "description": "Keyboard command to search clipboard"
+  },
+  "contextMenuUnlock": {
+    "message": "ページをロック解除",
+    "description": "Context menu toggle unlock"
+  },
+  "contextMenuLock": {
+    "message": "ページをロック（元に戻す）",
+    "description": "Context menu toggle lock"
+  },
+  "contextMenuCopy": {
+    "message": "履歴にコピー",
+    "description": "Context menu copy option"
+  },
+  "contextMenuCopyClean": {
+    "message": "クリーンコピー（透かし除去）",
+    "description": "Context menu copy without watermarks"
+  },
+  "contextMenuCopyCitation": {
+    "message": "引用付きコピー",
+    "description": "Context menu copy with source citation"
+  },
+  "contextMenuPin": {
+    "message": "選択をピン留め",
+    "description": "Context menu pin option"
+  },
+  "contextMenuSaveCollection": {
+    "message": "コレクションに保存",
+    "description": "Context menu save to collection parent"
+  },
+  "contextMenuNewCollection": {
+    "message": "+ 新しいコレクション...",
+    "description": "Context menu create new collection"
+  },
+  "contextMenuMode": {
+    "message": "モード",
+    "description": "Context menu mode parent"
+  },
+  "contextMenuClipboardHistory": {
+    "message": "クリップボード履歴",
+    "description": "Context menu open clipboard history"
+  },
+  "contextMenuQuickPaste": {
+    "message": "クイック貼り付け",
+    "description": "Context menu quick paste overlay"
+  },
+  "contextMenuSettings": {
+    "message": "設定",
+    "description": "Context menu open settings"
+  },
+  "popupEnable": {
+    "message": "有効にする",
+    "description": "Popup enable button label"
+  },
+  "popupActive": {
+    "message": "アクティブ",
+    "description": "Popup active state label"
+  },
+  "popupProtections": {
+    "message": "$COUNT$件の保護を解除",
+    "description": "Number of protections removed",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "modeAuto": {
+    "message": "自動",
+    "description": "Auto mode label"
+  },
+  "modeSafe": {
+    "message": "安全",
+    "description": "Safe mode label"
+  },
+  "modeAggressive": {
+    "message": "強力",
+    "description": "Aggressive mode label"
+  },
+  "recentCopies": {
+    "message": "最近のコピー",
+    "description": "Recent clipboard items header"
+  },
+  "noHistory": {
+    "message": "クリップボード履歴はまだありません",
+    "description": "Empty clipboard state"
+  },
+  "clipboardHistory": {
+    "message": "クリップボード履歴",
+    "description": "Clipboard history title"
+  },
+  "settings": {
+    "message": "設定",
+    "description": "Settings page title"
+  },
+  "searchPlaceholder": {
+    "message": "クリップボード履歴を検索...",
+    "description": "Search input placeholder"
+  },
+  "filterAll": {
+    "message": "すべて",
+    "description": "Filter all items"
+  },
+  "filterPinned": {
+    "message": "ピン留め",
+    "description": "Filter pinned items"
+  },
+  "filterUrls": {
+    "message": "URL",
+    "description": "Filter URL items"
+  },
+  "filterCode": {
+    "message": "コード",
+    "description": "Filter code items"
+  },
+  "filterText": {
+    "message": "テキスト",
+    "description": "Filter text items"
+  },
+  "typeAuto": {
+    "message": "Auto-detect",
+    "description": "Auto-detect content type option in add overlay"
+  },
+  "copy": {
+    "message": "コピー",
+    "description": "Copy action"
+  },
+  "copied": {
+    "message": "コピーしました！",
+    "description": "Copy confirmation"
+  },
+  "pin": {
+    "message": "ピン留め",
+    "description": "Pin action"
+  },
+  "unpin": {
+    "message": "ピン解除",
+    "description": "Unpin action"
+  },
+  "delete": {
+    "message": "削除",
+    "description": "Delete action"
+  },
+  "clearAll": {
+    "message": "すべてクリア",
+    "description": "Clear all items"
+  },
+  "clearConfirm": {
+    "message": "クリップボード履歴をすべてクリアしますか？元に戻せません。",
+    "description": "Clear confirmation dialog"
+  },
+  "items": {
+    "message": "$COUNT$件",
+    "description": "Item count display",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "42"
+      }
+    }
+  },
+  "justNow": {
+    "message": "たった今",
+    "description": "Time ago - just now"
+  },
+  "minutesAgo": {
+    "message": "$MINUTES$分前",
+    "description": "Time ago - minutes",
+    "placeholders": {
+      "MINUTES": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "hoursAgo": {
+    "message": "$HOURS$時間前",
+    "description": "Time ago - hours",
+    "placeholders": {
+      "HOURS": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "daysAgo": {
+    "message": "$DAYS$日前",
+    "description": "Time ago - days",
+    "placeholders": {
+      "DAYS": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "watermarkNotice": {
+    "message": "コピーされたテキストから透かし文字が除去されました。",
+    "description": "Watermark stripping notification"
+  },
+  "settingsSaved": {
+    "message": "設定を保存しました",
+    "description": "Settings save confirmation"
+  },
+  "exportSuccess": {
+    "message": "データのエクスポートに成功しました",
+    "description": "Export success message"
+  },
+  "protectionActive": {
+    "message": "保護が有効",
+    "description": "Popup label when unlock is active"
+  },
+  "tapToEnable": {
+    "message": "タップして有効化",
+    "description": "Popup label when unlock is inactive"
+  },
+  "statusActive": {
+    "message": "有効",
+    "description": "Popup status pill when active"
+  },
+  "statusOff": {
+    "message": "オフ",
+    "description": "Popup status pill when off"
+  },
+  "noRecentCopies": {
+    "message": "最近のコピーはありません",
+    "description": "Popup empty clipboard state"
+  },
+  "timeNow": {
+    "message": "今",
+    "description": "Popup time ago - just now short form"
+  },
+  "removed": {
+    "message": "$COUNT$件解除",
+    "description": "Popup protection count label",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "history": {
+    "message": "履歴",
+    "description": "Popup button to open clipboard history"
+  },
+  "recentLabel": {
+    "message": "最近",
+    "description": "Popup section header for recent clipboard items"
+  },
+  "allCollections": {
+    "message": "すべてのコレクション",
+    "description": "Sidepanel collection filter default option"
+  },
+  "none": {
+    "message": "なし",
+    "description": "Sidepanel collection select no-collection option"
+  },
+  "saving": {
+    "message": "保存中...",
+    "description": "Sidepanel add overlay saving indicator"
+  },
+  "save": {
+    "message": "保存",
+    "description": "Sidepanel add overlay save button"
+  },
+  "addTitle": {
+    "message": "クリップボード履歴に追加",
+    "description": "Sidepanel add overlay title"
+  },
+  "addPlaceholder": {
+    "message": "何でも貼り付けまたは入力 — URL、テキスト、コード...",
+    "description": "Sidepanel add overlay placeholder"
+  },
+  "addButton": {
+    "message": "+ 追加",
+    "description": "Sidepanel footer add button label"
+  },
+  "back": {
+    "message": "戻る",
+    "description": "Detail panel back button"
+  },
+  "cite": {
+    "message": "+ 引用",
+    "description": "Detail panel copy with citation button"
+  },
+  "open": {
+    "message": "開く",
+    "description": "Detail panel open source URL button"
+  },
+  "emptyUrlIcon": {
+    "message": "&#128279;",
+    "description": "Empty state icon for URLs filter"
+  },
+  "emptyUrlText": {
+    "message": "保存されたURLはまだありません",
+    "description": "Empty state text for URLs filter"
+  },
+  "emptyUrlHint": {
+    "message": "ブラウザからURLをコピーして保存するか、下の+ 追加をクリックしてください。",
+    "description": "Empty state hint for URLs filter"
+  },
+  "emptyCodeText": {
+    "message": "コードスニペットはまだありません",
+    "description": "Empty state text for Code filter"
+  },
+  "emptyCodeHint": {
+    "message": "エディタやウェブサイトからコードをコピーして保存しましょう。",
+    "description": "Empty state hint for Code filter"
+  },
+  "emptyTextText": {
+    "message": "テキストクリップはまだありません",
+    "description": "Empty state text for Text filter"
+  },
+  "emptyTextHint": {
+    "message": "ページからテキストをコピーして履歴を構築しましょう。",
+    "description": "Empty state hint for Text filter"
+  },
+  "emptyPinnedText": {
+    "message": "ピン留めされたアイテムはありません",
+    "description": "Empty state text for Pinned filter"
+  },
+  "emptyPinnedHint": {
+    "message": "アイテムを開いてピン留めをクリックすると、上部に固定されます。",
+    "description": "Empty state hint for Pinned filter"
+  },
+  "emptyDefaultHint": {
+    "message": "ウェブ上で何かをコピーすると、自動的にここに表示されます。",
+    "description": "Empty state hint for All filter"
+  },
+  "words": {
+    "message": "$COUNT$語",
+    "description": "Word count display in clip items",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "42"
+      }
+    }
+  },
+  "pdfCleaned": {
+    "message": "PDFクリーン済み",
+    "description": "PDF cleaned indicator in detail view"
+  },
+  "type": {
+    "message": "タイプ",
+    "description": "Type label in detail view"
+  },
+  "source": {
+    "message": "ソース",
+    "description": "Source label in detail view"
+  },
+  "optGeneralSettings": {
+    "message": "一般設定",
+    "description": "Options page general settings header"
+  },
+  "optGeneralDesc": {
+    "message": "CopyUnlockの基本動作を設定します。",
+    "description": "Options page general settings description"
+  },
+  "optEnableCopyUnlock": {
+    "message": "CopyUnlockを有効にする",
+    "description": "Options enable toggle label"
+  },
+  "optEnableHint": {
+    "message": "すべてのコピー解除機能のマスタースイッチ",
+    "description": "Options enable toggle hint"
+  },
+  "optDefaultMode": {
+    "message": "デフォルトモード",
+    "description": "Options default mode label"
+  },
+  "optDefaultModeHint": {
+    "message": "コピー保護を解除する強度",
+    "description": "Options default mode hint"
+  },
+  "optShowNotifications": {
+    "message": "通知を表示",
+    "description": "Options notifications toggle label"
+  },
+  "optNotificationsHint": {
+    "message": "保護が解除されたときにトースト通知を表示",
+    "description": "Options notifications hint"
+  },
+  "optContextMenu": {
+    "message": "コンテキストメニュー",
+    "description": "Options context menu toggle label"
+  },
+  "optContextMenuHint": {
+    "message": "右クリックメニューにCopyUnlockを表示",
+    "description": "Options context menu hint"
+  },
+  "optKeyboardShortcuts": {
+    "message": "キーボードショートカット",
+    "description": "Options keyboard shortcuts header"
+  },
+  "optToggleCopyUnlock": {
+    "message": "CopyUnlockを切り替え",
+    "description": "Options shortcut action label"
+  },
+  "optOpenClipboardHistory": {
+    "message": "クリップボード履歴を開く",
+    "description": "Options shortcut action label"
+  },
+  "optSearchClipboard": {
+    "message": "クリップボードを検索",
+    "description": "Options shortcut action label"
+  },
+  "optQuickPaste": {
+    "message": "クイック貼り付け",
+    "description": "Options shortcut action label"
+  },
+  "optConfigureShortcuts": {
+    "message": "Chrome設定で構成",
+    "description": "Options link to chrome shortcuts page"
+  },
+  "optClipboardHistory": {
+    "message": "クリップボード履歴",
+    "description": "Options clipboard section header"
+  },
+  "optClipboardDesc": {
+    "message": "クリップボードアイテムの保存方法を管理します。",
+    "description": "Options clipboard section description"
+  },
+  "optEnableClipboard": {
+    "message": "クリップボード履歴を有効にする",
+    "description": "Options clipboard enable label"
+  },
+  "optEnableClipboardHint": {
+    "message": "クリップボードの内容を自動保存",
+    "description": "Options clipboard enable hint"
+  },
+  "optMaxItems": {
+    "message": "最大アイテム数",
+    "description": "Options max items label"
+  },
+  "optMaxItemsHint": {
+    "message": "保存するクリップボードエントリの最大数",
+    "description": "Options max items hint"
+  },
+  "optRetentionPeriod": {
+    "message": "保持期間",
+    "description": "Options retention period label"
+  },
+  "optRetentionHint": {
+    "message": "古いエントリが自動削除されるまでの日数",
+    "description": "Options retention hint"
+  },
+  "optDays": {
+    "message": "日",
+    "description": "Options retention days suffix"
+  },
+  "optWatermarkStripping": {
+    "message": "透かし除去",
+    "description": "Options watermark stripping label"
+  },
+  "optWatermarkHint": {
+    "message": "コピーしたテキストから不可視のトラッキング文字を除去",
+    "description": "Options watermark hint"
+  },
+  "optAutoCitation": {
+    "message": "自動引用",
+    "description": "Options auto citation label"
+  },
+  "optAutoCitationHint": {
+    "message": "コピーしたテキストのソース引用を自動生成",
+    "description": "Options auto citation hint"
+  },
+  "optCitationOff": {
+    "message": "オフ",
+    "description": "Options citation mode off"
+  },
+  "optCitationUrl": {
+    "message": "URLのみ（無料）",
+    "description": "Options citation mode url"
+  },
+  "optCitationFormatted": {
+    "message": "フォーマット済み（Pro）",
+    "description": "Options citation mode formatted"
+  },
+  "optDefaultPasteFormat": {
+    "message": "デフォルト貼り付け形式",
+    "description": "Options paste format label"
+  },
+  "optPasteFormatHint": {
+    "message": "履歴から貼り付ける際の形式",
+    "description": "Options paste format hint"
+  },
+  "optPastePlain": {
+    "message": "プレーンテキスト",
+    "description": "Options paste format plain"
+  },
+  "optPasteRich": {
+    "message": "リッチテキスト（書式付き）",
+    "description": "Options paste format rich"
+  },
+  "optPasteClean": {
+    "message": "クリーン（空白を縮小）",
+    "description": "Options paste format clean"
+  },
+  "optPasteCitation": {
+    "message": "引用付き",
+    "description": "Options paste format with citation"
+  },
+  "optPdfCleanup": {
+    "message": "PDF改行クリーンアップ",
+    "description": "Options PDF cleanup label"
+  },
+  "optPdfCleanupHint": {
+    "message": "PDFからコピーしたテキストの不自然な改行を修正",
+    "description": "Options PDF cleanup hint"
+  },
+  "optSiteOverrides": {
+    "message": "サイト上書き",
+    "description": "Options site overrides header"
+  },
+  "optSiteOverridesDesc": {
+    "message": "特定のウェブサイトにカスタム解除モードを設定。",
+    "description": "Options site overrides description"
+  },
+  "optNoOverrides": {
+    "message": "サイト上書きは設定されていません。",
+    "description": "Options empty overrides state"
+  },
+  "optDisabled": {
+    "message": "無効",
+    "description": "Options override mode disabled"
+  },
+  "optAdd": {
+    "message": "追加",
+    "description": "Options add override button"
+  },
+  "optProTitle": {
+    "message": "CopyUnlock Pro",
+    "description": "Options pro section header"
+  },
+  "optProLicenseActive": {
+    "message": "Proライセンス有効",
+    "description": "Options pro active status"
+  },
+  "optProPlan": {
+    "message": "プラン",
+    "description": "Options pro plan label"
+  },
+  "optRefresh": {
+    "message": "更新",
+    "description": "Options refresh license button"
+  },
+  "optManageSubscription": {
+    "message": "サブスクリプション管理",
+    "description": "Options manage subscription label"
+  },
+  "optManageHint": {
+    "message": "支払い方法の更新、プラン変更、またはキャンセル",
+    "description": "Options manage subscription hint"
+  },
+  "optManage": {
+    "message": "管理",
+    "description": "Options manage button"
+  },
+  "optPrioritySupport": {
+    "message": "優先サポート",
+    "description": "Options priority support label"
+  },
+  "optPrioritySupportHint": {
+    "message": "Proメンバーは迅速な対応を受けられます",
+    "description": "Options priority support hint"
+  },
+  "optEmailUs": {
+    "message": "メールする",
+    "description": "Options email support button"
+  },
+  "optUnlockPower": {
+    "message": "フルパワーを解放",
+    "description": "Options pro hero title"
+  },
+  "optUnlockDesc": {
+    "message": "完全な解除エンジン、無制限クリップボード、コレクション、PDFクリーンアップ、フォーマット済み引用、優先サポート。",
+    "description": "Options pro hero description"
+  },
+  "optProFeatureItems": {
+    "message": "100,000クリップボードアイテム",
+    "description": "Options pro feature"
+  },
+  "optProFeatureItemsSub": {
+    "message": "無料版の500に対して",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureRetention": {
+    "message": "10年間保持",
+    "description": "Options pro feature"
+  },
+  "optProFeatureRetentionSub": {
+    "message": "無料版の30日に対して",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureCollections": {
+    "message": "1,000コレクション",
+    "description": "Options pro feature"
+  },
+  "optProFeatureCollectionsSub": {
+    "message": "無料版の3に対して",
+    "description": "Options pro feature sub"
+  },
+  "optProFeaturePdf": {
+    "message": "PDF改行クリーンアップ",
+    "description": "Options pro feature"
+  },
+  "optProFeaturePdfSub": {
+    "message": "壊れたPDFテキストを修正",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureCitations": {
+    "message": "フォーマット済み引用",
+    "description": "Options pro feature"
+  },
+  "optProFeatureCitationsSub": {
+    "message": "ソースを自動引用",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureSupport": {
+    "message": "優先サポート",
+    "description": "Options pro feature"
+  },
+  "optProFeatureSupportSub": {
+    "message": "メールで迅速に対応",
+    "description": "Options pro feature sub"
+  },
+  "optMonthly": {
+    "message": "月額",
+    "description": "Options plan monthly"
+  },
+  "optAnnual": {
+    "message": "年額",
+    "description": "Options plan annual"
+  },
+  "optLifetime": {
+    "message": "永久",
+    "description": "Options plan lifetime"
+  },
+  "optBestValue": {
+    "message": "最もお得",
+    "description": "Options plan best value badge"
+  },
+  "optSave44": {
+    "message": "44%オフ",
+    "description": "Options annual savings"
+  },
+  "optOneTime": {
+    "message": "一括払い",
+    "description": "Options lifetime one-time label"
+  },
+  "optProLegal": {
+    "message": "Stripeで安全にお支払い。いつでもキャンセル可能。ライセンスはChromeプロフィールのメールに紐付けられます。",
+    "description": "Options pro legal text"
+  },
+  "optAlreadyPurchased": {
+    "message": "購入済み？ライセンスを更新",
+    "description": "Options refresh license link"
+  },
+  "optDataManagement": {
+    "message": "データ管理",
+    "description": "Options data section header"
+  },
+  "optDataDesc": {
+    "message": "拡張機能のデータをエクスポート、インポート、またはクリア。",
+    "description": "Options data section description"
+  },
+  "optExportData": {
+    "message": "データをエクスポート",
+    "description": "Options export label"
+  },
+  "optExportHint": {
+    "message": "すべての設定と履歴をJSONでダウンロード",
+    "description": "Options export hint"
+  },
+  "optExport": {
+    "message": "エクスポート",
+    "description": "Options export button"
+  },
+  "optImportData": {
+    "message": "データをインポート",
+    "description": "Options import label"
+  },
+  "optImportHint": {
+    "message": "以前エクスポートしたJSONファイルから復元",
+    "description": "Options import hint"
+  },
+  "optImport": {
+    "message": "インポート",
+    "description": "Options import button"
+  },
+  "optClearAllData": {
+    "message": "すべてのデータをクリア",
+    "description": "Options clear data label"
+  },
+  "optClearHint": {
+    "message": "すべての設定、履歴、上書きを完全に削除",
+    "description": "Options clear data hint"
+  },
+  "optClear": {
+    "message": "クリア",
+    "description": "Options clear button"
+  },
+  "optStatistics": {
+    "message": "統計",
+    "description": "Options statistics header"
+  },
+  "optUnlocks": {
+    "message": "解除回数",
+    "description": "Options stat unlocks label"
+  },
+  "optCopiesSaved": {
+    "message": "保存されたコピー",
+    "description": "Options stat copies label"
+  },
+  "optWatermarksStripped": {
+    "message": "除去された透かし",
+    "description": "Options stat watermarks label"
+  },
+  "optNavGeneral": {
+    "message": "一般",
+    "description": "Options nav general tab"
+  },
+  "optNavClipboard": {
+    "message": "クリップボード",
+    "description": "Options nav clipboard tab"
+  },
+  "optNavSites": {
+    "message": "サイト",
+    "description": "Options nav sites tab"
+  },
+  "optNavPro": {
+    "message": "Pro",
+    "description": "Options nav pro tab"
+  },
+  "optNavData": {
+    "message": "データ",
+    "description": "Options nav data tab"
+  },
+  "optSaveFailed": {
+    "message": "設定の保存に失敗しました",
+    "description": "Options save error toast"
+  },
+  "optImportSuccess": {
+    "message": "データのインポートに成功しました",
+    "description": "Options import success toast"
+  },
+  "optImportFailed": {
+    "message": "インポート失敗 — 無効なファイル",
+    "description": "Options import error toast"
+  },
+  "optClearConfirm": {
+    "message": "CopyUnlockのすべてのデータをクリアしますか？元に戻せません。",
+    "description": "Options clear data confirm dialog"
+  },
+  "optAllDataCleared": {
+    "message": "すべてのデータがクリアされました",
+    "description": "Options clear success toast"
+  },
+  "optClearFailed": {
+    "message": "データのクリアに失敗しました",
+    "description": "Options clear error toast"
+  },
+  "optCheckingLicense": {
+    "message": "ライセンスを確認中...",
+    "description": "Options license check toast"
+  },
+  "optProVerified": {
+    "message": "Proライセンスが確認されました！",
+    "description": "Options license verified toast"
+  },
+  "optNoLicense": {
+    "message": "有効なライセンスが見つかりません",
+    "description": "Options no license toast"
+  },
+  "optLicenseCheckFailed": {
+    "message": "ライセンスの確認に失敗しました",
+    "description": "Options license check error toast"
+  },
+  "optOpening": {
+    "message": "開いています...",
+    "description": "Options manage subscription opening state"
+  },
+  "optOpeningPortal": {
+    "message": "請求ポータルを開いています...",
+    "description": "Options billing portal opening toast"
+  },
+  "optPortalFailed": {
+    "message": "請求ポータルを開けませんでした。サポートにお問い合わせください。",
+    "description": "Options billing portal error toast"
+  },
+  "optPortalError": {
+    "message": "請求ポータルの開設に失敗しました",
+    "description": "Options billing portal error toast"
+  },
+  "optExportFailed": {
+    "message": "エクスポートに失敗しました",
+    "description": "Options export error toast"
+  },
+  "optRenews": {
+    "message": "$DATE$に更新",
+    "description": "Options pro renewal date",
+    "placeholders": {
+      "DATE": {
+        "content": "$1",
+        "example": "Jan 15, 2026"
+      }
+    }
+  }
+}

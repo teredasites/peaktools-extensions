@@ -1,0 +1,830 @@
+{
+  "extensionName": {
+    "message": "CopyUnlock",
+    "description": "Extension name"
+  },
+  "extensionDescription": {
+    "message": "Ontgrendel kopieerbeperkingen en beheer je klembordgeschiedenis moeiteloos.",
+    "description": "Extension description"
+  },
+  "commandToggle": {
+    "message": "CopyUnlock schakelen",
+    "description": "Keyboard command to toggle the extension"
+  },
+  "commandClipboard": {
+    "message": "Klembordgeschiedenis openen",
+    "description": "Keyboard command to open clipboard history"
+  },
+  "commandSearch": {
+    "message": "Klembord doorzoeken",
+    "description": "Keyboard command to search clipboard"
+  },
+  "contextMenuUnlock": {
+    "message": "Pagina ontgrendelen",
+    "description": "Context menu toggle unlock"
+  },
+  "contextMenuLock": {
+    "message": "Pagina vergrendelen (terugzetten)",
+    "description": "Context menu toggle lock"
+  },
+  "contextMenuCopy": {
+    "message": "Kopiëren naar geschiedenis",
+    "description": "Context menu copy option"
+  },
+  "contextMenuCopyClean": {
+    "message": "Schoon kopiëren (watermerken verwijderen)",
+    "description": "Context menu copy without watermarks"
+  },
+  "contextMenuCopyCitation": {
+    "message": "Kopiëren met citaat",
+    "description": "Context menu copy with source citation"
+  },
+  "contextMenuPin": {
+    "message": "Selectie vastzetten",
+    "description": "Context menu pin option"
+  },
+  "contextMenuSaveCollection": {
+    "message": "Opslaan in collectie",
+    "description": "Context menu save to collection parent"
+  },
+  "contextMenuNewCollection": {
+    "message": "+ Nieuwe collectie...",
+    "description": "Context menu create new collection"
+  },
+  "contextMenuMode": {
+    "message": "Modus",
+    "description": "Context menu mode parent"
+  },
+  "contextMenuClipboardHistory": {
+    "message": "Klembordgeschiedenis",
+    "description": "Context menu open clipboard history"
+  },
+  "contextMenuQuickPaste": {
+    "message": "Snel plakken",
+    "description": "Context menu quick paste overlay"
+  },
+  "contextMenuSettings": {
+    "message": "Instellingen",
+    "description": "Context menu open settings"
+  },
+  "popupEnable": {
+    "message": "Inschakelen",
+    "description": "Popup enable button label"
+  },
+  "popupActive": {
+    "message": "Actief",
+    "description": "Popup active state label"
+  },
+  "popupProtections": {
+    "message": "$COUNT$ beveiligingen verwijderd",
+    "description": "Number of protections removed",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "modeAuto": {
+    "message": "Auto",
+    "description": "Auto mode label"
+  },
+  "modeSafe": {
+    "message": "Veilig",
+    "description": "Safe mode label"
+  },
+  "modeAggressive": {
+    "message": "Agressief",
+    "description": "Aggressive mode label"
+  },
+  "recentCopies": {
+    "message": "Recente kopieën",
+    "description": "Recent clipboard items header"
+  },
+  "noHistory": {
+    "message": "Nog geen klembordgeschiedenis",
+    "description": "Empty clipboard state"
+  },
+  "clipboardHistory": {
+    "message": "Klembordgeschiedenis",
+    "description": "Clipboard history title"
+  },
+  "settings": {
+    "message": "Instellingen",
+    "description": "Settings page title"
+  },
+  "searchPlaceholder": {
+    "message": "Klembordgeschiedenis doorzoeken...",
+    "description": "Search input placeholder"
+  },
+  "filterAll": {
+    "message": "Alle",
+    "description": "Filter all items"
+  },
+  "filterPinned": {
+    "message": "Vastgezet",
+    "description": "Filter pinned items"
+  },
+  "filterUrls": {
+    "message": "URLs",
+    "description": "Filter URL items"
+  },
+  "filterCode": {
+    "message": "Code",
+    "description": "Filter code items"
+  },
+  "filterText": {
+    "message": "Tekst",
+    "description": "Filter text items"
+  },
+  "typeAuto": {
+    "message": "Auto-detect",
+    "description": "Auto-detect content type option in add overlay"
+  },
+  "copy": {
+    "message": "Kopiëren",
+    "description": "Copy action"
+  },
+  "copied": {
+    "message": "Gekopieerd!",
+    "description": "Copy confirmation"
+  },
+  "pin": {
+    "message": "Vastzetten",
+    "description": "Pin action"
+  },
+  "unpin": {
+    "message": "Losmaken",
+    "description": "Unpin action"
+  },
+  "delete": {
+    "message": "Verwijderen",
+    "description": "Delete action"
+  },
+  "clearAll": {
+    "message": "Alles wissen",
+    "description": "Clear all items"
+  },
+  "clearConfirm": {
+    "message": "Alle klembordgeschiedenis wissen? Dit kan niet ongedaan worden gemaakt.",
+    "description": "Clear confirmation dialog"
+  },
+  "items": {
+    "message": "$COUNT$ items",
+    "description": "Item count display",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "42"
+      }
+    }
+  },
+  "justNow": {
+    "message": "Zojuist",
+    "description": "Time ago - just now"
+  },
+  "minutesAgo": {
+    "message": "$MINUTES$ min geleden",
+    "description": "Time ago - minutes",
+    "placeholders": {
+      "MINUTES": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "hoursAgo": {
+    "message": "$HOURS$ uur geleden",
+    "description": "Time ago - hours",
+    "placeholders": {
+      "HOURS": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "daysAgo": {
+    "message": "$DAYS$ dagen geleden",
+    "description": "Time ago - days",
+    "placeholders": {
+      "DAYS": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "watermarkNotice": {
+    "message": "Watermerktekens zijn verwijderd uit de gekopieerde tekst.",
+    "description": "Watermark stripping notification"
+  },
+  "settingsSaved": {
+    "message": "Instellingen opgeslagen",
+    "description": "Settings save confirmation"
+  },
+  "exportSuccess": {
+    "message": "Gegevens succesvol geëxporteerd",
+    "description": "Export success message"
+  },
+  "protectionActive": {
+    "message": "Bescherming actief",
+    "description": "Popup label when unlock is active"
+  },
+  "tapToEnable": {
+    "message": "Tik om in te schakelen",
+    "description": "Popup label when unlock is inactive"
+  },
+  "statusActive": {
+    "message": "Actief",
+    "description": "Popup status pill when active"
+  },
+  "statusOff": {
+    "message": "Uit",
+    "description": "Popup status pill when off"
+  },
+  "noRecentCopies": {
+    "message": "Geen recente kopieën",
+    "description": "Popup empty clipboard state"
+  },
+  "timeNow": {
+    "message": "nu",
+    "description": "Popup time ago - just now short form"
+  },
+  "removed": {
+    "message": "$COUNT$ verwijderd",
+    "description": "Popup protection count label",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "history": {
+    "message": "Geschiedenis",
+    "description": "Popup button to open clipboard history"
+  },
+  "recentLabel": {
+    "message": "Recent",
+    "description": "Popup section header for recent clipboard items"
+  },
+  "allCollections": {
+    "message": "Alle collecties",
+    "description": "Sidepanel collection filter default option"
+  },
+  "none": {
+    "message": "Geen",
+    "description": "Sidepanel collection select no-collection option"
+  },
+  "saving": {
+    "message": "Opslaan...",
+    "description": "Sidepanel add overlay saving indicator"
+  },
+  "save": {
+    "message": "Opslaan",
+    "description": "Sidepanel add overlay save button"
+  },
+  "addTitle": {
+    "message": "Toevoegen aan klembordgeschiedenis",
+    "description": "Sidepanel add overlay title"
+  },
+  "addPlaceholder": {
+    "message": "Plak of typ iets — URLs, tekst, code...",
+    "description": "Sidepanel add overlay placeholder"
+  },
+  "addButton": {
+    "message": "+ Toevoegen",
+    "description": "Sidepanel footer add button label"
+  },
+  "back": {
+    "message": "Terug",
+    "description": "Detail panel back button"
+  },
+  "cite": {
+    "message": "+ Citeren",
+    "description": "Detail panel copy with citation button"
+  },
+  "open": {
+    "message": "Openen",
+    "description": "Detail panel open source URL button"
+  },
+  "emptyUrlIcon": {
+    "message": "&#128279;",
+    "description": "Empty state icon for URLs filter"
+  },
+  "emptyUrlText": {
+    "message": "Nog geen URLs opgeslagen",
+    "description": "Empty state text for URLs filter"
+  },
+  "emptyUrlHint": {
+    "message": "Kopieer een URL uit je browser om het hier op te slaan, of klik op + Toevoegen hieronder.",
+    "description": "Empty state hint for URLs filter"
+  },
+  "emptyCodeText": {
+    "message": "Nog geen codefragmenten",
+    "description": "Empty state text for Code filter"
+  },
+  "emptyCodeHint": {
+    "message": "Kopieer code vanuit een editor of website om het hier op te slaan.",
+    "description": "Empty state hint for Code filter"
+  },
+  "emptyTextText": {
+    "message": "Nog geen tekstfragmenten",
+    "description": "Empty state text for Text filter"
+  },
+  "emptyTextHint": {
+    "message": "Kopieer tekst van een pagina om je geschiedenis op te bouwen.",
+    "description": "Empty state hint for Text filter"
+  },
+  "emptyPinnedText": {
+    "message": "Geen vastgezette items",
+    "description": "Empty state text for Pinned filter"
+  },
+  "emptyPinnedHint": {
+    "message": "Open een item en klik op Vastzetten om het bovenaan te houden.",
+    "description": "Empty state hint for Pinned filter"
+  },
+  "emptyDefaultHint": {
+    "message": "Kopieer iets op het web — het verschijnt hier automatisch.",
+    "description": "Empty state hint for All filter"
+  },
+  "words": {
+    "message": "$COUNT$ woorden",
+    "description": "Word count display in clip items",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "42"
+      }
+    }
+  },
+  "pdfCleaned": {
+    "message": "PDF opgeschoond",
+    "description": "PDF cleaned indicator in detail view"
+  },
+  "type": {
+    "message": "Type",
+    "description": "Type label in detail view"
+  },
+  "source": {
+    "message": "Bron",
+    "description": "Source label in detail view"
+  },
+  "optGeneralSettings": {
+    "message": "Algemene instellingen",
+    "description": "Options page general settings header"
+  },
+  "optGeneralDesc": {
+    "message": "Configureer het kerngedrag van CopyUnlock.",
+    "description": "Options page general settings description"
+  },
+  "optEnableCopyUnlock": {
+    "message": "CopyUnlock inschakelen",
+    "description": "Options enable toggle label"
+  },
+  "optEnableHint": {
+    "message": "Hoofdschakelaar voor alle ontgrendelfuncties",
+    "description": "Options enable toggle hint"
+  },
+  "optDefaultMode": {
+    "message": "Standaardmodus",
+    "description": "Options default mode label"
+  },
+  "optDefaultModeHint": {
+    "message": "Hoe agressief kopieerbescherming wordt verwijderd",
+    "description": "Options default mode hint"
+  },
+  "optShowNotifications": {
+    "message": "Meldingen tonen",
+    "description": "Options notifications toggle label"
+  },
+  "optNotificationsHint": {
+    "message": "Melding tonen wanneer bescherming is verwijderd",
+    "description": "Options notifications hint"
+  },
+  "optContextMenu": {
+    "message": "Contextmenu",
+    "description": "Options context menu toggle label"
+  },
+  "optContextMenuHint": {
+    "message": "CopyUnlock tonen in het rechtermuisknop-menu",
+    "description": "Options context menu hint"
+  },
+  "optKeyboardShortcuts": {
+    "message": "Sneltoetsen",
+    "description": "Options keyboard shortcuts header"
+  },
+  "optToggleCopyUnlock": {
+    "message": "CopyUnlock schakelen",
+    "description": "Options shortcut action label"
+  },
+  "optOpenClipboardHistory": {
+    "message": "Klembordgeschiedenis openen",
+    "description": "Options shortcut action label"
+  },
+  "optSearchClipboard": {
+    "message": "Klembord doorzoeken",
+    "description": "Options shortcut action label"
+  },
+  "optQuickPaste": {
+    "message": "Snel plakken",
+    "description": "Options shortcut action label"
+  },
+  "optConfigureShortcuts": {
+    "message": "Configureren in Chrome-instellingen",
+    "description": "Options link to chrome shortcuts page"
+  },
+  "optClipboardHistory": {
+    "message": "Klembordgeschiedenis",
+    "description": "Options clipboard section header"
+  },
+  "optClipboardDesc": {
+    "message": "Beheer hoe klemborditems worden opgeslagen.",
+    "description": "Options clipboard section description"
+  },
+  "optEnableClipboard": {
+    "message": "Klembordgeschiedenis inschakelen",
+    "description": "Options clipboard enable label"
+  },
+  "optEnableClipboardHint": {
+    "message": "Automatisch klembordinhoud opslaan",
+    "description": "Options clipboard enable hint"
+  },
+  "optMaxItems": {
+    "message": "Max items",
+    "description": "Options max items label"
+  },
+  "optMaxItemsHint": {
+    "message": "Maximaal aantal opgeslagen items",
+    "description": "Options max items hint"
+  },
+  "optRetentionPeriod": {
+    "message": "Bewaartermijn",
+    "description": "Options retention period label"
+  },
+  "optRetentionHint": {
+    "message": "Dagen voor automatische verwijdering van oude items",
+    "description": "Options retention hint"
+  },
+  "optDays": {
+    "message": "dagen",
+    "description": "Options retention days suffix"
+  },
+  "optWatermarkStripping": {
+    "message": "Watermerk verwijderen",
+    "description": "Options watermark stripping label"
+  },
+  "optWatermarkHint": {
+    "message": "Onzichtbare trackingtekens verwijderen uit gekopieerde tekst",
+    "description": "Options watermark hint"
+  },
+  "optAutoCitation": {
+    "message": "Auto-citaat",
+    "description": "Options auto citation label"
+  },
+  "optAutoCitationHint": {
+    "message": "Automatisch broncitaat genereren voor gekopieerde tekst",
+    "description": "Options auto citation hint"
+  },
+  "optCitationOff": {
+    "message": "Uit",
+    "description": "Options citation mode off"
+  },
+  "optCitationUrl": {
+    "message": "Alleen URL (Gratis)",
+    "description": "Options citation mode url"
+  },
+  "optCitationFormatted": {
+    "message": "Opgemaakt (Pro)",
+    "description": "Options citation mode formatted"
+  },
+  "optDefaultPasteFormat": {
+    "message": "Standaard plakformaat",
+    "description": "Options paste format label"
+  },
+  "optPasteFormatHint": {
+    "message": "Formaat bij plakken vanuit geschiedenis",
+    "description": "Options paste format hint"
+  },
+  "optPastePlain": {
+    "message": "Platte tekst",
+    "description": "Options paste format plain"
+  },
+  "optPasteRich": {
+    "message": "Opgemaakte tekst",
+    "description": "Options paste format rich"
+  },
+  "optPasteClean": {
+    "message": "Schoon (witruimte samenvoegen)",
+    "description": "Options paste format clean"
+  },
+  "optPasteCitation": {
+    "message": "Met citaat",
+    "description": "Options paste format with citation"
+  },
+  "optPdfCleanup": {
+    "message": "PDF regelafbreking opruimen",
+    "description": "Options PDF cleanup label"
+  },
+  "optPdfCleanupHint": {
+    "message": "Kunstmatige regelafbrekingen uit PDF-tekst corrigeren",
+    "description": "Options PDF cleanup hint"
+  },
+  "optSiteOverrides": {
+    "message": "Site-uitzonderingen",
+    "description": "Options site overrides header"
+  },
+  "optSiteOverridesDesc": {
+    "message": "Aangepaste ontgrendelmodi instellen voor specifieke websites.",
+    "description": "Options site overrides description"
+  },
+  "optNoOverrides": {
+    "message": "Geen site-uitzonderingen geconfigureerd.",
+    "description": "Options empty overrides state"
+  },
+  "optDisabled": {
+    "message": "Uitgeschakeld",
+    "description": "Options override mode disabled"
+  },
+  "optAdd": {
+    "message": "Toevoegen",
+    "description": "Options add override button"
+  },
+  "optProTitle": {
+    "message": "CopyUnlock Pro",
+    "description": "Options pro section header"
+  },
+  "optProLicenseActive": {
+    "message": "Pro-licentie actief",
+    "description": "Options pro active status"
+  },
+  "optProPlan": {
+    "message": "Plan",
+    "description": "Options pro plan label"
+  },
+  "optRefresh": {
+    "message": "Vernieuwen",
+    "description": "Options refresh license button"
+  },
+  "optManageSubscription": {
+    "message": "Abonnement beheren",
+    "description": "Options manage subscription label"
+  },
+  "optManageHint": {
+    "message": "Betaalmethode bijwerken, plan wijzigen of opzeggen",
+    "description": "Options manage subscription hint"
+  },
+  "optManage": {
+    "message": "Beheren",
+    "description": "Options manage button"
+  },
+  "optPrioritySupport": {
+    "message": "Prioriteitsondersteuning",
+    "description": "Options priority support label"
+  },
+  "optPrioritySupportHint": {
+    "message": "Pro-leden krijgen snelle reactietijden",
+    "description": "Options priority support hint"
+  },
+  "optEmailUs": {
+    "message": "Mail ons",
+    "description": "Options email support button"
+  },
+  "optUnlockPower": {
+    "message": "Ontgrendel de volledige kracht",
+    "description": "Options pro hero title"
+  },
+  "optUnlockDesc": {
+    "message": "Volledige ontgrendelmotor, onbeperkt klembord, collecties, PDF-opruiming, opgemaakte citaten en prioriteitsondersteuning.",
+    "description": "Options pro hero description"
+  },
+  "optProFeatureItems": {
+    "message": "100.000 klemborditems",
+    "description": "Options pro feature"
+  },
+  "optProFeatureItemsSub": {
+    "message": "vs 500 bij gratis",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureRetention": {
+    "message": "10 jaar bewaren",
+    "description": "Options pro feature"
+  },
+  "optProFeatureRetentionSub": {
+    "message": "vs 30 dagen bij gratis",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureCollections": {
+    "message": "1.000 collecties",
+    "description": "Options pro feature"
+  },
+  "optProFeatureCollectionsSub": {
+    "message": "vs 3 bij gratis",
+    "description": "Options pro feature sub"
+  },
+  "optProFeaturePdf": {
+    "message": "PDF-opruiming",
+    "description": "Options pro feature"
+  },
+  "optProFeaturePdfSub": {
+    "message": "Kapotte PDF-tekst repareren",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureCitations": {
+    "message": "Opgemaakte citaten",
+    "description": "Options pro feature"
+  },
+  "optProFeatureCitationsSub": {
+    "message": "Automatisch bronnen citeren",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureSupport": {
+    "message": "Prioriteitsondersteuning",
+    "description": "Options pro feature"
+  },
+  "optProFeatureSupportSub": {
+    "message": "Snelle reactie via e-mail",
+    "description": "Options pro feature sub"
+  },
+  "optMonthly": {
+    "message": "Maandelijks",
+    "description": "Options plan monthly"
+  },
+  "optAnnual": {
+    "message": "Jaarlijks",
+    "description": "Options plan annual"
+  },
+  "optLifetime": {
+    "message": "Levenslang",
+    "description": "Options plan lifetime"
+  },
+  "optBestValue": {
+    "message": "Beste waarde",
+    "description": "Options plan best value badge"
+  },
+  "optSave44": {
+    "message": "Bespaar 44%",
+    "description": "Options annual savings"
+  },
+  "optOneTime": {
+    "message": "Eenmalig",
+    "description": "Options lifetime one-time label"
+  },
+  "optProLegal": {
+    "message": "Mogelijk gemaakt door Stripe. Annuleer op elk moment. Licentie gekoppeld aan je Chrome-profiel e-mail.",
+    "description": "Options pro legal text"
+  },
+  "optAlreadyPurchased": {
+    "message": "Al gekocht? Licentie vernieuwen",
+    "description": "Options refresh license link"
+  },
+  "optDataManagement": {
+    "message": "Gegevensbeheer",
+    "description": "Options data section header"
+  },
+  "optDataDesc": {
+    "message": "Exporteer, importeer of wis extensiegegevens.",
+    "description": "Options data section description"
+  },
+  "optExportData": {
+    "message": "Gegevens exporteren",
+    "description": "Options export label"
+  },
+  "optExportHint": {
+    "message": "Download alle instellingen en geschiedenis als JSON",
+    "description": "Options export hint"
+  },
+  "optExport": {
+    "message": "Exporteren",
+    "description": "Options export button"
+  },
+  "optImportData": {
+    "message": "Gegevens importeren",
+    "description": "Options import label"
+  },
+  "optImportHint": {
+    "message": "Herstellen vanuit een eerder geëxporteerd JSON-bestand",
+    "description": "Options import hint"
+  },
+  "optImport": {
+    "message": "Importeren",
+    "description": "Options import button"
+  },
+  "optClearAllData": {
+    "message": "Alle gegevens wissen",
+    "description": "Options clear data label"
+  },
+  "optClearHint": {
+    "message": "Alle instellingen, geschiedenis en uitzonderingen permanent verwijderen",
+    "description": "Options clear data hint"
+  },
+  "optClear": {
+    "message": "Wissen",
+    "description": "Options clear button"
+  },
+  "optStatistics": {
+    "message": "Statistieken",
+    "description": "Options statistics header"
+  },
+  "optUnlocks": {
+    "message": "Ontgrendelingen",
+    "description": "Options stat unlocks label"
+  },
+  "optCopiesSaved": {
+    "message": "Opgeslagen kopieën",
+    "description": "Options stat copies label"
+  },
+  "optWatermarksStripped": {
+    "message": "Verwijderde watermerken",
+    "description": "Options stat watermarks label"
+  },
+  "optNavGeneral": {
+    "message": "Algemeen",
+    "description": "Options nav general tab"
+  },
+  "optNavClipboard": {
+    "message": "Klembord",
+    "description": "Options nav clipboard tab"
+  },
+  "optNavSites": {
+    "message": "Sites",
+    "description": "Options nav sites tab"
+  },
+  "optNavPro": {
+    "message": "Pro",
+    "description": "Options nav pro tab"
+  },
+  "optNavData": {
+    "message": "Gegevens",
+    "description": "Options nav data tab"
+  },
+  "optSaveFailed": {
+    "message": "Instellingen opslaan mislukt",
+    "description": "Options save error toast"
+  },
+  "optImportSuccess": {
+    "message": "Gegevens succesvol geïmporteerd",
+    "description": "Options import success toast"
+  },
+  "optImportFailed": {
+    "message": "Import mislukt — ongeldig bestand",
+    "description": "Options import error toast"
+  },
+  "optClearConfirm": {
+    "message": "Weet je zeker dat je alle CopyUnlock-gegevens wilt wissen? Dit kan niet ongedaan worden gemaakt.",
+    "description": "Options clear data confirm dialog"
+  },
+  "optAllDataCleared": {
+    "message": "Alle gegevens gewist",
+    "description": "Options clear success toast"
+  },
+  "optClearFailed": {
+    "message": "Gegevens wissen mislukt",
+    "description": "Options clear error toast"
+  },
+  "optCheckingLicense": {
+    "message": "Licentie controleren...",
+    "description": "Options license check toast"
+  },
+  "optProVerified": {
+    "message": "Pro-licentie geverifieerd!",
+    "description": "Options license verified toast"
+  },
+  "optNoLicense": {
+    "message": "Geen actieve licentie gevonden",
+    "description": "Options no license toast"
+  },
+  "optLicenseCheckFailed": {
+    "message": "Licentiecontrole mislukt",
+    "description": "Options license check error toast"
+  },
+  "optOpening": {
+    "message": "Openen...",
+    "description": "Options manage subscription opening state"
+  },
+  "optOpeningPortal": {
+    "message": "Factureringsportaal openen...",
+    "description": "Options billing portal opening toast"
+  },
+  "optPortalFailed": {
+    "message": "Kan factureringsportaal niet openen. Neem contact op met support.",
+    "description": "Options billing portal error toast"
+  },
+  "optPortalError": {
+    "message": "Fout bij openen factureringsportaal",
+    "description": "Options billing portal error toast"
+  },
+  "optExportFailed": {
+    "message": "Export mislukt",
+    "description": "Options export error toast"
+  },
+  "optRenews": {
+    "message": "Verlengt op $DATE$",
+    "description": "Options pro renewal date",
+    "placeholders": {
+      "DATE": {
+        "content": "$1",
+        "example": "Jan 15, 2026"
+      }
+    }
+  }
+}

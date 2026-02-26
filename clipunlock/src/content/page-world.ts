@@ -13,7 +13,8 @@
 
   // ─── Auto-tracker: capture copy-related addEventListener calls ───
   const tracked: Array<{ type: string; target: string }> = [];
-  const COPY_EVENTS = ['copy', 'cut', 'paste', 'contextmenu', 'selectstart', 'mousedown', 'dragstart'];
+  const COPY_EVENTS_SET = new Set(['copy', 'cut', 'paste', 'contextmenu', 'selectstart', 'mousedown', 'dragstart']);
+  const MAX_TRACKED = 500; // Cap tracked entries to prevent memory bloat on heavy sites
 
   EventTarget.prototype.addEventListener = function (
     this: EventTarget,
@@ -21,16 +22,21 @@
     listener: EventListenerOrEventListenerObject,
     options?: boolean | AddEventListenerOptions,
   ) {
-    if (COPY_EVENTS.indexOf(type) !== -1) {
-      tracked.push({
-        type: type,
-        target:
-          this === document
-            ? 'document'
-            : this === window
-              ? 'window'
-              : (this as Element).tagName || 'unknown',
-      });
+    if (tracked.length < MAX_TRACKED && COPY_EVENTS_SET.has(type)) {
+      try {
+        tracked.push({
+          type: type,
+          target:
+            this === document
+              ? 'document'
+              : this === window
+                ? 'window'
+                : (this as Element).tagName || 'unknown',
+        });
+      } catch {
+        // Some exotic EventTarget subclasses (MediaSource, AudioNode, etc.)
+        // may throw on property access — silently skip tracking
+      }
     }
     return origAddEventListener.call(this, type, listener, options);
   };
@@ -68,7 +74,7 @@
     const detail = (e as CustomEvent).detail;
     if (!detail || !detail.action) return;
 
-    switch (detail.action) {
+    try { switch (detail.action) {
       case 'prototype-intercept': {
         unlockActive = true;
         const blocked = new Set(['copy', 'cut', 'paste', 'contextmenu', 'selectstart']);
@@ -346,8 +352,210 @@
         break;
       }
 
+      case 'neutralize-alert': {
+        unlockActive = true;
+        // Override window.alert to no-op while unlock is active
+        // Sites use alert() on right-click to annoy users and block context menu
+        const origAlert = window.alert;
+        window.alert = function (msg?: string) {
+          if (unlockActive) return; // swallow alert during unlock
+          return origAlert.call(window, msg);
+        };
+        // Also override window.confirm and window.prompt used by some sites
+        const origConfirm = window.confirm;
+        window.confirm = function (msg?: string): boolean {
+          if (unlockActive) return true;
+          return origConfirm.call(window, msg);
+        };
+        const origPrompt = window.prompt;
+        window.prompt = function (msg?: string, def?: string): string | null {
+          if (unlockActive) return def ?? '';
+          return origPrompt.call(window, msg, def);
+        };
+        // Store for revert
+        (window as Record<string, unknown>).__copyunlock_orig_alert = origAlert;
+        (window as Record<string, unknown>).__copyunlock_orig_confirm = origConfirm;
+        (window as Record<string, unknown>).__copyunlock_orig_prompt = origPrompt;
+        break;
+      }
+
+      case 'anti-hijack': {
+        unlockActive = true;
+        // Intercept copy events in capture phase — if the page's copy listener
+        // modifies clipboardData.setData, we re-set it with the real selection text
+        origAddEventListener.call(
+          document,
+          'copy',
+          function (ev: Event) {
+            if (!unlockActive) return;
+            const ce = ev as ClipboardEvent;
+            const sel = window.getSelection();
+            if (!sel || sel.rangeCount === 0) return;
+            const originalText = sel.toString();
+            // After a microtask, check if clipboard was hijacked
+            // (page scripts run between capture and bubble phase)
+            setTimeout(function () {
+              if (!ce.clipboardData) return;
+              try {
+                const currentData = ce.clipboardData.getData('text/plain');
+                // If the data was changed from what the user selected, it was hijacked
+                if (currentData && currentData !== originalText && originalText.length > 0) {
+                  // Can't fix here — already committed. But we prevent future hijacks below.
+                }
+              } catch { /* clipboardData may be expired */ }
+            }, 0);
+          },
+          true,
+        );
+
+        // Patch DataTransfer.prototype.setData to guard against pastejacking
+        const origSetData = DataTransfer.prototype.setData;
+        DataTransfer.prototype.setData = function (format: string, data: string) {
+          if (unlockActive) {
+            // Only allow setData from our own code, block page script hijacking
+            // Check if we're in a copy event handler by looking at the call stack
+            const sel = window.getSelection();
+            const selText = sel ? sel.toString() : '';
+            if (selText.length > 0 && data !== selText && format === 'text/plain') {
+              // Page is trying to replace selected text with something else — block it
+              return origSetData.call(this, format, selText);
+            }
+          }
+          return origSetData.call(this, format, data);
+        };
+        (window as Record<string, unknown>).__copyunlock_orig_setData = origSetData;
+        break;
+      }
+
+      case 'neutralize-debugger': {
+        unlockActive = true;
+        // Override the Function constructor to strip debugger statements
+        const OrigFunction = Function;
+        const FunctionProxy = new Proxy(OrigFunction, {
+          construct(target, args) {
+            // Rewrite any Function('debugger') or Function body containing 'debugger'
+            if (args.length > 0) {
+              const lastArg = String(args[args.length - 1]);
+              if (/\bdebugger\b/.test(lastArg)) {
+                args[args.length - 1] = lastArg.replace(/\bdebugger\b/g, '/* debugger neutralized */');
+              }
+            }
+            return Reflect.construct(target, args);
+          },
+          apply(target, thisArg, args) {
+            if (args.length > 0) {
+              const lastArg = String(args[args.length - 1]);
+              if (/\bdebugger\b/.test(lastArg)) {
+                args[args.length - 1] = lastArg.replace(/\bdebugger\b/g, '/* debugger neutralized */');
+              }
+            }
+            return Reflect.apply(target, thisArg, args);
+          },
+        });
+        try {
+          (window as Record<string, unknown>).Function = FunctionProxy;
+        } catch { /* strict mode may prevent this */ }
+
+        // Also patch eval to strip debugger
+        const origEval = window.eval;
+        (window as Record<string, unknown>).eval = function (code: string) {
+          if (unlockActive && typeof code === 'string' && /\bdebugger\b/.test(code)) {
+            code = code.replace(/\bdebugger\b/g, '/* debugger neutralized */');
+          }
+          return origEval.call(window, code);
+        };
+
+        // Patch setInterval/setTimeout to strip debugger from string arguments
+        const origSetInterval = window.setInterval;
+        const origSetTimeout = window.setTimeout;
+        (window as Record<string, unknown>).setInterval = function (handler: unknown, ...args: unknown[]) {
+          if (unlockActive && typeof handler === 'string' && /\bdebugger\b/.test(handler)) {
+            handler = (handler as string).replace(/\bdebugger\b/g, '/* debugger neutralized */');
+          }
+          return origSetInterval.call(window, handler as TimerHandler, ...args);
+        };
+        (window as Record<string, unknown>).setTimeout = function (handler: unknown, ...args: unknown[]) {
+          if (unlockActive && typeof handler === 'string' && /\bdebugger\b/.test(handler)) {
+            handler = (handler as string).replace(/\bdebugger\b/g, '/* debugger neutralized */');
+          }
+          return origSetTimeout.call(window, handler as TimerHandler, ...args);
+        };
+
+        (window as Record<string, unknown>).__copyunlock_orig_eval = origEval;
+        (window as Record<string, unknown>).__copyunlock_orig_setInterval = origSetInterval;
+        (window as Record<string, unknown>).__copyunlock_orig_setTimeout = origSetTimeout;
+        break;
+      }
+
+      case 'unblock-print': {
+        unlockActive = true;
+        // Block key event listeners that prevent Ctrl+P, F12, PrintScreen
+        origAddEventListener.call(
+          document,
+          'keydown',
+          function (ev: Event) {
+            if (!unlockActive) return;
+            const ke = ev as KeyboardEvent;
+            // Allow Ctrl+P (print)
+            if ((ke.ctrlKey || ke.metaKey) && ke.key === 'p') {
+              ke.stopImmediatePropagation();
+              return;
+            }
+            // Allow F12 (devtools)
+            if (ke.key === 'F12') {
+              ke.stopImmediatePropagation();
+              return;
+            }
+            // Allow PrintScreen
+            if (ke.key === 'PrintScreen') {
+              ke.stopImmediatePropagation();
+              return;
+            }
+            // Allow Ctrl+Shift+I (devtools)
+            if ((ke.ctrlKey || ke.metaKey) && ke.shiftKey && ke.key === 'I') {
+              ke.stopImmediatePropagation();
+              return;
+            }
+          },
+          true,
+        );
+
+        // Also block keyup for the same keys (some sites use keyup)
+        origAddEventListener.call(
+          document,
+          'keyup',
+          function (ev: Event) {
+            if (!unlockActive) return;
+            const ke = ev as KeyboardEvent;
+            if ((ke.ctrlKey || ke.metaKey) && ke.key === 'p') ke.stopImmediatePropagation();
+            if (ke.key === 'F12') ke.stopImmediatePropagation();
+            if (ke.key === 'PrintScreen') ke.stopImmediatePropagation();
+          },
+          true,
+        );
+
+        // Remove beforeprint/afterprint event listeners that hide content
+        origAddEventListener.call(window, 'beforeprint', function () {
+          if (!unlockActive) return;
+          // Force all elements visible during print
+          document.querySelectorAll('[style*="display: none"], [style*="visibility: hidden"]').forEach(function (el) {
+            (el as HTMLElement).style.setProperty('display', 'block', 'important');
+            (el as HTMLElement).style.setProperty('visibility', 'visible', 'important');
+          });
+        }, true);
+        break;
+      }
+
       case 'get-detection-data': {
         // Bridge MAIN world JS state to ISOLATED world for accurate detection
+        let gsOverridden = false;
+        try {
+          gsOverridden = !!(
+            window.getSelection &&
+            window.getSelection !== origGetSelection &&
+            !window.getSelection.toString().includes('[native code]')
+          );
+        } catch { /* Function.prototype.toString may be overridden */ }
         const data = {
           trackedListeners: tracked.slice(),
           oncopy: document.oncopy !== null,
@@ -355,10 +563,7 @@
           onpaste: document.onpaste !== null,
           oncontextmenu: document.oncontextmenu !== null,
           onselectstart: document.onselectstart !== null,
-          getSelectionOverridden: !!(
-            window.getSelection &&
-            !window.getSelection.toString().includes('[native code]')
-          ),
+          getSelectionOverridden: gsOverridden,
         };
         window.dispatchEvent(
           new CustomEvent('__copyunlock_report', { detail: data }),
@@ -373,7 +578,7 @@
         // Restore prototypes
         EventTarget.prototype.addEventListener = origAddEventListener;
         Selection.prototype.removeAllRanges = origRemoveAllRanges;
-        Selection.prototype.empty = origEmpty;
+        if (origEmpty) Selection.prototype.empty = origEmpty;
         window.getSelection = origGetSelection;
         removeAllRangesPatched = false;
         selectionProtectedUntil = 0;
@@ -399,18 +604,44 @@
           inputOverridden = false;
         }
 
+        // Restore alert/confirm/prompt
+        const w = window as Record<string, unknown>;
+        if (w.__copyunlock_orig_alert) {
+          window.alert = w.__copyunlock_orig_alert as typeof window.alert;
+          window.confirm = w.__copyunlock_orig_confirm as typeof window.confirm;
+          window.prompt = w.__copyunlock_orig_prompt as typeof window.prompt;
+        }
+
+        // Restore DataTransfer.prototype.setData
+        if (w.__copyunlock_orig_setData) {
+          DataTransfer.prototype.setData = w.__copyunlock_orig_setData as typeof DataTransfer.prototype.setData;
+        }
+
+        // Restore eval, setInterval, setTimeout
+        if (w.__copyunlock_orig_eval) {
+          (window as Record<string, unknown>).eval = w.__copyunlock_orig_eval;
+        }
+        if (w.__copyunlock_orig_setInterval) {
+          (window as Record<string, unknown>).setInterval = w.__copyunlock_orig_setInterval;
+        }
+        if (w.__copyunlock_orig_setTimeout) {
+          (window as Record<string, unknown>).setTimeout = w.__copyunlock_orig_setTimeout;
+        }
+
         // Re-register blocked listeners that were captured during prototype-intercept
         const blocked = (window as Record<string, unknown>).__copyunlock_blocked_listeners as Array<{
           target: EventTarget; type: string; fn: EventListenerOrEventListenerObject; opts: unknown;
         }> | undefined;
         if (blocked && blocked.length > 0) {
           for (const entry of blocked) {
-            origAddEventListener.call(entry.target, entry.type, entry.fn, entry.opts as boolean | AddEventListenerOptions);
+            try {
+              origAddEventListener.call(entry.target, entry.type, entry.fn, entry.opts as boolean | AddEventListenerOptions);
+            } catch { /* target may have been garbage collected */ }
           }
           blocked.length = 0;
         }
         break;
       }
-    }
+    } } catch { /* silently handle errors to never break page functionality */ }
   });
 })();

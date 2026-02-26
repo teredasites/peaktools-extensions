@@ -1,0 +1,826 @@
+{
+  "extensionName": {
+    "message": "CopyUnlock",
+    "description": "Extension name"
+  },
+  "extensionDescription": {
+    "message": "افتح قيود النسخ وأدر سجل الحافظة بسهولة.",
+    "description": "Extension description"
+  },
+  "commandToggle": {
+    "message": "تبديل CopyUnlock",
+    "description": "Keyboard command to toggle the extension"
+  },
+  "commandClipboard": {
+    "message": "فتح سجل الحافظة",
+    "description": "Keyboard command to open clipboard history"
+  },
+  "commandSearch": {
+    "message": "بحث في الحافظة",
+    "description": "Keyboard command to search clipboard"
+  },
+  "contextMenuUnlock": {
+    "message": "فتح الصفحة",
+    "description": "Context menu toggle unlock"
+  },
+  "contextMenuLock": {
+    "message": "قفل الصفحة (تراجع)",
+    "description": "Context menu toggle lock"
+  },
+  "contextMenuCopy": {
+    "message": "نسخ إلى السجل",
+    "description": "Context menu copy option"
+  },
+  "contextMenuCopyClean": {
+    "message": "نسخ نظيف (إزالة العلامات المائية)",
+    "description": "Context menu copy without watermarks"
+  },
+  "contextMenuCopyCitation": {
+    "message": "نسخ مع الاقتباس",
+    "description": "Context menu copy with source citation"
+  },
+  "contextMenuPin": {
+    "message": "تثبيت التحديد",
+    "description": "Context menu pin option"
+  },
+  "contextMenuSaveCollection": {
+    "message": "حفظ في المجموعة",
+    "description": "Context menu save to collection parent"
+  },
+  "contextMenuNewCollection": {
+    "message": "+ مجموعة جديدة...",
+    "description": "Context menu create new collection"
+  },
+  "contextMenuMode": {
+    "message": "الوضع",
+    "description": "Context menu mode parent"
+  },
+  "contextMenuClipboardHistory": {
+    "message": "سجل الحافظة",
+    "description": "Context menu open clipboard history"
+  },
+  "contextMenuQuickPaste": {
+    "message": "لصق سريع",
+    "description": "Context menu quick paste overlay"
+  },
+  "contextMenuSettings": {
+    "message": "الإعدادات",
+    "description": "Context menu open settings"
+  },
+  "popupEnable": {
+    "message": "تفعيل",
+    "description": "Popup enable button label"
+  },
+  "popupActive": {
+    "message": "نشط",
+    "description": "Popup active state label"
+  },
+  "popupProtections": {
+    "message": "$COUNT$ حماية أزيلت",
+    "description": "Number of protections removed",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "modeAuto": {
+    "message": "تلقائي",
+    "description": "Auto mode label"
+  },
+  "modeSafe": {
+    "message": "آمن",
+    "description": "Safe mode label"
+  },
+  "modeAggressive": {
+    "message": "قوي",
+    "description": "Aggressive mode label"
+  },
+  "recentCopies": {
+    "message": "النسخ الأخيرة",
+    "description": "Recent clipboard items header"
+  },
+  "noHistory": {
+    "message": "لا يوجد سجل حافظة بعد",
+    "description": "Empty clipboard state"
+  },
+  "clipboardHistory": {
+    "message": "سجل الحافظة",
+    "description": "Clipboard history title"
+  },
+  "settings": {
+    "message": "الإعدادات",
+    "description": "Settings page title"
+  },
+  "searchPlaceholder": {
+    "message": "البحث في سجل الحافظة...",
+    "description": "Search input placeholder"
+  },
+  "filterAll": {
+    "message": "الكل",
+    "description": "Filter all items"
+  },
+  "filterPinned": {
+    "message": "المثبتة",
+    "description": "Filter pinned items"
+  },
+  "filterUrls": {
+    "message": "روابط",
+    "description": "Filter URL items"
+  },
+  "filterCode": {
+    "message": "كود",
+    "description": "Filter code items"
+  },
+  "filterText": {
+    "message": "نص",
+    "description": "Filter text items"
+  },
+  "copy": {
+    "message": "نسخ",
+    "description": "Copy action"
+  },
+  "copied": {
+    "message": "تم النسخ!",
+    "description": "Copy confirmation"
+  },
+  "pin": {
+    "message": "تثبيت",
+    "description": "Pin action"
+  },
+  "unpin": {
+    "message": "إلغاء التثبيت",
+    "description": "Unpin action"
+  },
+  "delete": {
+    "message": "حذف",
+    "description": "Delete action"
+  },
+  "clearAll": {
+    "message": "مسح الكل",
+    "description": "Clear all items"
+  },
+  "clearConfirm": {
+    "message": "مسح كل سجل الحافظة؟ لا يمكن التراجع.",
+    "description": "Clear confirmation dialog"
+  },
+  "items": {
+    "message": "$COUNT$ عنصر",
+    "description": "Item count display",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "42"
+      }
+    }
+  },
+  "justNow": {
+    "message": "الآن",
+    "description": "Time ago - just now"
+  },
+  "minutesAgo": {
+    "message": "منذ $MINUTES$ دقيقة",
+    "description": "Time ago - minutes",
+    "placeholders": {
+      "MINUTES": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "hoursAgo": {
+    "message": "منذ $HOURS$ ساعة",
+    "description": "Time ago - hours",
+    "placeholders": {
+      "HOURS": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "daysAgo": {
+    "message": "منذ $DAYS$ يوم",
+    "description": "Time ago - days",
+    "placeholders": {
+      "DAYS": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "watermarkNotice": {
+    "message": "تمت إزالة أحرف العلامة المائية من النص المنسوخ.",
+    "description": "Watermark stripping notification"
+  },
+  "settingsSaved": {
+    "message": "تم حفظ الإعدادات",
+    "description": "Settings save confirmation"
+  },
+  "exportSuccess": {
+    "message": "تم تصدير البيانات بنجاح",
+    "description": "Export success message"
+  },
+  "protectionActive": {
+    "message": "الحماية نشطة",
+    "description": "Popup label when unlock is active"
+  },
+  "tapToEnable": {
+    "message": "انقر للتفعيل",
+    "description": "Popup label when unlock is inactive"
+  },
+  "statusActive": {
+    "message": "نشط",
+    "description": "Popup status pill when active"
+  },
+  "statusOff": {
+    "message": "متوقف",
+    "description": "Popup status pill when off"
+  },
+  "noRecentCopies": {
+    "message": "لا توجد نسخ حديثة",
+    "description": "Popup empty clipboard state"
+  },
+  "timeNow": {
+    "message": "الآن",
+    "description": "Popup time ago - just now short form"
+  },
+  "removed": {
+    "message": "$COUNT$ أزيلت",
+    "description": "Popup protection count label",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "history": {
+    "message": "السجل",
+    "description": "Popup button to open clipboard history"
+  },
+  "recentLabel": {
+    "message": "الأخيرة",
+    "description": "Popup section header for recent clipboard items"
+  },
+  "allCollections": {
+    "message": "كل المجموعات",
+    "description": "Sidepanel collection filter default option"
+  },
+  "none": {
+    "message": "لا شيء",
+    "description": "Sidepanel collection select no-collection option"
+  },
+  "saving": {
+    "message": "جاري الحفظ...",
+    "description": "Sidepanel add overlay saving indicator"
+  },
+  "save": {
+    "message": "حفظ",
+    "description": "Sidepanel add overlay save button"
+  },
+  "addTitle": {
+    "message": "إضافة إلى سجل الحافظة",
+    "description": "Sidepanel add overlay title"
+  },
+  "addPlaceholder": {
+    "message": "الصق أو اكتب أي شيء — روابط، نص، كود...",
+    "description": "Sidepanel add overlay placeholder"
+  },
+  "addButton": {
+    "message": "+ إضافة",
+    "description": "Sidepanel footer add button label"
+  },
+  "back": {
+    "message": "رجوع",
+    "description": "Detail panel back button"
+  },
+  "cite": {
+    "message": "+ اقتباس",
+    "description": "Detail panel copy with citation button"
+  },
+  "open": {
+    "message": "فتح",
+    "description": "Detail panel open source URL button"
+  },
+  "emptyUrlIcon": {
+    "message": "&#128279;",
+    "description": "Empty state icon for URLs filter"
+  },
+  "emptyUrlText": {
+    "message": "لا توجد روابط محفوظة بعد",
+    "description": "Empty state text for URLs filter"
+  },
+  "emptyUrlHint": {
+    "message": "انسخ أي رابط من متصفحك لحفظه هنا، أو انقر + إضافة أدناه.",
+    "description": "Empty state hint for URLs filter"
+  },
+  "emptyCodeText": {
+    "message": "لا توجد مقاطع كود بعد",
+    "description": "Empty state text for Code filter"
+  },
+  "emptyCodeHint": {
+    "message": "انسخ كوداً من أي محرر أو موقع لحفظه هنا.",
+    "description": "Empty state hint for Code filter"
+  },
+  "emptyTextText": {
+    "message": "لا توجد مقاطع نصية بعد",
+    "description": "Empty state text for Text filter"
+  },
+  "emptyTextHint": {
+    "message": "انسخ نصاً من أي صفحة لبدء بناء سجلك.",
+    "description": "Empty state hint for Text filter"
+  },
+  "emptyPinnedText": {
+    "message": "لا توجد عناصر مثبتة",
+    "description": "Empty state text for Pinned filter"
+  },
+  "emptyPinnedHint": {
+    "message": "افتح أي عنصر وانقر تثبيت للاحتفاظ به في الأعلى.",
+    "description": "Empty state hint for Pinned filter"
+  },
+  "emptyDefaultHint": {
+    "message": "انسخ أي شيء من الويب — يظهر هنا تلقائياً.",
+    "description": "Empty state hint for All filter"
+  },
+  "words": {
+    "message": "$COUNT$ كلمة",
+    "description": "Word count display in clip items",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "42"
+      }
+    }
+  },
+  "pdfCleaned": {
+    "message": "تم تنظيف PDF",
+    "description": "PDF cleaned indicator in detail view"
+  },
+  "type": {
+    "message": "النوع",
+    "description": "Type label in detail view"
+  },
+  "source": {
+    "message": "المصدر",
+    "description": "Source label in detail view"
+  },
+  "optGeneralSettings": {
+    "message": "الإعدادات العامة",
+    "description": "Options page general settings header"
+  },
+  "optGeneralDesc": {
+    "message": "تكوين السلوك الأساسي لـ CopyUnlock.",
+    "description": "Options page general settings description"
+  },
+  "optEnableCopyUnlock": {
+    "message": "تفعيل CopyUnlock",
+    "description": "Options enable toggle label"
+  },
+  "optEnableHint": {
+    "message": "مفتاح رئيسي لجميع ميزات فتح النسخ",
+    "description": "Options enable toggle hint"
+  },
+  "optDefaultMode": {
+    "message": "الوضع الافتراضي",
+    "description": "Options default mode label"
+  },
+  "optDefaultModeHint": {
+    "message": "مدى قوة إزالة حماية النسخ",
+    "description": "Options default mode hint"
+  },
+  "optShowNotifications": {
+    "message": "إظهار الإشعارات",
+    "description": "Options notifications toggle label"
+  },
+  "optNotificationsHint": {
+    "message": "عرض إشعار عند إزالة الحماية",
+    "description": "Options notifications hint"
+  },
+  "optContextMenu": {
+    "message": "قائمة السياق",
+    "description": "Options context menu toggle label"
+  },
+  "optContextMenuHint": {
+    "message": "إظهار CopyUnlock في قائمة النقر بالزر الأيمن",
+    "description": "Options context menu hint"
+  },
+  "optKeyboardShortcuts": {
+    "message": "اختصارات لوحة المفاتيح",
+    "description": "Options keyboard shortcuts header"
+  },
+  "optToggleCopyUnlock": {
+    "message": "تبديل CopyUnlock",
+    "description": "Options shortcut action label"
+  },
+  "optOpenClipboardHistory": {
+    "message": "فتح سجل الحافظة",
+    "description": "Options shortcut action label"
+  },
+  "optSearchClipboard": {
+    "message": "بحث في الحافظة",
+    "description": "Options shortcut action label"
+  },
+  "optQuickPaste": {
+    "message": "لصق سريع",
+    "description": "Options shortcut action label"
+  },
+  "optConfigureShortcuts": {
+    "message": "تكوين في إعدادات Chrome",
+    "description": "Options link to chrome shortcuts page"
+  },
+  "optClipboardHistory": {
+    "message": "سجل الحافظة",
+    "description": "Options clipboard section header"
+  },
+  "optClipboardDesc": {
+    "message": "إدارة كيفية تخزين عناصر الحافظة.",
+    "description": "Options clipboard section description"
+  },
+  "optEnableClipboard": {
+    "message": "تفعيل سجل الحافظة",
+    "description": "Options clipboard enable label"
+  },
+  "optEnableClipboardHint": {
+    "message": "حفظ محتويات الحافظة تلقائياً",
+    "description": "Options clipboard enable hint"
+  },
+  "optMaxItems": {
+    "message": "الحد الأقصى للعناصر",
+    "description": "Options max items label"
+  },
+  "optMaxItemsHint": {
+    "message": "الحد الأقصى لإدخالات الحافظة المخزنة",
+    "description": "Options max items hint"
+  },
+  "optRetentionPeriod": {
+    "message": "فترة الاحتفاظ",
+    "description": "Options retention period label"
+  },
+  "optRetentionHint": {
+    "message": "أيام قبل حذف الإدخالات القديمة تلقائياً",
+    "description": "Options retention hint"
+  },
+  "optDays": {
+    "message": "أيام",
+    "description": "Options retention days suffix"
+  },
+  "optWatermarkStripping": {
+    "message": "إزالة العلامات المائية",
+    "description": "Options watermark stripping label"
+  },
+  "optWatermarkHint": {
+    "message": "إزالة أحرف التتبع غير المرئية من النص المنسوخ",
+    "description": "Options watermark hint"
+  },
+  "optAutoCitation": {
+    "message": "الاقتباس التلقائي",
+    "description": "Options auto citation label"
+  },
+  "optAutoCitationHint": {
+    "message": "إنشاء اقتباس المصدر تلقائياً للنص المنسوخ",
+    "description": "Options auto citation hint"
+  },
+  "optCitationOff": {
+    "message": "متوقف",
+    "description": "Options citation mode off"
+  },
+  "optCitationUrl": {
+    "message": "URL فقط (مجاني)",
+    "description": "Options citation mode url"
+  },
+  "optCitationFormatted": {
+    "message": "منسق (Pro)",
+    "description": "Options citation mode formatted"
+  },
+  "optDefaultPasteFormat": {
+    "message": "تنسيق اللصق الافتراضي",
+    "description": "Options paste format label"
+  },
+  "optPasteFormatHint": {
+    "message": "التنسيق المستخدم عند اللصق من سجل الحافظة",
+    "description": "Options paste format hint"
+  },
+  "optPastePlain": {
+    "message": "نص عادي",
+    "description": "Options paste format plain"
+  },
+  "optPasteRich": {
+    "message": "نص منسق (مع التنسيق)",
+    "description": "Options paste format rich"
+  },
+  "optPasteClean": {
+    "message": "نظيف (طي المسافات)",
+    "description": "Options paste format clean"
+  },
+  "optPasteCitation": {
+    "message": "مع اقتباس",
+    "description": "Options paste format with citation"
+  },
+  "optPdfCleanup": {
+    "message": "تنظيف فواصل أسطر PDF",
+    "description": "Options PDF cleanup label"
+  },
+  "optPdfCleanupHint": {
+    "message": "إصلاح فواصل الأسطر الاصطناعية من نص PDF المنسوخ",
+    "description": "Options PDF cleanup hint"
+  },
+  "optSiteOverrides": {
+    "message": "تجاوزات المواقع",
+    "description": "Options site overrides header"
+  },
+  "optSiteOverridesDesc": {
+    "message": "تعيين أوضاع فتح مخصصة لمواقع محددة.",
+    "description": "Options site overrides description"
+  },
+  "optNoOverrides": {
+    "message": "لا توجد تجاوزات مواقع مكونة.",
+    "description": "Options empty overrides state"
+  },
+  "optDisabled": {
+    "message": "معطل",
+    "description": "Options override mode disabled"
+  },
+  "optAdd": {
+    "message": "إضافة",
+    "description": "Options add override button"
+  },
+  "optProTitle": {
+    "message": "CopyUnlock Pro",
+    "description": "Options pro section header"
+  },
+  "optProLicenseActive": {
+    "message": "ترخيص Pro نشط",
+    "description": "Options pro active status"
+  },
+  "optProPlan": {
+    "message": "الخطة",
+    "description": "Options pro plan label"
+  },
+  "optRefresh": {
+    "message": "تحديث",
+    "description": "Options refresh license button"
+  },
+  "optManageSubscription": {
+    "message": "إدارة الاشتراك",
+    "description": "Options manage subscription label"
+  },
+  "optManageHint": {
+    "message": "تحديث طريقة الدفع أو تغيير الخطة أو الإلغاء",
+    "description": "Options manage subscription hint"
+  },
+  "optManage": {
+    "message": "إدارة",
+    "description": "Options manage button"
+  },
+  "optPrioritySupport": {
+    "message": "دعم ذو أولوية",
+    "description": "Options priority support label"
+  },
+  "optPrioritySupportHint": {
+    "message": "أعضاء Pro يحصلون على أوقات استجابة سريعة",
+    "description": "Options priority support hint"
+  },
+  "optEmailUs": {
+    "message": "راسلنا",
+    "description": "Options email support button"
+  },
+  "optUnlockPower": {
+    "message": "افتح القوة الكاملة",
+    "description": "Options pro hero title"
+  },
+  "optUnlockDesc": {
+    "message": "محرك فتح كامل، حافظة غير محدودة، مجموعات، تنظيف PDF، اقتباسات منسقة، ودعم ذو أولوية.",
+    "description": "Options pro hero description"
+  },
+  "optProFeatureItems": {
+    "message": "100,000 عنصر حافظة",
+    "description": "Options pro feature"
+  },
+  "optProFeatureItemsSub": {
+    "message": "مقابل 500 في المجاني",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureRetention": {
+    "message": "احتفاظ 10 سنوات",
+    "description": "Options pro feature"
+  },
+  "optProFeatureRetentionSub": {
+    "message": "مقابل 30 يوم في المجاني",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureCollections": {
+    "message": "1,000 مجموعة",
+    "description": "Options pro feature"
+  },
+  "optProFeatureCollectionsSub": {
+    "message": "مقابل 3 في المجاني",
+    "description": "Options pro feature sub"
+  },
+  "optProFeaturePdf": {
+    "message": "تنظيف فواصل أسطر PDF",
+    "description": "Options pro feature"
+  },
+  "optProFeaturePdfSub": {
+    "message": "إصلاح نص PDF المعطل",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureCitations": {
+    "message": "اقتباسات منسقة",
+    "description": "Options pro feature"
+  },
+  "optProFeatureCitationsSub": {
+    "message": "اقتبس مصادرك تلقائياً",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureSupport": {
+    "message": "دعم ذو أولوية",
+    "description": "Options pro feature"
+  },
+  "optProFeatureSupportSub": {
+    "message": "استجابة سريعة عبر البريد",
+    "description": "Options pro feature sub"
+  },
+  "optMonthly": {
+    "message": "شهري",
+    "description": "Options plan monthly"
+  },
+  "optAnnual": {
+    "message": "سنوي",
+    "description": "Options plan annual"
+  },
+  "optLifetime": {
+    "message": "مدى الحياة",
+    "description": "Options plan lifetime"
+  },
+  "optBestValue": {
+    "message": "أفضل قيمة",
+    "description": "Options plan best value badge"
+  },
+  "optSave44": {
+    "message": "وفر 44%",
+    "description": "Options annual savings"
+  },
+  "optOneTime": {
+    "message": "دفعة واحدة",
+    "description": "Options lifetime one-time label"
+  },
+  "optProLegal": {
+    "message": "مدعوم بـ Stripe. إلغاء في أي وقت. الترخيص مرتبط ببريد ملفك الشخصي في Chrome.",
+    "description": "Options pro legal text"
+  },
+  "optAlreadyPurchased": {
+    "message": "اشتريت بالفعل؟ تحديث الترخيص",
+    "description": "Options refresh license link"
+  },
+  "optDataManagement": {
+    "message": "إدارة البيانات",
+    "description": "Options data section header"
+  },
+  "optDataDesc": {
+    "message": "تصدير أو استيراد أو مسح بيانات الإضافة.",
+    "description": "Options data section description"
+  },
+  "optExportData": {
+    "message": "تصدير البيانات",
+    "description": "Options export label"
+  },
+  "optExportHint": {
+    "message": "تنزيل جميع الإعدادات وسجل الحافظة كملف JSON",
+    "description": "Options export hint"
+  },
+  "optExport": {
+    "message": "تصدير",
+    "description": "Options export button"
+  },
+  "optImportData": {
+    "message": "استيراد البيانات",
+    "description": "Options import label"
+  },
+  "optImportHint": {
+    "message": "استعادة من ملف JSON مصدر مسبقاً",
+    "description": "Options import hint"
+  },
+  "optImport": {
+    "message": "استيراد",
+    "description": "Options import button"
+  },
+  "optClearAllData": {
+    "message": "مسح جميع البيانات",
+    "description": "Options clear data label"
+  },
+  "optClearHint": {
+    "message": "حذف جميع الإعدادات والسجل والتجاوزات نهائياً",
+    "description": "Options clear data hint"
+  },
+  "optClear": {
+    "message": "مسح",
+    "description": "Options clear button"
+  },
+  "optStatistics": {
+    "message": "الإحصائيات",
+    "description": "Options statistics header"
+  },
+  "optUnlocks": {
+    "message": "عمليات الفتح",
+    "description": "Options stat unlocks label"
+  },
+  "optCopiesSaved": {
+    "message": "النسخ المحفوظة",
+    "description": "Options stat copies label"
+  },
+  "optWatermarksStripped": {
+    "message": "العلامات المائية المزالة",
+    "description": "Options stat watermarks label"
+  },
+  "optNavGeneral": {
+    "message": "عام",
+    "description": "Options nav general tab"
+  },
+  "optNavClipboard": {
+    "message": "الحافظة",
+    "description": "Options nav clipboard tab"
+  },
+  "optNavSites": {
+    "message": "المواقع",
+    "description": "Options nav sites tab"
+  },
+  "optNavPro": {
+    "message": "Pro",
+    "description": "Options nav pro tab"
+  },
+  "optNavData": {
+    "message": "البيانات",
+    "description": "Options nav data tab"
+  },
+  "optSaveFailed": {
+    "message": "فشل حفظ الإعدادات",
+    "description": "Options save error toast"
+  },
+  "optImportSuccess": {
+    "message": "تم استيراد البيانات بنجاح",
+    "description": "Options import success toast"
+  },
+  "optImportFailed": {
+    "message": "فشل الاستيراد — ملف غير صالح",
+    "description": "Options import error toast"
+  },
+  "optClearConfirm": {
+    "message": "هل أنت متأكد من مسح جميع بيانات CopyUnlock؟ لا يمكن التراجع.",
+    "description": "Options clear data confirm dialog"
+  },
+  "optAllDataCleared": {
+    "message": "تم مسح جميع البيانات",
+    "description": "Options clear success toast"
+  },
+  "optClearFailed": {
+    "message": "فشل مسح البيانات",
+    "description": "Options clear error toast"
+  },
+  "optCheckingLicense": {
+    "message": "جاري التحقق من الترخيص...",
+    "description": "Options license check toast"
+  },
+  "optProVerified": {
+    "message": "تم التحقق من ترخيص Pro!",
+    "description": "Options license verified toast"
+  },
+  "optNoLicense": {
+    "message": "لم يتم العثور على ترخيص نشط",
+    "description": "Options no license toast"
+  },
+  "optLicenseCheckFailed": {
+    "message": "فشل التحقق من الترخيص",
+    "description": "Options license check error toast"
+  },
+  "optOpening": {
+    "message": "جاري الفتح...",
+    "description": "Options manage subscription opening state"
+  },
+  "optOpeningPortal": {
+    "message": "جاري فتح بوابة الفوترة...",
+    "description": "Options billing portal opening toast"
+  },
+  "optPortalFailed": {
+    "message": "تعذر فتح بوابة الفوترة. اتصل بالدعم.",
+    "description": "Options billing portal error toast"
+  },
+  "optPortalError": {
+    "message": "فشل فتح بوابة الفوترة",
+    "description": "Options billing portal error toast"
+  },
+  "optExportFailed": {
+    "message": "فشل التصدير",
+    "description": "Options export error toast"
+  },
+  "optRenews": {
+    "message": "يتجدد $DATE$",
+    "description": "Options pro renewal date",
+    "placeholders": {
+      "DATE": {
+        "content": "$1",
+        "example": "Jan 15, 2026"
+      }
+    }
+  }
+}

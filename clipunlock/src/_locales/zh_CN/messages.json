@@ -1,51 +1,83 @@
 {
   "extensionName": {
     "message": "CopyUnlock",
-    "description": "扩展名称"
+    "description": "Extension name"
   },
   "extensionDescription": {
     "message": "解除复制限制，轻松管理剪贴板历史记录。",
-    "description": "扩展描述"
+    "description": "Extension description"
   },
   "commandToggle": {
     "message": "切换 CopyUnlock",
-    "description": "切换扩展的键盘命令"
+    "description": "Keyboard command to toggle the extension"
   },
   "commandClipboard": {
     "message": "打开剪贴板历史",
-    "description": "打开剪贴板历史的键盘命令"
+    "description": "Keyboard command to open clipboard history"
   },
   "commandSearch": {
     "message": "搜索剪贴板",
-    "description": "搜索剪贴板的键盘命令"
+    "description": "Keyboard command to search clipboard"
+  },
+  "contextMenuUnlock": {
+    "message": "解锁页面",
+    "description": "Context menu toggle unlock"
+  },
+  "contextMenuLock": {
+    "message": "锁定页面（还原）",
+    "description": "Context menu toggle lock"
   },
   "contextMenuCopy": {
-    "message": "复制 (CopyUnlock)",
-    "description": "右键菜单复制选项"
+    "message": "复制到历史",
+    "description": "Context menu copy option"
   },
   "contextMenuCopyClean": {
-    "message": "复制干净文本",
-    "description": "不带水印的复制"
+    "message": "干净复制（去水印）",
+    "description": "Context menu copy without watermarks"
+  },
+  "contextMenuCopyCitation": {
+    "message": "复制并引用",
+    "description": "Context menu copy with source citation"
   },
   "contextMenuPin": {
-    "message": "固定到剪贴板",
-    "description": "右键菜单固定选项"
+    "message": "固定选择",
+    "description": "Context menu pin option"
   },
-  "contextMenuSearch": {
-    "message": "在剪贴板历史中搜索",
-    "description": "右键菜单搜索选项"
+  "contextMenuSaveCollection": {
+    "message": "保存到收藏夹",
+    "description": "Context menu save to collection parent"
+  },
+  "contextMenuNewCollection": {
+    "message": "+ 新建收藏夹...",
+    "description": "Context menu create new collection"
+  },
+  "contextMenuMode": {
+    "message": "模式",
+    "description": "Context menu mode parent"
+  },
+  "contextMenuClipboardHistory": {
+    "message": "剪贴板历史",
+    "description": "Context menu open clipboard history"
+  },
+  "contextMenuQuickPaste": {
+    "message": "快速粘贴",
+    "description": "Context menu quick paste overlay"
+  },
+  "contextMenuSettings": {
+    "message": "设置",
+    "description": "Context menu open settings"
   },
   "popupEnable": {
     "message": "启用",
-    "description": "弹窗启用按钮标签"
+    "description": "Popup enable button label"
   },
   "popupActive": {
     "message": "已激活",
-    "description": "弹窗激活状态标签"
+    "description": "Popup active state label"
   },
   "popupProtections": {
     "message": "已移除 $COUNT$ 个保护",
-    "description": "已移除的保护数量",
+    "description": "Number of protections removed",
     "placeholders": {
       "COUNT": {
         "content": "$1",
@@ -55,87 +87,91 @@
   },
   "modeAuto": {
     "message": "自动",
-    "description": "自动模式标签"
+    "description": "Auto mode label"
   },
   "modeSafe": {
     "message": "安全",
-    "description": "安全模式标签"
+    "description": "Safe mode label"
   },
   "modeAggressive": {
     "message": "强力",
-    "description": "强力模式标签"
+    "description": "Aggressive mode label"
   },
   "recentCopies": {
     "message": "最近复制",
-    "description": "最近剪贴板项目标题"
+    "description": "Recent clipboard items header"
   },
   "noHistory": {
     "message": "暂无剪贴板历史",
-    "description": "剪贴板空状态"
+    "description": "Empty clipboard state"
   },
   "clipboardHistory": {
     "message": "剪贴板历史",
-    "description": "剪贴板历史标题"
+    "description": "Clipboard history title"
   },
   "settings": {
     "message": "设置",
-    "description": "设置页面标题"
+    "description": "Settings page title"
   },
   "searchPlaceholder": {
     "message": "搜索剪贴板历史...",
-    "description": "搜索输入框占位符"
+    "description": "Search input placeholder"
   },
   "filterAll": {
     "message": "全部",
-    "description": "筛选全部"
+    "description": "Filter all items"
   },
   "filterPinned": {
     "message": "已固定",
-    "description": "筛选已固定"
+    "description": "Filter pinned items"
   },
   "filterUrls": {
     "message": "网址",
-    "description": "筛选网址"
+    "description": "Filter URL items"
   },
   "filterCode": {
     "message": "代码",
-    "description": "筛选代码"
+    "description": "Filter code items"
   },
   "filterText": {
     "message": "文本",
-    "description": "筛选文本"
+    "description": "Filter text items"
+  },
+  "typeAuto": {
+    "message": "Auto-detect",
+    "description": "Auto-detect content type option in add overlay"
   },
   "copy": {
     "message": "复制",
-    "description": "复制操作"
+    "description": "Copy action"
   },
   "copied": {
     "message": "已复制！",
-    "description": "复制确认"
+    "description": "Copy confirmation"
   },
   "pin": {
     "message": "固定",
-    "description": "固定操作"
+    "description": "Pin action"
   },
   "unpin": {
     "message": "取消固定",
-    "description": "取消固定操作"
+    "description": "Unpin action"
   },
   "delete": {
     "message": "删除",
-    "description": "删除操作"
+    "description": "Delete action"
   },
   "clearAll": {
     "message": "清除全部",
-    "description": "清除所有项目"
+    "description": "Clear all items"
   },
   "clearConfirm": {
     "message": "清除所有剪贴板历史？此操作无法撤销。",
-    "description": "清除确认对话框"
+    "description": "Clear confirmation dialog"
   },
   "items": {
     "message": "$COUNT$ 个项目",
-    "description": "项目计数显示",
+    "description": "Item count display",
     "placeholders": {
       "COUNT": {
         "content": "$1",
@@ -145,11 +181,11 @@
   },
   "justNow": {
     "message": "刚刚",
-    "description": "时间 - 刚刚"
+    "description": "Time ago - just now"
   },
   "minutesAgo": {
     "message": "$MINUTES$分钟前",
-    "description": "时间 - 分钟",
+    "description": "Time ago - minutes",
     "placeholders": {
       "MINUTES": {
         "content": "$1",
@@ -159,7 +195,7 @@
   },
   "hoursAgo": {
     "message": "$HOURS$小时前",
-    "description": "时间 - 小时",
+    "description": "Time ago - hours",
     "placeholders": {
       "HOURS": {
         "content": "$1",
@@ -169,7 +205,7 @@
   },
   "daysAgo": {
     "message": "$DAYS$天前",
-    "description": "时间 - 天",
+    "description": "Time ago - days",
     "placeholders": {
       "DAYS": {
         "content": "$1",
@@ -179,14 +215,616 @@
   },
   "watermarkNotice": {
     "message": "已从复制的文本中移除水印字符。",
-    "description": "水印移除通知"
+    "description": "Watermark stripping notification"
   },
   "settingsSaved": {
     "message": "设置已保存",
-    "description": "设置保存确认"
+    "description": "Settings save confirmation"
   },
   "exportSuccess": {
     "message": "数据导出成功",
-    "description": "导出成功消息"
+    "description": "Export success message"
+  },
+  "protectionActive": {
+    "message": "保护已激活",
+    "description": "Popup label when unlock is active"
+  },
+  "tapToEnable": {
+    "message": "点击启用",
+    "description": "Popup label when unlock is inactive"
+  },
+  "statusActive": {
+    "message": "已激活",
+    "description": "Popup status pill when active"
+  },
+  "statusOff": {
+    "message": "已关闭",
+    "description": "Popup status pill when off"
+  },
+  "noRecentCopies": {
+    "message": "没有最近的复制",
+    "description": "Popup empty clipboard state"
+  },
+  "timeNow": {
+    "message": "刚刚",
+    "description": "Popup time ago - just now short form"
+  },
+  "removed": {
+    "message": "已移除 $COUNT$ 个",
+    "description": "Popup protection count label",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "history": {
+    "message": "历史",
+    "description": "Popup button to open clipboard history"
+  },
+  "recentLabel": {
+    "message": "最近",
+    "description": "Popup section header for recent clipboard items"
+  },
+  "allCollections": {
+    "message": "所有收藏夹",
+    "description": "Sidepanel collection filter default option"
+  },
+  "none": {
+    "message": "无",
+    "description": "Sidepanel collection select no-collection option"
+  },
+  "saving": {
+    "message": "保存中...",
+    "description": "Sidepanel add overlay saving indicator"
+  },
+  "save": {
+    "message": "保存",
+    "description": "Sidepanel add overlay save button"
+  },
+  "addTitle": {
+    "message": "添加到剪贴板历史",
+    "description": "Sidepanel add overlay title"
+  },
+  "addPlaceholder": {
+    "message": "粘贴或输入任何内容 — 链接、文本、代码...",
+    "description": "Sidepanel add overlay placeholder"
+  },
+  "addButton": {
+    "message": "+ 添加",
+    "description": "Sidepanel footer add button label"
+  },
+  "back": {
+    "message": "返回",
+    "description": "Detail panel back button"
+  },
+  "cite": {
+    "message": "+ 引用",
+    "description": "Detail panel copy with citation button"
+  },
+  "open": {
+    "message": "打开",
+    "description": "Detail panel open source URL button"
+  },
+  "emptyUrlIcon": {
+    "message": "&#128279;",
+    "description": "Empty state icon for URLs filter"
+  },
+  "emptyUrlText": {
+    "message": "还没有保存的链接",
+    "description": "Empty state text for URLs filter"
+  },
+  "emptyUrlHint": {
+    "message": "从浏览器复制任意链接保存到这里，或点击下方的 + 添加。",
+    "description": "Empty state hint for URLs filter"
+  },
+  "emptyCodeText": {
+    "message": "还没有代码片段",
+    "description": "Empty state text for Code filter"
+  },
+  "emptyCodeHint": {
+    "message": "从任何编辑器或网站复制代码保存到这里。",
+    "description": "Empty state hint for Code filter"
+  },
+  "emptyTextText": {
+    "message": "还没有文本片段",
+    "description": "Empty state text for Text filter"
+  },
+  "emptyTextHint": {
+    "message": "从任何页面复制文本来开始建立你的历史记录。",
+    "description": "Empty state hint for Text filter"
+  },
+  "emptyPinnedText": {
+    "message": "没有固定的项目",
+    "description": "Empty state text for Pinned filter"
+  },
+  "emptyPinnedHint": {
+    "message": "打开任何项目并点击固定，将其保持在顶部。",
+    "description": "Empty state hint for Pinned filter"
+  },
+  "emptyDefaultHint": {
+    "message": "在网页上复制任何内容 — 会自动出现在这里。",
+    "description": "Empty state hint for All filter"
+  },
+  "words": {
+    "message": "$COUNT$ 个字",
+    "description": "Word count display in clip items",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "42"
+      }
+    }
+  },
+  "pdfCleaned": {
+    "message": "PDF已清理",
+    "description": "PDF cleaned indicator in detail view"
+  },
+  "type": {
+    "message": "类型",
+    "description": "Type label in detail view"
+  },
+  "source": {
+    "message": "来源",
+    "description": "Source label in detail view"
+  },
+  "optGeneralSettings": {
+    "message": "常规设置",
+    "description": "Options page general settings header"
+  },
+  "optGeneralDesc": {
+    "message": "配置 CopyUnlock 的核心行为。",
+    "description": "Options page general settings description"
+  },
+  "optEnableCopyUnlock": {
+    "message": "启用 CopyUnlock",
+    "description": "Options enable toggle label"
+  },
+  "optEnableHint": {
+    "message": "所有复制解锁功能的主开关",
+    "description": "Options enable toggle hint"
+  },
+  "optDefaultMode": {
+    "message": "默认模式",
+    "description": "Options default mode label"
+  },
+  "optDefaultModeHint": {
+    "message": "移除复制保护的激进程度",
+    "description": "Options default mode hint"
+  },
+  "optShowNotifications": {
+    "message": "显示通知",
+    "description": "Options notifications toggle label"
+  },
+  "optNotificationsHint": {
+    "message": "移除保护时显示提示",
+    "description": "Options notifications hint"
+  },
+  "optContextMenu": {
+    "message": "右键菜单",
+    "description": "Options context menu toggle label"
+  },
+  "optContextMenuHint": {
+    "message": "在右键菜单中显示 CopyUnlock",
+    "description": "Options context menu hint"
+  },
+  "optKeyboardShortcuts": {
+    "message": "键盘快捷键",
+    "description": "Options keyboard shortcuts header"
+  },
+  "optToggleCopyUnlock": {
+    "message": "切换 CopyUnlock",
+    "description": "Options shortcut action label"
+  },
+  "optOpenClipboardHistory": {
+    "message": "打开剪贴板历史",
+    "description": "Options shortcut action label"
+  },
+  "optSearchClipboard": {
+    "message": "搜索剪贴板",
+    "description": "Options shortcut action label"
+  },
+  "optQuickPaste": {
+    "message": "快速粘贴",
+    "description": "Options shortcut action label"
+  },
+  "optConfigureShortcuts": {
+    "message": "在 Chrome 设置中配置",
+    "description": "Options link to chrome shortcuts page"
+  },
+  "optClipboardHistory": {
+    "message": "剪贴板历史",
+    "description": "Options clipboard section header"
+  },
+  "optClipboardDesc": {
+    "message": "管理剪贴板项目的存储方式。",
+    "description": "Options clipboard section description"
+  },
+  "optEnableClipboard": {
+    "message": "启用剪贴板历史",
+    "description": "Options clipboard enable label"
+  },
+  "optEnableClipboardHint": {
+    "message": "自动保存剪贴板内容",
+    "description": "Options clipboard enable hint"
+  },
+  "optMaxItems": {
+    "message": "最大项目数",
+    "description": "Options max items label"
+  },
+  "optMaxItemsHint": {
+    "message": "最多存储的剪贴板条目数",
+    "description": "Options max items hint"
+  },
+  "optRetentionPeriod": {
+    "message": "保留期限",
+    "description": "Options retention period label"
+  },
+  "optRetentionHint": {
+    "message": "旧条目自动清除前的天数",
+    "description": "Options retention hint"
+  },
+  "optDays": {
+    "message": "天",
+    "description": "Options retention days suffix"
+  },
+  "optWatermarkStripping": {
+    "message": "水印去除",
+    "description": "Options watermark stripping label"
+  },
+  "optWatermarkHint": {
+    "message": "从复制的文本中移除不可见的跟踪字符",
+    "description": "Options watermark hint"
+  },
+  "optAutoCitation": {
+    "message": "自动引用",
+    "description": "Options auto citation label"
+  },
+  "optAutoCitationHint": {
+    "message": "自动为复制的文本生成来源引用",
+    "description": "Options auto citation hint"
+  },
+  "optCitationOff": {
+    "message": "关闭",
+    "description": "Options citation mode off"
+  },
+  "optCitationUrl": {
+    "message": "仅 URL（免费）",
+    "description": "Options citation mode url"
+  },
+  "optCitationFormatted": {
+    "message": "格式化（Pro）",
+    "description": "Options citation mode formatted"
+  },
+  "optDefaultPasteFormat": {
+    "message": "默认粘贴格式",
+    "description": "Options paste format label"
+  },
+  "optPasteFormatHint": {
+    "message": "从历史记录粘贴时使用的格式",
+    "description": "Options paste format hint"
+  },
+  "optPastePlain": {
+    "message": "纯文本",
+    "description": "Options paste format plain"
+  },
+  "optPasteRich": {
+    "message": "富文本（带格式）",
+    "description": "Options paste format rich"
+  },
+  "optPasteClean": {
+    "message": "清洁（折叠空格）",
+    "description": "Options paste format clean"
+  },
+  "optPasteCitation": {
+    "message": "带引用",
+    "description": "Options paste format with citation"
+  },
+  "optPdfCleanup": {
+    "message": "PDF 换行清理",
+    "description": "Options PDF cleanup label"
+  },
+  "optPdfCleanupHint": {
+    "message": "修复从 PDF 复制文本的人为换行",
+    "description": "Options PDF cleanup hint"
+  },
+  "optSiteOverrides": {
+    "message": "网站覆盖",
+    "description": "Options site overrides header"
+  },
+  "optSiteOverridesDesc": {
+    "message": "为特定网站设置自定义解锁模式。",
+    "description": "Options site overrides description"
+  },
+  "optNoOverrides": {
+    "message": "未配置网站覆盖。",
+    "description": "Options empty overrides state"
+  },
+  "optDisabled": {
+    "message": "已禁用",
+    "description": "Options override mode disabled"
+  },
+  "optAdd": {
+    "message": "添加",
+    "description": "Options add override button"
+  },
+  "optProTitle": {
+    "message": "CopyUnlock Pro",
+    "description": "Options pro section header"
+  },
+  "optProLicenseActive": {
+    "message": "Pro 许可证已激活",
+    "description": "Options pro active status"
+  },
+  "optProPlan": {
+    "message": "计划",
+    "description": "Options pro plan label"
+  },
+  "optRefresh": {
+    "message": "刷新",
+    "description": "Options refresh license button"
+  },
+  "optManageSubscription": {
+    "message": "管理订阅",
+    "description": "Options manage subscription label"
+  },
+  "optManageHint": {
+    "message": "更新付款方式、更改计划或取消",
+    "description": "Options manage subscription hint"
+  },
+  "optManage": {
+    "message": "管理",
+    "description": "Options manage button"
+  },
+  "optPrioritySupport": {
+    "message": "优先支持",
+    "description": "Options priority support label"
+  },
+  "optPrioritySupportHint": {
+    "message": "Pro 会员享受快速响应",
+    "description": "Options priority support hint"
+  },
+  "optEmailUs": {
+    "message": "联系我们",
+    "description": "Options email support button"
+  },
+  "optUnlockPower": {
+    "message": "解锁全部功能",
+    "description": "Options pro hero title"
+  },
+  "optUnlockDesc": {
+    "message": "完整解锁引擎、无限剪贴板、收藏夹、PDF清理、格式化引用和优先支持。",
+    "description": "Options pro hero description"
+  },
+  "optProFeatureItems": {
+    "message": "100,000 个剪贴板项目",
+    "description": "Options pro feature"
+  },
+  "optProFeatureItemsSub": {
+    "message": "免费版仅 500 个",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureRetention": {
+    "message": "10 年保留期",
+    "description": "Options pro feature"
+  },
+  "optProFeatureRetentionSub": {
+    "message": "免费版仅 30 天",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureCollections": {
+    "message": "1,000 个收藏夹",
+    "description": "Options pro feature"
+  },
+  "optProFeatureCollectionsSub": {
+    "message": "免费版仅 3 个",
+    "description": "Options pro feature sub"
+  },
+  "optProFeaturePdf": {
+    "message": "PDF 换行清理",
+    "description": "Options pro feature"
+  },
+  "optProFeaturePdfSub": {
+    "message": "修复损坏的 PDF 文本",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureCitations": {
+    "message": "格式化引用",
+    "description": "Options pro feature"
+  },
+  "optProFeatureCitationsSub": {
+    "message": "自动引用来源",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureSupport": {
+    "message": "优先支持",
+    "description": "Options pro feature"
+  },
+  "optProFeatureSupportSub": {
+    "message": "通过邮件快速响应",
+    "description": "Options pro feature sub"
+  },
+  "optMonthly": {
+    "message": "月付",
+    "description": "Options plan monthly"
+  },
+  "optAnnual": {
+    "message": "年付",
+    "description": "Options plan annual"
+  },
+  "optLifetime": {
+    "message": "终身",
+    "description": "Options plan lifetime"
+  },
+  "optBestValue": {
+    "message": "最佳价值",
+    "description": "Options plan best value badge"
+  },
+  "optSave44": {
+    "message": "节省 44%",
+    "description": "Options annual savings"
+  },
+  "optOneTime": {
+    "message": "一次性付款",
+    "description": "Options lifetime one-time label"
+  },
+  "optProLegal": {
+    "message": "由 Stripe 提供支持。随时取消。许可证绑定到您的 Chrome 个人资料邮箱。",
+    "description": "Options pro legal text"
+  },
+  "optAlreadyPurchased": {
+    "message": "已购买？刷新许可证",
+    "description": "Options refresh license link"
+  },
+  "optDataManagement": {
+    "message": "数据管理",
+    "description": "Options data section header"
+  },
+  "optDataDesc": {
+    "message": "导出、导入或清除扩展数据。",
+    "description": "Options data section description"
+  },
+  "optExportData": {
+    "message": "导出数据",
+    "description": "Options export label"
+  },
+  "optExportHint": {
+    "message": "将所有设置和历史记录下载为 JSON",
+    "description": "Options export hint"
+  },
+  "optExport": {
+    "message": "导出",
+    "description": "Options export button"
+  },
+  "optImportData": {
+    "message": "导入数据",
+    "description": "Options import label"
+  },
+  "optImportHint": {
+    "message": "从之前导出的 JSON 文件恢复",
+    "description": "Options import hint"
+  },
+  "optImport": {
+    "message": "导入",
+    "description": "Options import button"
+  },
+  "optClearAllData": {
+    "message": "清除所有数据",
+    "description": "Options clear data label"
+  },
+  "optClearHint": {
+    "message": "永久删除所有设置、历史记录和覆盖",
+    "description": "Options clear data hint"
+  },
+  "optClear": {
+    "message": "清除",
+    "description": "Options clear button"
+  },
+  "optStatistics": {
+    "message": "统计",
+    "description": "Options statistics header"
+  },
+  "optUnlocks": {
+    "message": "解锁次数",
+    "description": "Options stat unlocks label"
+  },
+  "optCopiesSaved": {
+    "message": "保存的复制",
+    "description": "Options stat copies label"
+  },
+  "optWatermarksStripped": {
+    "message": "去除的水印",
+    "description": "Options stat watermarks label"
+  },
+  "optNavGeneral": {
+    "message": "常规",
+    "description": "Options nav general tab"
+  },
+  "optNavClipboard": {
+    "message": "剪贴板",
+    "description": "Options nav clipboard tab"
+  },
+  "optNavSites": {
+    "message": "网站",
+    "description": "Options nav sites tab"
+  },
+  "optNavPro": {
+    "message": "Pro",
+    "description": "Options nav pro tab"
+  },
+  "optNavData": {
+    "message": "数据",
+    "description": "Options nav data tab"
+  },
+  "optSaveFailed": {
+    "message": "保存设置失败",
+    "description": "Options save error toast"
+  },
+  "optImportSuccess": {
+    "message": "数据导入成功",
+    "description": "Options import success toast"
+  },
+  "optImportFailed": {
+    "message": "导入失败 — 文件无效",
+    "description": "Options import error toast"
+  },
+  "optClearConfirm": {
+    "message": "确定要清除所有 CopyUnlock 数据吗？此操作无法撤销。",
+    "description": "Options clear data confirm dialog"
+  },
+  "optAllDataCleared": {
+    "message": "所有数据已清除",
+    "description": "Options clear success toast"
+  },
+  "optClearFailed": {
+    "message": "清除数据失败",
+    "description": "Options clear error toast"
+  },
+  "optCheckingLicense": {
+    "message": "正在验证许可证...",
+    "description": "Options license check toast"
+  },
+  "optProVerified": {
+    "message": "Pro 许可证已验证！",
+    "description": "Options license verified toast"
+  },
+  "optNoLicense": {
+    "message": "未找到有效许可证",
+    "description": "Options no license toast"
+  },
+  "optLicenseCheckFailed": {
+    "message": "许可证验证失败",
+    "description": "Options license check error toast"
+  },
+  "optOpening": {
+    "message": "打开中...",
+    "description": "Options manage subscription opening state"
+  },
+  "optOpeningPortal": {
+    "message": "正在打开账单门户...",
+    "description": "Options billing portal opening toast"
+  },
+  "optPortalFailed": {
+    "message": "无法打开账单门户。请联系支持。",
+    "description": "Options billing portal error toast"
+  },
+  "optPortalError": {
+    "message": "打开账单门户失败",
+    "description": "Options billing portal error toast"
+  },
+  "optExportFailed": {
+    "message": "导出失败",
+    "description": "Options export error toast"
+  },
+  "optRenews": {
+    "message": "续费日期 $DATE$",
+    "description": "Options pro renewal date",
+    "placeholders": {
+      "DATE": {
+        "content": "$1",
+        "example": "Jan 15, 2026"
+      }
+    }
   }
 }

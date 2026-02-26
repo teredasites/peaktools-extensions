@@ -14,7 +14,7 @@
         <img src="../../assets/icons/icon-48.png" alt="" width="28" height="28" class="top-icon">
         <div class="top-brand-text">
           <span class="top-brand-name">CopyUnlock</span>
-          <span class="top-brand-sub">Settings</span>
+          <span class="top-brand-sub" data-i18n="settings">Settings</span>
         </div>
       </div>
       <span class="version-tag">v<span id="version">1.0.0</span></span>
@@ -24,23 +24,23 @@
     <nav class="settings-nav">
       <button class="nav-item active" data-section="general">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-        General
+        <span data-i18n="optNavGeneral">General</span>
       </button>
       <button class="nav-item" data-section="clipboard">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
-        Clipboard
+        <span data-i18n="optNavClipboard">Clipboard</span>
       </button>
       <button class="nav-item" data-section="sites">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-        Sites
+        <span data-i18n="optNavSites">Sites</span>
       </button>
       <button class="nav-item" data-section="pro">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        Pro
+        <span data-i18n="optNavPro">Pro</span>
       </button>
       <button class="nav-item" data-section="data">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-        Data
+        <span data-i18n="optNavData">Data</span>
       </button>
     </nav>
 
@@ -48,15 +48,15 @@
       <!-- General Section -->
       <section id="section-general" class="section-panel active">
         <div class="panel-header">
-          <h2>General Settings</h2>
-          <p class="panel-desc">Configure CopyUnlock's core behavior.</p>
+          <h2 data-i18n="optGeneralSettings">General Settings</h2>
+          <p class="panel-desc" data-i18n="optGeneralDesc">Configure CopyUnlock's core behavior.</p>
         </div>
 
         <div class="setting-card">
           <div class="setting-row">
             <div class="setting-info">
-              <span class="setting-label">Enable CopyUnlock</span>
-              <span class="setting-hint">Master toggle for all copy-unlock features</span>
+              <span class="setting-label" data-i18n="optEnableCopyUnlock">Enable CopyUnlock</span>
+              <span class="setting-hint" data-i18n="optEnableHint">Master toggle for all copy-unlock features</span>
             </div>
             <label class="toggle-switch">
               <input type="checkbox" id="enabled" checked>
@@ -66,23 +66,34 @@
 
           <div class="setting-row">
             <div class="setting-info">
-              <span class="setting-label">Default Mode</span>
-              <span class="setting-hint">How aggressively to remove copy protections</span>
+              <span class="setting-label" data-i18n="optDefaultMode">Default Mode</span>
+              <span class="setting-hint" data-i18n="optDefaultModeHint">How aggressively to remove copy protections</span>
             </div>
             <select id="default-mode" class="select-control">
-              <option value="auto">Auto</option>
-              <option value="safe">Safe</option>
-              <option value="aggressive">Aggressive</option>
+              <option value="auto" data-i18n="modeAuto">Auto</option>
+              <option value="safe" data-i18n="modeSafe">Safe</option>
+              <option value="aggressive" data-i18n="modeAggressive">Aggressive</option>
             </select>
           </div>
 
           <div class="setting-row">
             <div class="setting-info">
-              <span class="setting-label">Show Notifications</span>
-              <span class="setting-hint">Display toast when protections are removed</span>
+              <span class="setting-label" data-i18n="optShowNotifications">Show Notifications</span>
+              <span class="setting-hint" data-i18n="optNotificationsHint">Display toast when protections are removed</span>
             </div>
             <label class="toggle-switch">
               <input type="checkbox" id="notifications" checked>
+              <span class="toggle-track"></span>
+            </label>
+          </div>
+
+            <div class="setting-row">
+            <div class="setting-info">
+              <span class="setting-label" data-i18n="optContextMenu">Context Menu</span>
+              <span class="setting-hint" data-i18n="optContextMenuHint">Show CopyUnlock in the right-click menu</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="context-menu-enabled" checked>
               <span class="toggle-track"></span>
             </label>
           </div>
@@ -92,23 +103,27 @@
 
         <!-- Keyboard Shortcuts -->
         <div class="panel-header" style="margin-top: 24px;">
-          <h2>Keyboard Shortcuts</h2>
+          <h2 data-i18n="optKeyboardShortcuts">Keyboard Shortcuts</h2>
         </div>
         <div class="setting-card">
           <div class="shortcut-row">
-            <span class="shortcut-action">Toggle CopyUnlock</span>
+            <span class="shortcut-action" data-i18n="optToggleCopyUnlock">Toggle CopyUnlock</span>
             <kbd>Alt+Shift+U</kbd>
           </div>
           <div class="shortcut-row">
-            <span class="shortcut-action">Open Clipboard History</span>
+            <span class="shortcut-action" data-i18n="optOpenClipboardHistory">Open Clipboard History</span>
             <kbd>Alt+Shift+C</kbd>
           </div>
           <div class="shortcut-row">
-            <span class="shortcut-action">Search Clipboard</span>
+            <span class="shortcut-action" data-i18n="optSearchClipboard">Search Clipboard</span>
             <kbd>Alt+Shift+S</kbd>
           </div>
+          <div class="shortcut-row">
+            <span class="shortcut-action" data-i18n="optQuickPaste">Quick Paste</span>
+            <kbd>Ctrl+Shift+V</kbd>
+          </div>
           <div class="shortcut-row last">
-            <a href="#" id="configure-shortcuts" class="link-btn">Configure in Chrome Settings</a>
+            <a href="#" id="configure-shortcuts" class="link-btn" data-i18n="optConfigureShortcuts">Configure in Chrome Settings</a>
           </div>
         </div>
       </section>
@@ -116,15 +131,15 @@
       <!-- Clipboard Section -->
       <section id="section-clipboard" class="section-panel">
         <div class="panel-header">
-          <h2>Clipboard History</h2>
-          <p class="panel-desc">Manage how clipboard items are stored.</p>
+          <h2 data-i18n="optClipboardHistory">Clipboard History</h2>
+          <p class="panel-desc" data-i18n="optClipboardDesc">Manage how clipboard items are stored.</p>
         </div>
 
         <div class="setting-card">
           <div class="setting-row">
             <div class="setting-info">
-              <span class="setting-label">Enable Clipboard History</span>
-              <span class="setting-hint">Automatically save clipboard contents</span>
+              <span class="setting-label" data-i18n="optEnableClipboard">Enable Clipboard History</span>
+              <span class="setting-hint" data-i18n="optEnableClipboardHint">Automatically save clipboard contents</span>
             </div>
             <label class="toggle-switch">
               <input type="checkbox" id="clipboard-enabled" checked>
@@ -134,30 +149,66 @@
 
           <div class="setting-row">
             <div class="setting-info">
-              <span class="setting-label">Max Items</span>
-              <span class="setting-hint">Maximum clipboard entries to store</span>
+              <span class="setting-label" data-i18n="optMaxItems">Max Items</span>
+              <span class="setting-hint" data-i18n="optMaxItemsHint">Maximum clipboard entries to store</span>
             </div>
             <input type="number" id="max-items" min="10" max="100000" value="500" class="num-input">
           </div>
 
           <div class="setting-row">
             <div class="setting-info">
-              <span class="setting-label">Retention Period</span>
-              <span class="setting-hint">Days before old entries are automatically purged</span>
+              <span class="setting-label" data-i18n="optRetentionPeriod">Retention Period</span>
+              <span class="setting-hint" data-i18n="optRetentionHint">Days before old entries are automatically purged</span>
             </div>
             <div class="input-suffix">
               <input type="number" id="retention-days" min="1" max="3650" value="30" class="num-input">
-              <span class="suffix">days</span>
+              <span class="suffix" data-i18n="optDays">days</span>
             </div>
           </div>
 
           <div class="setting-row">
             <div class="setting-info">
-              <span class="setting-label">Watermark Stripping</span>
-              <span class="setting-hint">Remove invisible tracking characters from copied text</span>
+              <span class="setting-label" data-i18n="optWatermarkStripping">Watermark Stripping</span>
+              <span class="setting-hint" data-i18n="optWatermarkHint">Remove invisible tracking characters from copied text</span>
             </div>
             <label class="toggle-switch">
               <input type="checkbox" id="watermark-stripping" checked>
+              <span class="toggle-track"></span>
+            </label>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-info">
+              <span class="setting-label" data-i18n="optAutoCitation">Auto-Citation</span>
+              <span class="setting-hint" data-i18n="optAutoCitationHint">Automatically generate source citation for copied text</span>
+            </div>
+            <select id="auto-citation" class="select-control">
+              <option value="none" data-i18n="optCitationOff">Off</option>
+              <option value="url" data-i18n="optCitationUrl">URL only (Free)</option>
+              <option value="formatted" data-i18n="optCitationFormatted">Formatted (Pro)</option>
+            </select>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-info">
+              <span class="setting-label" data-i18n="optDefaultPasteFormat">Default Paste Format</span>
+              <span class="setting-hint" data-i18n="optPasteFormatHint">Format used when pasting from clipboard history</span>
+            </div>
+            <select id="default-paste-format" class="select-control">
+              <option value="plain" data-i18n="optPastePlain">Plain text</option>
+              <option value="rich" data-i18n="optPasteRich">Rich text (with formatting)</option>
+              <option value="clean" data-i18n="optPasteClean">Clean (collapse whitespace)</option>
+              <option value="with-citation" data-i18n="optPasteCitation">With citation</option>
+            </select>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-info">
+              <span class="setting-label"><span data-i18n="optPdfCleanup">PDF Line Break Cleanup</span> <span class="pro-inline-tag">PRO</span></span>
+              <span class="setting-hint" data-i18n="optPdfCleanupHint">Fix artificial line breaks from PDF-copied text</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="pdf-cleanup">
               <span class="toggle-track"></span>
             </label>
           </div>
@@ -167,8 +218,8 @@
       <!-- Sites Section -->
       <section id="section-sites" class="section-panel">
         <div class="panel-header">
-          <h2>Site Overrides</h2>
-          <p class="panel-desc">Set custom unlock modes for specific websites.</p>
+          <h2 data-i18n="optSiteOverrides">Site Overrides</h2>
+          <p class="panel-desc" data-i18n="optSiteOverridesDesc">Set custom unlock modes for specific websites.</p>
         </div>
 
         <div class="setting-card">
@@ -176,12 +227,12 @@
           <div class="override-add-row">
             <input type="text" id="override-domain" placeholder="example.com" class="text-input">
             <select id="override-mode" class="select-control">
-              <option value="auto">Auto</option>
-              <option value="safe">Safe</option>
-              <option value="aggressive">Aggressive</option>
-              <option value="disabled">Disabled</option>
+              <option value="auto" data-i18n="modeAuto">Auto</option>
+              <option value="safe" data-i18n="modeSafe">Safe</option>
+              <option value="aggressive" data-i18n="modeAggressive">Aggressive</option>
+              <option value="disabled" data-i18n="optDisabled">Disabled</option>
             </select>
-            <button id="add-override" class="btn-accent-sm">Add</button>
+            <button id="add-override" class="btn-accent-sm" data-i18n="optAdd">Add</button>
           </div>
         </div>
       </section>
@@ -189,7 +240,7 @@
       <!-- Pro Section -->
       <section id="section-pro" class="section-panel">
         <div class="panel-header">
-          <h2>CopyUnlock Pro <span id="pro-badge" class="pro-tag hidden">PRO</span></h2>
+          <h2><span data-i18n="optProTitle">CopyUnlock Pro</span> <span id="pro-badge" class="pro-tag hidden">PRO</span></h2>
         </div>
 
         <div id="pro-active-info" class="pro-active-card hidden">
@@ -197,26 +248,33 @@
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
           </div>
           <div class="pro-active-details">
-            <span class="pro-active-title">Pro License Active</span>
-            <span class="pro-active-plan">Plan: <strong id="pro-plan-name">—</strong></span>
+            <span class="pro-active-title" data-i18n="optProLicenseActive">Pro License Active</span>
+            <span class="pro-active-plan"><span data-i18n="optProPlan">Plan</span>: <strong id="pro-plan-name">—</strong> <span id="pro-renews-at" class="pro-renew-date"></span></span>
           </div>
-          <button id="refresh-license-btn" class="btn-ghost">Refresh</button>
+          <button id="refresh-license-btn" class="btn-ghost" data-i18n="optRefresh">Refresh</button>
         </div>
-        <div id="pro-support-section" class="setting-card hidden" style="margin-top: 12px;">
+        <div id="pro-manage-section" class="setting-card hidden" style="margin-top: 12px;">
           <div class="data-action-row">
             <div class="data-action-info">
-              <span class="setting-label">Priority Support</span>
-              <span class="setting-hint">Pro members get fast response times</span>
+              <span class="setting-label" data-i18n="optManageSubscription">Manage Subscription</span>
+              <span class="setting-hint" data-i18n="optManageHint">Update payment method, change plan, or cancel</span>
             </div>
-            <a href="mailto:support@peaktools.dev?subject=CopyUnlock%20Pro%20Support" class="btn-outline" id="support-email-btn">Email Us</a>
+            <button id="manage-subscription" class="btn-outline" data-i18n="optManage">Manage</button>
+          </div>
+          <div class="data-action-row">
+            <div class="data-action-info">
+              <span class="setting-label" data-i18n="optPrioritySupport">Priority Support</span>
+              <span class="setting-hint" data-i18n="optPrioritySupportHint">Pro members get fast response times</span>
+            </div>
+            <a href="mailto:support@peaktools.dev?subject=CopyUnlock%20Pro%20Support" class="btn-outline" id="support-email-btn" data-i18n="optEmailUs">Email Us</a>
           </div>
         </div>
 
         <div id="pro-upgrade-section">
           <div class="pro-hero">
             <div class="pro-hero-content">
-              <h3>Unlock the full power</h3>
-              <p>Unlimited clipboard history, 10-year retention, and priority support.</p>
+              <h3 data-i18n="optUnlockPower">Unlock the full power</h3>
+              <p data-i18n="optUnlockDesc">Full unlock engine, unlimited clipboard, collections, PDF cleanup, formatted citations, and priority support.</p>
             </div>
           </div>
 
@@ -226,8 +284,8 @@
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
               </div>
               <div class="feature-text">
-                <strong>100,000 items</strong>
-                <span>vs 200 on free</span>
+                <strong data-i18n="optProFeatureItems">100,000 clipboard items</strong>
+                <span data-i18n="optProFeatureItemsSub">vs 500 on free</span>
               </div>
             </div>
             <div class="pro-feature">
@@ -235,17 +293,35 @@
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
               </div>
               <div class="feature-text">
-                <strong>10-year retention</strong>
-                <span>vs 30 days on free</span>
+                <strong data-i18n="optProFeatureRetention">10-year retention</strong>
+                <span data-i18n="optProFeatureRetentionSub">vs 30 days on free</span>
               </div>
             </div>
             <div class="pro-feature">
               <div class="feature-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
               </div>
               <div class="feature-text">
-                <strong>Unlimited pins & tags</strong>
-                <span>Organize everything</span>
+                <strong data-i18n="optProFeatureCollections">1,000 collections</strong>
+                <span data-i18n="optProFeatureCollectionsSub">vs 3 on free</span>
+              </div>
+            </div>
+            <div class="pro-feature">
+              <div class="feature-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </div>
+              <div class="feature-text">
+                <strong data-i18n="optProFeaturePdf">PDF line break cleanup</strong>
+                <span data-i18n="optProFeaturePdfSub">Fix broken PDF text</span>
+              </div>
+            </div>
+            <div class="pro-feature">
+              <div class="feature-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+              </div>
+              <div class="feature-text">
+                <strong data-i18n="optProFeatureCitations">Formatted citations</strong>
+                <span data-i18n="optProFeatureCitationsSub">Auto-cite your sources</span>
               </div>
             </div>
             <div class="pro-feature">
@@ -253,83 +329,83 @@
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
               </div>
               <div class="feature-text">
-                <strong>Priority support</strong>
-                <span>Fast response via email</span>
+                <strong data-i18n="optProFeatureSupport">Priority support</strong>
+                <span data-i18n="optProFeatureSupportSub">Fast response via email</span>
               </div>
             </div>
           </div>
 
           <div class="plan-cards">
             <button class="plan-card" id="plan-monthly" data-plan="monthly">
-              <span class="plan-period">Monthly</span>
-              <span class="plan-price">$3.99<span class="plan-unit">/mo</span></span>
+              <span class="plan-period" data-i18n="optMonthly">Monthly</span>
+              <span class="plan-price">$1.99<span class="plan-unit">/mo</span></span>
             </button>
             <button class="plan-card popular" id="plan-annual" data-plan="annual">
-              <span class="plan-badge-tag">Best value</span>
-              <span class="plan-period">Annual</span>
-              <span class="plan-price">$29.99<span class="plan-unit">/yr</span></span>
-              <span class="plan-savings">Save 37%</span>
+              <span class="plan-badge-tag" data-i18n="optBestValue">Best value</span>
+              <span class="plan-period" data-i18n="optAnnual">Annual</span>
+              <span class="plan-price">$19.99<span class="plan-unit">/yr</span></span>
+              <span class="plan-savings" data-i18n="optSave16">Save 16%</span>
             </button>
             <button class="plan-card" id="plan-lifetime" data-plan="lifetime">
-              <span class="plan-period">Lifetime</span>
+              <span class="plan-period" data-i18n="optLifetime">Lifetime</span>
               <span class="plan-price">$49.99</span>
-              <span class="plan-savings">One-time</span>
+              <span class="plan-savings" data-i18n="optOneTime">One-time</span>
             </button>
           </div>
 
-          <p class="pro-legal">Powered by Stripe. Cancel anytime. License tied to your Chrome profile email.</p>
-          <button id="refresh-license-btn-free" class="btn-ghost center-btn">Already purchased? Refresh license</button>
+          <p class="pro-legal" data-i18n="optProLegal">Powered by Stripe. Cancel anytime. License tied to your Chrome profile email.</p>
+          <button id="refresh-license-btn-free" class="btn-ghost center-btn" data-i18n="optAlreadyPurchased">Already purchased? Refresh license</button>
         </div>
       </section>
 
       <!-- Data Section -->
       <section id="section-data" class="section-panel">
         <div class="panel-header">
-          <h2>Data Management</h2>
-          <p class="panel-desc">Export, import, or clear your extension data.</p>
+          <h2 data-i18n="optDataManagement">Data Management</h2>
+          <p class="panel-desc" data-i18n="optDataDesc">Export, import, or clear your extension data.</p>
         </div>
 
         <div class="setting-card">
           <div class="data-action-row">
             <div class="data-action-info">
-              <span class="setting-label">Export Data</span>
-              <span class="setting-hint">Download all settings and clipboard history as JSON</span>
+              <span class="setting-label" data-i18n="optExportData">Export Data</span>
+              <span class="setting-hint" data-i18n="optExportHint">Download all settings and clipboard history as JSON</span>
             </div>
-            <button id="export-data" class="btn-outline">Export</button>
+            <button id="export-data" class="btn-outline" data-i18n="optExport">Export</button>
           </div>
           <div class="data-action-row">
             <div class="data-action-info">
-              <span class="setting-label">Import Data</span>
-              <span class="setting-hint">Restore from a previously exported JSON file</span>
+              <span class="setting-label" data-i18n="optImportData">Import Data</span>
+              <span class="setting-hint" data-i18n="optImportHint">Restore from a previously exported JSON file</span>
             </div>
-            <button id="import-data" class="btn-outline">Import</button>
+            <button id="import-data" class="btn-outline" data-i18n="optImport">Import</button>
           </div>
           <div class="data-action-row danger-zone">
             <div class="data-action-info">
-              <span class="setting-label">Clear All Data</span>
-              <span class="setting-hint">Permanently delete all settings, history, and overrides</span>
+              <span class="setting-label" data-i18n="optClearAllData">Clear All Data</span>
+              <span class="setting-hint" data-i18n="optClearHint">Permanently delete all settings, history, and overrides</span>
             </div>
-            <button id="clear-data" class="btn-danger">Clear</button>
+            <button id="clear-data" class="btn-danger" data-i18n="optClear">Clear</button>
           </div>
         </div>
         <input type="file" id="import-file" accept=".json" style="display: none;">
 
         <!-- About / Stats -->
         <div class="panel-header" style="margin-top: 24px;">
-          <h2>Statistics</h2>
+          <h2 data-i18n="optStatistics">Statistics</h2>
         </div>
         <div class="stats-grid">
           <div class="stat-card">
             <span class="stat-number" id="stat-unlocks">0</span>
-            <span class="stat-name">Unlocks</span>
+            <span class="stat-name" data-i18n="optUnlocks">Unlocks</span>
           </div>
           <div class="stat-card">
             <span class="stat-number" id="stat-copies">0</span>
-            <span class="stat-name">Copies Saved</span>
+            <span class="stat-name" data-i18n="optCopiesSaved">Copies Saved</span>
           </div>
           <div class="stat-card">
             <span class="stat-number" id="stat-watermarks">0</span>
-            <span class="stat-name">Watermarks Stripped</span>
+            <span class="stat-name" data-i18n="optWatermarksStripped">Watermarks Stripped</span>
           </div>
         </div>
       </section>

@@ -48,9 +48,9 @@ function analyzeForText(ctx: CanvasRenderingContext2D, width: number, height: nu
   const totalSampled = Math.floor(data.length / 16); // 4 channels * 4 skip
 
   for (let i = 0; i < data.length; i += 16) {
-    const r = data[i];
-    const g = data[i + 1];
-    const b = data[i + 2];
+    const r = data[i]!;
+    const g = data[i + 1]!;
+    const b = data[i + 2]!;
     const brightness = (r + g + b) / 3;
 
     if (brightness < 80) darkPixels++;
@@ -58,9 +58,9 @@ function analyzeForText(ctx: CanvasRenderingContext2D, width: number, height: nu
 
     // Simple edge detection: compare with neighbor
     if (i + 16 < data.length) {
-      const nr = data[i + 16];
-      const ng = data[i + 17];
-      const nb = data[i + 18];
+      const nr = data[i + 16]!;
+      const ng = data[i + 17]!;
+      const nb = data[i + 18]!;
       const nBrightness = (nr + ng + nb) / 3;
       if (Math.abs(brightness - nBrightness) > 60) edgePixels++;
     }

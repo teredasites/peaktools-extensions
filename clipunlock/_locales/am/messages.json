@@ -1,0 +1,826 @@
+{
+  "extensionName": {
+    "message": "CopyUnlock",
+    "description": "Extension name"
+  },
+  "extensionDescription": {
+    "message": "የቅጂ ገደቦችን ይክፈቱ እና የቅንጥብ ሰሌዳ ታሪክዎን በቀላሉ ያስተዳድሩ።",
+    "description": "Extension description"
+  },
+  "commandToggle": {
+    "message": "CopyUnlock ቀያይር",
+    "description": "Keyboard command to toggle the extension"
+  },
+  "commandClipboard": {
+    "message": "የቅንጥብ ሰሌዳ ታሪክ ክፈት",
+    "description": "Keyboard command to open clipboard history"
+  },
+  "commandSearch": {
+    "message": "ቅንጥብ ሰሌዳ ፈልግ",
+    "description": "Keyboard command to search clipboard"
+  },
+  "contextMenuUnlock": {
+    "message": "ገጹን ክፈት",
+    "description": "Context menu toggle unlock"
+  },
+  "contextMenuLock": {
+    "message": "ገጹን ቆልፍ (መልስ)",
+    "description": "Context menu toggle lock"
+  },
+  "contextMenuCopy": {
+    "message": "ወደ ታሪክ ቅጂ",
+    "description": "Context menu copy option"
+  },
+  "contextMenuCopyClean": {
+    "message": "ንጹህ ቅጂ (ምልክቶችን አስወግድ)",
+    "description": "Context menu copy without watermarks"
+  },
+  "contextMenuCopyCitation": {
+    "message": "ከጥቅስ ጋር ቅጂ",
+    "description": "Context menu copy with source citation"
+  },
+  "contextMenuPin": {
+    "message": "ምርጫን ሰካ",
+    "description": "Context menu pin option"
+  },
+  "contextMenuSaveCollection": {
+    "message": "ወደ ስብስብ አስቀምጥ",
+    "description": "Context menu save to collection parent"
+  },
+  "contextMenuNewCollection": {
+    "message": "+ አዲስ ስብስብ...",
+    "description": "Context menu create new collection"
+  },
+  "contextMenuMode": {
+    "message": "ሁነታ",
+    "description": "Context menu mode parent"
+  },
+  "contextMenuClipboardHistory": {
+    "message": "የቅንጥብ ሰሌዳ ታሪክ",
+    "description": "Context menu open clipboard history"
+  },
+  "contextMenuQuickPaste": {
+    "message": "ፈጣን ለጥፍ",
+    "description": "Context menu quick paste overlay"
+  },
+  "contextMenuSettings": {
+    "message": "ቅንብሮች",
+    "description": "Context menu open settings"
+  },
+  "popupEnable": {
+    "message": "አንቃ",
+    "description": "Popup enable button label"
+  },
+  "popupActive": {
+    "message": "ንቁ",
+    "description": "Popup active state label"
+  },
+  "popupProtections": {
+    "message": "$COUNT$ ጥበቃዎች ተወግደዋል",
+    "description": "Number of protections removed",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "modeAuto": {
+    "message": "ራስ-ሰር",
+    "description": "Auto mode label"
+  },
+  "modeSafe": {
+    "message": "ደህና",
+    "description": "Safe mode label"
+  },
+  "modeAggressive": {
+    "message": "ጠንካራ",
+    "description": "Aggressive mode label"
+  },
+  "recentCopies": {
+    "message": "የቅርብ ቅጂዎች",
+    "description": "Recent clipboard items header"
+  },
+  "noHistory": {
+    "message": "ገና የቅንጥብ ሰሌዳ ታሪክ የለም",
+    "description": "Empty clipboard state"
+  },
+  "clipboardHistory": {
+    "message": "የቅንጥብ ሰሌዳ ታሪክ",
+    "description": "Clipboard history title"
+  },
+  "settings": {
+    "message": "ቅንብሮች",
+    "description": "Settings page title"
+  },
+  "searchPlaceholder": {
+    "message": "የቅንጥብ ሰሌዳ ታሪክ ፈልግ...",
+    "description": "Search input placeholder"
+  },
+  "filterAll": {
+    "message": "ሁሉም",
+    "description": "Filter all items"
+  },
+  "filterPinned": {
+    "message": "የተሰኩ",
+    "description": "Filter pinned items"
+  },
+  "filterUrls": {
+    "message": "URLs",
+    "description": "Filter URL items"
+  },
+  "filterCode": {
+    "message": "ኮድ",
+    "description": "Filter code items"
+  },
+  "filterText": {
+    "message": "ጽሑፍ",
+    "description": "Filter text items"
+  },
+  "copy": {
+    "message": "ቅጂ",
+    "description": "Copy action"
+  },
+  "copied": {
+    "message": "ተቀድቷል!",
+    "description": "Copy confirmation"
+  },
+  "pin": {
+    "message": "ሰካ",
+    "description": "Pin action"
+  },
+  "unpin": {
+    "message": "አስወግድ",
+    "description": "Unpin action"
+  },
+  "delete": {
+    "message": "ሰርዝ",
+    "description": "Delete action"
+  },
+  "clearAll": {
+    "message": "ሁሉንም አጽዳ",
+    "description": "Clear all items"
+  },
+  "clearConfirm": {
+    "message": "ሁሉንም የቅንጥብ ሰሌዳ ታሪክ ያጽዱ? ይህ ሊቀለበስ አይችልም።",
+    "description": "Clear confirmation dialog"
+  },
+  "items": {
+    "message": "$COUNT$ ንጥሎች",
+    "description": "Item count display",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "42"
+      }
+    }
+  },
+  "justNow": {
+    "message": "አሁን",
+    "description": "Time ago - just now"
+  },
+  "minutesAgo": {
+    "message": "ከ$MINUTES$ ደቂቃ በፊት",
+    "description": "Time ago - minutes",
+    "placeholders": {
+      "MINUTES": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "hoursAgo": {
+    "message": "ከ$HOURS$ ሰዓት በፊት",
+    "description": "Time ago - hours",
+    "placeholders": {
+      "HOURS": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "daysAgo": {
+    "message": "ከ$DAYS$ ቀን በፊት",
+    "description": "Time ago - days",
+    "placeholders": {
+      "DAYS": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "watermarkNotice": {
+    "message": "የውሃ ምልክት ቁምፊዎች ከተቀዳው ጽሑፍ ተወግደዋል።",
+    "description": "Watermark stripping notification"
+  },
+  "settingsSaved": {
+    "message": "ቅንብሮች ተቀምጠዋል",
+    "description": "Settings save confirmation"
+  },
+  "exportSuccess": {
+    "message": "ውሂብ በተሳካ ሁኔታ ተላክ",
+    "description": "Export success message"
+  },
+  "protectionActive": {
+    "message": "ጥበቃ ንቁ",
+    "description": "Popup label when unlock is active"
+  },
+  "tapToEnable": {
+    "message": "ለማንቃት ንካ",
+    "description": "Popup label when unlock is inactive"
+  },
+  "statusActive": {
+    "message": "ንቁ",
+    "description": "Popup status pill when active"
+  },
+  "statusOff": {
+    "message": "ጠፍቷል",
+    "description": "Popup status pill when off"
+  },
+  "noRecentCopies": {
+    "message": "የቅርብ ቅጂዎች የሉም",
+    "description": "Popup empty clipboard state"
+  },
+  "timeNow": {
+    "message": "አሁን",
+    "description": "Popup time ago - just now short form"
+  },
+  "removed": {
+    "message": "$COUNT$ ተወግደዋል",
+    "description": "Popup protection count label",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "history": {
+    "message": "ታሪክ",
+    "description": "Popup button to open clipboard history"
+  },
+  "recentLabel": {
+    "message": "የቅርብ",
+    "description": "Popup section header for recent clipboard items"
+  },
+  "allCollections": {
+    "message": "ሁሉም ስብስቦች",
+    "description": "Sidepanel collection filter default option"
+  },
+  "none": {
+    "message": "ምንም",
+    "description": "Sidepanel collection select no-collection option"
+  },
+  "saving": {
+    "message": "በማስቀመጥ ላይ...",
+    "description": "Sidepanel add overlay saving indicator"
+  },
+  "save": {
+    "message": "አስቀምጥ",
+    "description": "Sidepanel add overlay save button"
+  },
+  "addTitle": {
+    "message": "ወደ ቅንጥብ ሰሌዳ ታሪክ ጨምር",
+    "description": "Sidepanel add overlay title"
+  },
+  "addPlaceholder": {
+    "message": "ማንኛውንም ነገር ለጥፍ ወይም ጻፍ — URLs፣ ጽሑፍ፣ ኮድ...",
+    "description": "Sidepanel add overlay placeholder"
+  },
+  "addButton": {
+    "message": "+ ጨምር",
+    "description": "Sidepanel footer add button label"
+  },
+  "back": {
+    "message": "ተመለስ",
+    "description": "Detail panel back button"
+  },
+  "cite": {
+    "message": "+ ጥቅስ",
+    "description": "Detail panel copy with citation button"
+  },
+  "open": {
+    "message": "ክፈት",
+    "description": "Detail panel open source URL button"
+  },
+  "emptyUrlIcon": {
+    "message": "&#128279;",
+    "description": "Empty state icon for URLs filter"
+  },
+  "emptyUrlText": {
+    "message": "ገና URLs አልተቀመጡም",
+    "description": "Empty state text for URLs filter"
+  },
+  "emptyUrlHint": {
+    "message": "ለማስቀመጥ ማንኛውንም URL ከአሳሽዎ ይቅዱ ወይም ከታች + ጨምር ይንኩ።",
+    "description": "Empty state hint for URLs filter"
+  },
+  "emptyCodeText": {
+    "message": "ገና ኮድ ቅንጥቦች የሉም",
+    "description": "Empty state text for Code filter"
+  },
+  "emptyCodeHint": {
+    "message": "ለማስቀመጥ ከማንኛውም አርታዒ ወይም ድረ-ገጽ ኮድ ይቅዱ።",
+    "description": "Empty state hint for Code filter"
+  },
+  "emptyTextText": {
+    "message": "ገና ጽሑፍ ቅንጥቦች የሉም",
+    "description": "Empty state text for Text filter"
+  },
+  "emptyTextHint": {
+    "message": "ታሪክዎን ለመገንባት ከማንኛውም ገጽ ጽሑፍ ይቅዱ።",
+    "description": "Empty state hint for Text filter"
+  },
+  "emptyPinnedText": {
+    "message": "የተሰኩ ንጥሎች የሉም",
+    "description": "Empty state text for Pinned filter"
+  },
+  "emptyPinnedHint": {
+    "message": "ማንኛውንም ንጥል ክፈት እና በላይ ለማቆየት ሰካ ይንኩ።",
+    "description": "Empty state hint for Pinned filter"
+  },
+  "emptyDefaultHint": {
+    "message": "በድሩ ላይ ማንኛውንም ነገር ይቅዱ — እዚህ ራስ-ሰር ይታያል።",
+    "description": "Empty state hint for All filter"
+  },
+  "words": {
+    "message": "$COUNT$ ቃላት",
+    "description": "Word count display in clip items",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "42"
+      }
+    }
+  },
+  "pdfCleaned": {
+    "message": "PDF ተጸዳ",
+    "description": "PDF cleaned indicator in detail view"
+  },
+  "type": {
+    "message": "ዓይነት",
+    "description": "Type label in detail view"
+  },
+  "source": {
+    "message": "ምንጭ",
+    "description": "Source label in detail view"
+  },
+  "optGeneralSettings": {
+    "message": "ጠቅላላ ቅንብሮች",
+    "description": "Options page general settings header"
+  },
+  "optGeneralDesc": {
+    "message": "የCopyUnlock ዋና ባህሪን ያዋቅሩ።",
+    "description": "Options page general settings description"
+  },
+  "optEnableCopyUnlock": {
+    "message": "CopyUnlock አንቃ",
+    "description": "Options enable toggle label"
+  },
+  "optEnableHint": {
+    "message": "ለሁሉም የቅጂ ማስከፈቻ ባህሪዎች ዋና መቀያየሪያ",
+    "description": "Options enable toggle hint"
+  },
+  "optDefaultMode": {
+    "message": "ነባሪ ሁነታ",
+    "description": "Options default mode label"
+  },
+  "optDefaultModeHint": {
+    "message": "የቅጂ ጥበቃዎችን ለማስወገድ ምን ያህል ጠንካራ",
+    "description": "Options default mode hint"
+  },
+  "optShowNotifications": {
+    "message": "ማሳወቂያዎችን አሳይ",
+    "description": "Options notifications toggle label"
+  },
+  "optNotificationsHint": {
+    "message": "ጥበቃዎች ሲወገዱ ማሳወቂያ አሳይ",
+    "description": "Options notifications hint"
+  },
+  "optContextMenu": {
+    "message": "የአውድ ምናሌ",
+    "description": "Options context menu toggle label"
+  },
+  "optContextMenuHint": {
+    "message": "CopyUnlock በቀኝ-ጠቅ ምናሌ ውስጥ አሳይ",
+    "description": "Options context menu hint"
+  },
+  "optKeyboardShortcuts": {
+    "message": "የቁልፍ ሰሌዳ አቋራጮች",
+    "description": "Options keyboard shortcuts header"
+  },
+  "optToggleCopyUnlock": {
+    "message": "CopyUnlock ቀያይር",
+    "description": "Options shortcut action label"
+  },
+  "optOpenClipboardHistory": {
+    "message": "የቅንጥብ ሰሌዳ ታሪክ ክፈት",
+    "description": "Options shortcut action label"
+  },
+  "optSearchClipboard": {
+    "message": "ቅንጥብ ሰሌዳ ፈልግ",
+    "description": "Options shortcut action label"
+  },
+  "optQuickPaste": {
+    "message": "ፈጣን ለጥፍ",
+    "description": "Options shortcut action label"
+  },
+  "optConfigureShortcuts": {
+    "message": "በChrome ቅንብሮች ውስጥ ያዋቅሩ",
+    "description": "Options link to chrome shortcuts page"
+  },
+  "optClipboardHistory": {
+    "message": "የቅንጥብ ሰሌዳ ታሪክ",
+    "description": "Options clipboard section header"
+  },
+  "optClipboardDesc": {
+    "message": "የቅንጥብ ሰሌዳ ንጥሎች እንዴት እንደሚከማቹ ያስተዳድሩ።",
+    "description": "Options clipboard section description"
+  },
+  "optEnableClipboard": {
+    "message": "የቅንጥብ ሰሌዳ ታሪክ አንቃ",
+    "description": "Options clipboard enable label"
+  },
+  "optEnableClipboardHint": {
+    "message": "የቅንጥብ ሰሌዳ ይዘቶችን ራስ-ሰር አስቀምጥ",
+    "description": "Options clipboard enable hint"
+  },
+  "optMaxItems": {
+    "message": "ከፍተኛ ንጥሎች",
+    "description": "Options max items label"
+  },
+  "optMaxItemsHint": {
+    "message": "ሊከማቹ የሚችሉ ከፍተኛ ንጥሎች",
+    "description": "Options max items hint"
+  },
+  "optRetentionPeriod": {
+    "message": "የማቆያ ጊዜ",
+    "description": "Options retention period label"
+  },
+  "optRetentionHint": {
+    "message": "የድሮ ንጥሎች ራስ-ሰር ከመሰረዛቸው በፊት ያሉ ቀናት",
+    "description": "Options retention hint"
+  },
+  "optDays": {
+    "message": "ቀናት",
+    "description": "Options retention days suffix"
+  },
+  "optWatermarkStripping": {
+    "message": "ምልክት ማስወገድ",
+    "description": "Options watermark stripping label"
+  },
+  "optWatermarkHint": {
+    "message": "ከተቀዳ ጽሑፍ የማይታዩ ቁምፊዎችን አስወግድ",
+    "description": "Options watermark hint"
+  },
+  "optAutoCitation": {
+    "message": "ራስ-ሰር ጥቅስ",
+    "description": "Options auto citation label"
+  },
+  "optAutoCitationHint": {
+    "message": "ለተቀዳ ጽሑፍ ራስ-ሰር ምንጭ ጥቅስ ያዘጋጁ",
+    "description": "Options auto citation hint"
+  },
+  "optCitationOff": {
+    "message": "ጠፍቷል",
+    "description": "Options citation mode off"
+  },
+  "optCitationUrl": {
+    "message": "URL ብቻ (ነጻ)",
+    "description": "Options citation mode url"
+  },
+  "optCitationFormatted": {
+    "message": "የተቀረጸ (Pro)",
+    "description": "Options citation mode formatted"
+  },
+  "optDefaultPasteFormat": {
+    "message": "ነባሪ የመለጠፍ ቅርጸት",
+    "description": "Options paste format label"
+  },
+  "optPasteFormatHint": {
+    "message": "ከቅንጥብ ሰሌዳ ታሪክ ሲለጠፉ የሚጠቀሙት ቅርጸት",
+    "description": "Options paste format hint"
+  },
+  "optPastePlain": {
+    "message": "ተራ ጽሑፍ",
+    "description": "Options paste format plain"
+  },
+  "optPasteRich": {
+    "message": "የበለጸገ ጽሑፍ (ከቅርጸት ጋር)",
+    "description": "Options paste format rich"
+  },
+  "optPasteClean": {
+    "message": "ንጹህ (ባዶ ቦታ ጨምቅ)",
+    "description": "Options paste format clean"
+  },
+  "optPasteCitation": {
+    "message": "ከጥቅስ ጋር",
+    "description": "Options paste format with citation"
+  },
+  "optPdfCleanup": {
+    "message": "PDF መስመር ማጽዳት",
+    "description": "Options PDF cleanup label"
+  },
+  "optPdfCleanupHint": {
+    "message": "ከPDF የተቀዳ ጽሑፍ ሰው ሰራሽ ሰርዝ አስተካክል",
+    "description": "Options PDF cleanup hint"
+  },
+  "optSiteOverrides": {
+    "message": "የጣቢያ ልዩ ቅንብሮች",
+    "description": "Options site overrides header"
+  },
+  "optSiteOverridesDesc": {
+    "message": "ለተወሰኑ ድረ-ገጾች ልዩ ሁነታዎችን ያዘጋጁ።",
+    "description": "Options site overrides description"
+  },
+  "optNoOverrides": {
+    "message": "ልዩ ቅንብሮች አልተዋቀሩም።",
+    "description": "Options empty overrides state"
+  },
+  "optDisabled": {
+    "message": "ተሰናክሏል",
+    "description": "Options override mode disabled"
+  },
+  "optAdd": {
+    "message": "ጨምር",
+    "description": "Options add override button"
+  },
+  "optProTitle": {
+    "message": "CopyUnlock Pro",
+    "description": "Options pro section header"
+  },
+  "optProLicenseActive": {
+    "message": "Pro ፍቃድ ንቁ",
+    "description": "Options pro active status"
+  },
+  "optProPlan": {
+    "message": "ዕቅድ",
+    "description": "Options pro plan label"
+  },
+  "optRefresh": {
+    "message": "አድስ",
+    "description": "Options refresh license button"
+  },
+  "optManageSubscription": {
+    "message": "ምዝገባ ያስተዳድሩ",
+    "description": "Options manage subscription label"
+  },
+  "optManageHint": {
+    "message": "የክፍያ ዘዴ ያዘምኑ፣ ዕቅድ ይቀይሩ ወይም ይሰርዙ",
+    "description": "Options manage subscription hint"
+  },
+  "optManage": {
+    "message": "ያስተዳድሩ",
+    "description": "Options manage button"
+  },
+  "optPrioritySupport": {
+    "message": "ቅድሚያ ድጋፍ",
+    "description": "Options priority support label"
+  },
+  "optPrioritySupportHint": {
+    "message": "Pro አባላት ፈጣን ምላሽ ያገኛሉ",
+    "description": "Options priority support hint"
+  },
+  "optEmailUs": {
+    "message": "ኢሜይል ይላኩልን",
+    "description": "Options email support button"
+  },
+  "optUnlockPower": {
+    "message": "ሙሉ ኃይሉን ይክፈቱ",
+    "description": "Options pro hero title"
+  },
+  "optUnlockDesc": {
+    "message": "ሙሉ ማስከፈቻ ሞተር፣ ያልተገደበ ቅንጥብ ሰሌዳ፣ ስብስቦች፣ PDF ማጽዳት፣ የተቀረጹ ጥቅሶች እና ቅድሚያ ድጋፍ።",
+    "description": "Options pro hero description"
+  },
+  "optProFeatureItems": {
+    "message": "100,000 ንጥሎች",
+    "description": "Options pro feature"
+  },
+  "optProFeatureItemsSub": {
+    "message": "በነጻ 500 ብቻ",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureRetention": {
+    "message": "10 ዓመት ማቆያ",
+    "description": "Options pro feature"
+  },
+  "optProFeatureRetentionSub": {
+    "message": "በነጻ 30 ቀን ብቻ",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureCollections": {
+    "message": "1,000 ስብስቦች",
+    "description": "Options pro feature"
+  },
+  "optProFeatureCollectionsSub": {
+    "message": "በነጻ 3 ብቻ",
+    "description": "Options pro feature sub"
+  },
+  "optProFeaturePdf": {
+    "message": "PDF መስመር ማጽዳት",
+    "description": "Options pro feature"
+  },
+  "optProFeaturePdfSub": {
+    "message": "የተበላሸ PDF ጽሑፍ አስተካክል",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureCitations": {
+    "message": "የተቀረጹ ጥቅሶች",
+    "description": "Options pro feature"
+  },
+  "optProFeatureCitationsSub": {
+    "message": "ምንጮችዎን ራስ-ሰር ይጥቅሱ",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureSupport": {
+    "message": "ቅድሚያ ድጋፍ",
+    "description": "Options pro feature"
+  },
+  "optProFeatureSupportSub": {
+    "message": "በኢሜይል ፈጣን ምላሽ",
+    "description": "Options pro feature sub"
+  },
+  "optMonthly": {
+    "message": "ወርሃዊ",
+    "description": "Options plan monthly"
+  },
+  "optAnnual": {
+    "message": "ዓመታዊ",
+    "description": "Options plan annual"
+  },
+  "optLifetime": {
+    "message": "ዕድሜ ልክ",
+    "description": "Options plan lifetime"
+  },
+  "optBestValue": {
+    "message": "ምርጥ ዋጋ",
+    "description": "Options plan best value badge"
+  },
+  "optSave44": {
+    "message": "44% ቆጥብ",
+    "description": "Options annual savings"
+  },
+  "optOneTime": {
+    "message": "አንድ ጊዜ",
+    "description": "Options lifetime one-time label"
+  },
+  "optProLegal": {
+    "message": "በStripe የተደገፈ። በማንኛውም ጊዜ ይሰርዙ። ፍቃድ ከChrome መገለጫ ኢሜይልዎ ጋር የተገናኘ ነው።",
+    "description": "Options pro legal text"
+  },
+  "optAlreadyPurchased": {
+    "message": "ቀድመው ገዝተዋል? ፍቃድ ያድሱ",
+    "description": "Options refresh license link"
+  },
+  "optDataManagement": {
+    "message": "ውሂብ አስተዳደር",
+    "description": "Options data section header"
+  },
+  "optDataDesc": {
+    "message": "የቅጥያ ውሂብዎን ይላኩ፣ ያስመጡ ወይም ያጽዱ።",
+    "description": "Options data section description"
+  },
+  "optExportData": {
+    "message": "ውሂብ ላክ",
+    "description": "Options export label"
+  },
+  "optExportHint": {
+    "message": "ሁሉንም ቅንብሮች እና ታሪክ እንደ JSON ያውርዱ",
+    "description": "Options export hint"
+  },
+  "optExport": {
+    "message": "ላክ",
+    "description": "Options export button"
+  },
+  "optImportData": {
+    "message": "ውሂብ አስመጣ",
+    "description": "Options import label"
+  },
+  "optImportHint": {
+    "message": "ከቀድሞ የተላከ JSON ፋይል ወደነበረበት መልስ",
+    "description": "Options import hint"
+  },
+  "optImport": {
+    "message": "አስመጣ",
+    "description": "Options import button"
+  },
+  "optClearAllData": {
+    "message": "ሁሉንም ውሂብ አጽዳ",
+    "description": "Options clear data label"
+  },
+  "optClearHint": {
+    "message": "ሁሉንም ቅንብሮች፣ ታሪክ እና ልዩ ቅንብሮች በቋሚነት ሰርዝ",
+    "description": "Options clear data hint"
+  },
+  "optClear": {
+    "message": "አጽዳ",
+    "description": "Options clear button"
+  },
+  "optStatistics": {
+    "message": "ስታቲስቲክስ",
+    "description": "Options statistics header"
+  },
+  "optUnlocks": {
+    "message": "ማስከፈቻዎች",
+    "description": "Options stat unlocks label"
+  },
+  "optCopiesSaved": {
+    "message": "የተቀመጡ ቅጂዎች",
+    "description": "Options stat copies label"
+  },
+  "optWatermarksStripped": {
+    "message": "የተወገዱ ምልክቶች",
+    "description": "Options stat watermarks label"
+  },
+  "optNavGeneral": {
+    "message": "ጠቅላላ",
+    "description": "Options nav general tab"
+  },
+  "optNavClipboard": {
+    "message": "ቅንጥብ ሰሌዳ",
+    "description": "Options nav clipboard tab"
+  },
+  "optNavSites": {
+    "message": "ጣቢያዎች",
+    "description": "Options nav sites tab"
+  },
+  "optNavPro": {
+    "message": "Pro",
+    "description": "Options nav pro tab"
+  },
+  "optNavData": {
+    "message": "ውሂብ",
+    "description": "Options nav data tab"
+  },
+  "optSaveFailed": {
+    "message": "ቅንብሮችን ማስቀመጥ አልተሳካም",
+    "description": "Options save error toast"
+  },
+  "optImportSuccess": {
+    "message": "ውሂብ በተሳካ ሁኔታ ተመጣ",
+    "description": "Options import success toast"
+  },
+  "optImportFailed": {
+    "message": "ማስመጣት አልተሳካም — ልክ ያልሆነ ፋይል",
+    "description": "Options import error toast"
+  },
+  "optClearConfirm": {
+    "message": "ሁሉንም CopyUnlock ውሂብ ማጽዳት እንደሚፈልጉ እርግጠኛ ነዎት? ይህ ሊቀለበስ አይችልም።",
+    "description": "Options clear data confirm dialog"
+  },
+  "optAllDataCleared": {
+    "message": "ሁሉም ውሂብ ተጸድቷል",
+    "description": "Options clear success toast"
+  },
+  "optClearFailed": {
+    "message": "ውሂብ ማጽዳት አልተሳካም",
+    "description": "Options clear error toast"
+  },
+  "optCheckingLicense": {
+    "message": "ፍቃድ በመፈተሽ ላይ...",
+    "description": "Options license check toast"
+  },
+  "optProVerified": {
+    "message": "Pro ፍቃድ ተረጋግጧል!",
+    "description": "Options license verified toast"
+  },
+  "optNoLicense": {
+    "message": "ንቁ ፍቃድ አልተገኘም",
+    "description": "Options no license toast"
+  },
+  "optLicenseCheckFailed": {
+    "message": "ፍቃድ ማረጋገጥ አልተሳካም",
+    "description": "Options license check error toast"
+  },
+  "optOpening": {
+    "message": "በመክፈት ላይ...",
+    "description": "Options manage subscription opening state"
+  },
+  "optOpeningPortal": {
+    "message": "የፋይናንስ ፖርታል በመክፈት ላይ...",
+    "description": "Options billing portal opening toast"
+  },
+  "optPortalFailed": {
+    "message": "ፖርታሉን መክፈት አልተቻለም። ድጋፍ ያግኙ።",
+    "description": "Options billing portal error toast"
+  },
+  "optPortalError": {
+    "message": "ፖርታሉን መክፈት አልተሳካም",
+    "description": "Options billing portal error toast"
+  },
+  "optExportFailed": {
+    "message": "ላክ አልተሳካም",
+    "description": "Options export error toast"
+  },
+  "optRenews": {
+    "message": "$DATE$ ይታደሳል",
+    "description": "Options pro renewal date",
+    "placeholders": {
+      "DATE": {
+        "content": "$1",
+        "example": "Jan 15, 2026"
+      }
+    }
+  }
+}

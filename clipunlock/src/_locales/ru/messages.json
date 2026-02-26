@@ -1,0 +1,830 @@
+{
+  "extensionName": {
+    "message": "CopyUnlock",
+    "description": "Extension name"
+  },
+  "extensionDescription": {
+    "message": "Снимайте ограничения копирования и легко управляйте историей буфера обмена.",
+    "description": "Extension description"
+  },
+  "commandToggle": {
+    "message": "Переключить CopyUnlock",
+    "description": "Keyboard command to toggle the extension"
+  },
+  "commandClipboard": {
+    "message": "Открыть историю буфера обмена",
+    "description": "Keyboard command to open clipboard history"
+  },
+  "commandSearch": {
+    "message": "Поиск в буфере обмена",
+    "description": "Keyboard command to search clipboard"
+  },
+  "contextMenuUnlock": {
+    "message": "Разблокировать страницу",
+    "description": "Context menu toggle unlock"
+  },
+  "contextMenuLock": {
+    "message": "Заблокировать страницу (отменить)",
+    "description": "Context menu toggle lock"
+  },
+  "contextMenuCopy": {
+    "message": "Копировать в историю",
+    "description": "Context menu copy option"
+  },
+  "contextMenuCopyClean": {
+    "message": "Чистая копия (без водяных знаков)",
+    "description": "Context menu copy without watermarks"
+  },
+  "contextMenuCopyCitation": {
+    "message": "Копировать с цитатой",
+    "description": "Context menu copy with source citation"
+  },
+  "contextMenuPin": {
+    "message": "Закрепить выделение",
+    "description": "Context menu pin option"
+  },
+  "contextMenuSaveCollection": {
+    "message": "Сохранить в коллекцию",
+    "description": "Context menu save to collection parent"
+  },
+  "contextMenuNewCollection": {
+    "message": "+ Новая коллекция...",
+    "description": "Context menu create new collection"
+  },
+  "contextMenuMode": {
+    "message": "Режим",
+    "description": "Context menu mode parent"
+  },
+  "contextMenuClipboardHistory": {
+    "message": "История буфера обмена",
+    "description": "Context menu open clipboard history"
+  },
+  "contextMenuQuickPaste": {
+    "message": "Быстрая вставка",
+    "description": "Context menu quick paste overlay"
+  },
+  "contextMenuSettings": {
+    "message": "Настройки",
+    "description": "Context menu open settings"
+  },
+  "popupEnable": {
+    "message": "Включить",
+    "description": "Popup enable button label"
+  },
+  "popupActive": {
+    "message": "Активно",
+    "description": "Popup active state label"
+  },
+  "popupProtections": {
+    "message": "$COUNT$ защит снято",
+    "description": "Number of protections removed",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "modeAuto": {
+    "message": "Авто",
+    "description": "Auto mode label"
+  },
+  "modeSafe": {
+    "message": "Безопасный",
+    "description": "Safe mode label"
+  },
+  "modeAggressive": {
+    "message": "Агрессивный",
+    "description": "Aggressive mode label"
+  },
+  "recentCopies": {
+    "message": "Недавние копии",
+    "description": "Recent clipboard items header"
+  },
+  "noHistory": {
+    "message": "История буфера обмена пуста",
+    "description": "Empty clipboard state"
+  },
+  "clipboardHistory": {
+    "message": "История буфера обмена",
+    "description": "Clipboard history title"
+  },
+  "settings": {
+    "message": "Настройки",
+    "description": "Settings page title"
+  },
+  "searchPlaceholder": {
+    "message": "Поиск в истории буфера обмена...",
+    "description": "Search input placeholder"
+  },
+  "filterAll": {
+    "message": "Все",
+    "description": "Filter all items"
+  },
+  "filterPinned": {
+    "message": "Закреплённые",
+    "description": "Filter pinned items"
+  },
+  "filterUrls": {
+    "message": "URL",
+    "description": "Filter URL items"
+  },
+  "filterCode": {
+    "message": "Код",
+    "description": "Filter code items"
+  },
+  "filterText": {
+    "message": "Текст",
+    "description": "Filter text items"
+  },
+  "typeAuto": {
+    "message": "Auto-detect",
+    "description": "Auto-detect content type option in add overlay"
+  },
+  "copy": {
+    "message": "Копировать",
+    "description": "Copy action"
+  },
+  "copied": {
+    "message": "Скопировано!",
+    "description": "Copy confirmation"
+  },
+  "pin": {
+    "message": "Закрепить",
+    "description": "Pin action"
+  },
+  "unpin": {
+    "message": "Открепить",
+    "description": "Unpin action"
+  },
+  "delete": {
+    "message": "Удалить",
+    "description": "Delete action"
+  },
+  "clearAll": {
+    "message": "Очистить всё",
+    "description": "Clear all items"
+  },
+  "clearConfirm": {
+    "message": "Очистить всю историю буфера обмена? Это нельзя отменить.",
+    "description": "Clear confirmation dialog"
+  },
+  "items": {
+    "message": "$COUNT$ элементов",
+    "description": "Item count display",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "42"
+      }
+    }
+  },
+  "justNow": {
+    "message": "Только что",
+    "description": "Time ago - just now"
+  },
+  "minutesAgo": {
+    "message": "$MINUTES$ мин назад",
+    "description": "Time ago - minutes",
+    "placeholders": {
+      "MINUTES": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "hoursAgo": {
+    "message": "$HOURS$ ч назад",
+    "description": "Time ago - hours",
+    "placeholders": {
+      "HOURS": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "daysAgo": {
+    "message": "$DAYS$ дн назад",
+    "description": "Time ago - days",
+    "placeholders": {
+      "DAYS": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "watermarkNotice": {
+    "message": "Символы водяного знака были удалены из скопированного текста.",
+    "description": "Watermark stripping notification"
+  },
+  "settingsSaved": {
+    "message": "Настройки сохранены",
+    "description": "Settings save confirmation"
+  },
+  "exportSuccess": {
+    "message": "Данные успешно экспортированы",
+    "description": "Export success message"
+  },
+  "protectionActive": {
+    "message": "Защита активна",
+    "description": "Popup label when unlock is active"
+  },
+  "tapToEnable": {
+    "message": "Нажмите для включения",
+    "description": "Popup label when unlock is inactive"
+  },
+  "statusActive": {
+    "message": "Активно",
+    "description": "Popup status pill when active"
+  },
+  "statusOff": {
+    "message": "Выкл",
+    "description": "Popup status pill when off"
+  },
+  "noRecentCopies": {
+    "message": "Нет недавних копий",
+    "description": "Popup empty clipboard state"
+  },
+  "timeNow": {
+    "message": "сейчас",
+    "description": "Popup time ago - just now short form"
+  },
+  "removed": {
+    "message": "$COUNT$ удалено",
+    "description": "Popup protection count label",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "history": {
+    "message": "История",
+    "description": "Popup button to open clipboard history"
+  },
+  "recentLabel": {
+    "message": "Недавние",
+    "description": "Popup section header for recent clipboard items"
+  },
+  "allCollections": {
+    "message": "Все коллекции",
+    "description": "Sidepanel collection filter default option"
+  },
+  "none": {
+    "message": "Нет",
+    "description": "Sidepanel collection select no-collection option"
+  },
+  "saving": {
+    "message": "Сохранение...",
+    "description": "Sidepanel add overlay saving indicator"
+  },
+  "save": {
+    "message": "Сохранить",
+    "description": "Sidepanel add overlay save button"
+  },
+  "addTitle": {
+    "message": "Добавить в историю буфера обмена",
+    "description": "Sidepanel add overlay title"
+  },
+  "addPlaceholder": {
+    "message": "Вставьте или введите что угодно — URL, текст, код...",
+    "description": "Sidepanel add overlay placeholder"
+  },
+  "addButton": {
+    "message": "+ Добавить",
+    "description": "Sidepanel footer add button label"
+  },
+  "back": {
+    "message": "Назад",
+    "description": "Detail panel back button"
+  },
+  "cite": {
+    "message": "+ Цитата",
+    "description": "Detail panel copy with citation button"
+  },
+  "open": {
+    "message": "Открыть",
+    "description": "Detail panel open source URL button"
+  },
+  "emptyUrlIcon": {
+    "message": "&#128279;",
+    "description": "Empty state icon for URLs filter"
+  },
+  "emptyUrlText": {
+    "message": "URL ещё не сохранены",
+    "description": "Empty state text for URLs filter"
+  },
+  "emptyUrlHint": {
+    "message": "Скопируйте любой URL из браузера, чтобы сохранить его здесь, или нажмите + Добавить ниже.",
+    "description": "Empty state hint for URLs filter"
+  },
+  "emptyCodeText": {
+    "message": "Фрагментов кода пока нет",
+    "description": "Empty state text for Code filter"
+  },
+  "emptyCodeHint": {
+    "message": "Скопируйте код из любого редактора или сайта, чтобы сохранить его здесь.",
+    "description": "Empty state hint for Code filter"
+  },
+  "emptyTextText": {
+    "message": "Текстовых фрагментов пока нет",
+    "description": "Empty state text for Text filter"
+  },
+  "emptyTextHint": {
+    "message": "Скопируйте текст с любой страницы, чтобы начать историю.",
+    "description": "Empty state hint for Text filter"
+  },
+  "emptyPinnedText": {
+    "message": "Нет закреплённых элементов",
+    "description": "Empty state text for Pinned filter"
+  },
+  "emptyPinnedHint": {
+    "message": "Откройте элемент и нажмите Закрепить, чтобы оставить его вверху.",
+    "description": "Empty state hint for Pinned filter"
+  },
+  "emptyDefaultHint": {
+    "message": "Скопируйте что-нибудь в интернете — оно появится здесь автоматически.",
+    "description": "Empty state hint for All filter"
+  },
+  "words": {
+    "message": "$COUNT$ слов",
+    "description": "Word count display in clip items",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "42"
+      }
+    }
+  },
+  "pdfCleaned": {
+    "message": "PDF очищен",
+    "description": "PDF cleaned indicator in detail view"
+  },
+  "type": {
+    "message": "Тип",
+    "description": "Type label in detail view"
+  },
+  "source": {
+    "message": "Источник",
+    "description": "Source label in detail view"
+  },
+  "optGeneralSettings": {
+    "message": "Общие настройки",
+    "description": "Options page general settings header"
+  },
+  "optGeneralDesc": {
+    "message": "Настройте основное поведение CopyUnlock.",
+    "description": "Options page general settings description"
+  },
+  "optEnableCopyUnlock": {
+    "message": "Включить CopyUnlock",
+    "description": "Options enable toggle label"
+  },
+  "optEnableHint": {
+    "message": "Главный переключатель для всех функций разблокировки",
+    "description": "Options enable toggle hint"
+  },
+  "optDefaultMode": {
+    "message": "Режим по умолчанию",
+    "description": "Options default mode label"
+  },
+  "optDefaultModeHint": {
+    "message": "Насколько агрессивно удалять защиту от копирования",
+    "description": "Options default mode hint"
+  },
+  "optShowNotifications": {
+    "message": "Показывать уведомления",
+    "description": "Options notifications toggle label"
+  },
+  "optNotificationsHint": {
+    "message": "Показывать уведомление при снятии защиты",
+    "description": "Options notifications hint"
+  },
+  "optContextMenu": {
+    "message": "Контекстное меню",
+    "description": "Options context menu toggle label"
+  },
+  "optContextMenuHint": {
+    "message": "Показывать CopyUnlock в контекстном меню",
+    "description": "Options context menu hint"
+  },
+  "optKeyboardShortcuts": {
+    "message": "Горячие клавиши",
+    "description": "Options keyboard shortcuts header"
+  },
+  "optToggleCopyUnlock": {
+    "message": "Переключить CopyUnlock",
+    "description": "Options shortcut action label"
+  },
+  "optOpenClipboardHistory": {
+    "message": "Открыть историю буфера обмена",
+    "description": "Options shortcut action label"
+  },
+  "optSearchClipboard": {
+    "message": "Поиск в буфере обмена",
+    "description": "Options shortcut action label"
+  },
+  "optQuickPaste": {
+    "message": "Быстрая вставка",
+    "description": "Options shortcut action label"
+  },
+  "optConfigureShortcuts": {
+    "message": "Настроить в параметрах Chrome",
+    "description": "Options link to chrome shortcuts page"
+  },
+  "optClipboardHistory": {
+    "message": "История буфера обмена",
+    "description": "Options clipboard section header"
+  },
+  "optClipboardDesc": {
+    "message": "Управление хранением элементов буфера обмена.",
+    "description": "Options clipboard section description"
+  },
+  "optEnableClipboard": {
+    "message": "Включить историю буфера обмена",
+    "description": "Options clipboard enable label"
+  },
+  "optEnableClipboardHint": {
+    "message": "Автоматически сохранять содержимое буфера обмена",
+    "description": "Options clipboard enable hint"
+  },
+  "optMaxItems": {
+    "message": "Макс. элементов",
+    "description": "Options max items label"
+  },
+  "optMaxItemsHint": {
+    "message": "Максимальное количество записей буфера обмена",
+    "description": "Options max items hint"
+  },
+  "optRetentionPeriod": {
+    "message": "Период хранения",
+    "description": "Options retention period label"
+  },
+  "optRetentionHint": {
+    "message": "Дней до автоматического удаления старых записей",
+    "description": "Options retention hint"
+  },
+  "optDays": {
+    "message": "дней",
+    "description": "Options retention days suffix"
+  },
+  "optWatermarkStripping": {
+    "message": "Удаление водяных знаков",
+    "description": "Options watermark stripping label"
+  },
+  "optWatermarkHint": {
+    "message": "Удалять невидимые символы отслеживания из скопированного текста",
+    "description": "Options watermark hint"
+  },
+  "optAutoCitation": {
+    "message": "Автоцитирование",
+    "description": "Options auto citation label"
+  },
+  "optAutoCitationHint": {
+    "message": "Автоматически создавать цитату источника для скопированного текста",
+    "description": "Options auto citation hint"
+  },
+  "optCitationOff": {
+    "message": "Выкл",
+    "description": "Options citation mode off"
+  },
+  "optCitationUrl": {
+    "message": "Только URL (Бесплатно)",
+    "description": "Options citation mode url"
+  },
+  "optCitationFormatted": {
+    "message": "Форматированная (Pro)",
+    "description": "Options citation mode formatted"
+  },
+  "optDefaultPasteFormat": {
+    "message": "Формат вставки по умолчанию",
+    "description": "Options paste format label"
+  },
+  "optPasteFormatHint": {
+    "message": "Формат при вставке из истории",
+    "description": "Options paste format hint"
+  },
+  "optPastePlain": {
+    "message": "Простой текст",
+    "description": "Options paste format plain"
+  },
+  "optPasteRich": {
+    "message": "Форматированный текст",
+    "description": "Options paste format rich"
+  },
+  "optPasteClean": {
+    "message": "Чистый (свернуть пробелы)",
+    "description": "Options paste format clean"
+  },
+  "optPasteCitation": {
+    "message": "С цитатой",
+    "description": "Options paste format with citation"
+  },
+  "optPdfCleanup": {
+    "message": "Очистка переносов PDF",
+    "description": "Options PDF cleanup label"
+  },
+  "optPdfCleanupHint": {
+    "message": "Исправить искусственные переносы строк из PDF",
+    "description": "Options PDF cleanup hint"
+  },
+  "optSiteOverrides": {
+    "message": "Исключения для сайтов",
+    "description": "Options site overrides header"
+  },
+  "optSiteOverridesDesc": {
+    "message": "Установить пользовательские режимы разблокировки для конкретных сайтов.",
+    "description": "Options site overrides description"
+  },
+  "optNoOverrides": {
+    "message": "Исключения для сайтов не настроены.",
+    "description": "Options empty overrides state"
+  },
+  "optDisabled": {
+    "message": "Отключено",
+    "description": "Options override mode disabled"
+  },
+  "optAdd": {
+    "message": "Добавить",
+    "description": "Options add override button"
+  },
+  "optProTitle": {
+    "message": "CopyUnlock Pro",
+    "description": "Options pro section header"
+  },
+  "optProLicenseActive": {
+    "message": "Лицензия Pro активна",
+    "description": "Options pro active status"
+  },
+  "optProPlan": {
+    "message": "План",
+    "description": "Options pro plan label"
+  },
+  "optRefresh": {
+    "message": "Обновить",
+    "description": "Options refresh license button"
+  },
+  "optManageSubscription": {
+    "message": "Управление подпиской",
+    "description": "Options manage subscription label"
+  },
+  "optManageHint": {
+    "message": "Обновить способ оплаты, сменить план или отменить",
+    "description": "Options manage subscription hint"
+  },
+  "optManage": {
+    "message": "Управление",
+    "description": "Options manage button"
+  },
+  "optPrioritySupport": {
+    "message": "Приоритетная поддержка",
+    "description": "Options priority support label"
+  },
+  "optPrioritySupportHint": {
+    "message": "Участники Pro получают быстрые ответы",
+    "description": "Options priority support hint"
+  },
+  "optEmailUs": {
+    "message": "Написать нам",
+    "description": "Options email support button"
+  },
+  "optUnlockPower": {
+    "message": "Раскройте всю мощь",
+    "description": "Options pro hero title"
+  },
+  "optUnlockDesc": {
+    "message": "Полный движок разблокировки, безлимитный буфер обмена, коллекции, очистка PDF, форматированные цитаты и приоритетная поддержка.",
+    "description": "Options pro hero description"
+  },
+  "optProFeatureItems": {
+    "message": "100 000 элементов буфера обмена",
+    "description": "Options pro feature"
+  },
+  "optProFeatureItemsSub": {
+    "message": "вместо 500 в бесплатной версии",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureRetention": {
+    "message": "Хранение 10 лет",
+    "description": "Options pro feature"
+  },
+  "optProFeatureRetentionSub": {
+    "message": "вместо 30 дней в бесплатной",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureCollections": {
+    "message": "1 000 коллекций",
+    "description": "Options pro feature"
+  },
+  "optProFeatureCollectionsSub": {
+    "message": "вместо 3 в бесплатной",
+    "description": "Options pro feature sub"
+  },
+  "optProFeaturePdf": {
+    "message": "Очистка переносов PDF",
+    "description": "Options pro feature"
+  },
+  "optProFeaturePdfSub": {
+    "message": "Исправить сломанный текст PDF",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureCitations": {
+    "message": "Форматированные цитаты",
+    "description": "Options pro feature"
+  },
+  "optProFeatureCitationsSub": {
+    "message": "Автоматическое цитирование источников",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureSupport": {
+    "message": "Приоритетная поддержка",
+    "description": "Options pro feature"
+  },
+  "optProFeatureSupportSub": {
+    "message": "Быстрый ответ по email",
+    "description": "Options pro feature sub"
+  },
+  "optMonthly": {
+    "message": "Ежемесячно",
+    "description": "Options plan monthly"
+  },
+  "optAnnual": {
+    "message": "Ежегодно",
+    "description": "Options plan annual"
+  },
+  "optLifetime": {
+    "message": "Навсегда",
+    "description": "Options plan lifetime"
+  },
+  "optBestValue": {
+    "message": "Лучшая цена",
+    "description": "Options plan best value badge"
+  },
+  "optSave44": {
+    "message": "Скидка 44%",
+    "description": "Options annual savings"
+  },
+  "optOneTime": {
+    "message": "Единоразово",
+    "description": "Options lifetime one-time label"
+  },
+  "optProLegal": {
+    "message": "Оплата через Stripe. Отмена в любое время. Лицензия привязана к email вашего профиля Chrome.",
+    "description": "Options pro legal text"
+  },
+  "optAlreadyPurchased": {
+    "message": "Уже купили? Обновить лицензию",
+    "description": "Options refresh license link"
+  },
+  "optDataManagement": {
+    "message": "Управление данными",
+    "description": "Options data section header"
+  },
+  "optDataDesc": {
+    "message": "Экспорт, импорт или очистка данных расширения.",
+    "description": "Options data section description"
+  },
+  "optExportData": {
+    "message": "Экспорт данных",
+    "description": "Options export label"
+  },
+  "optExportHint": {
+    "message": "Скачать все настройки и историю в формате JSON",
+    "description": "Options export hint"
+  },
+  "optExport": {
+    "message": "Экспорт",
+    "description": "Options export button"
+  },
+  "optImportData": {
+    "message": "Импорт данных",
+    "description": "Options import label"
+  },
+  "optImportHint": {
+    "message": "Восстановить из ранее экспортированного JSON-файла",
+    "description": "Options import hint"
+  },
+  "optImport": {
+    "message": "Импорт",
+    "description": "Options import button"
+  },
+  "optClearAllData": {
+    "message": "Очистить все данные",
+    "description": "Options clear data label"
+  },
+  "optClearHint": {
+    "message": "Безвозвратно удалить все настройки, историю и исключения",
+    "description": "Options clear data hint"
+  },
+  "optClear": {
+    "message": "Очистить",
+    "description": "Options clear button"
+  },
+  "optStatistics": {
+    "message": "Статистика",
+    "description": "Options statistics header"
+  },
+  "optUnlocks": {
+    "message": "Разблокировок",
+    "description": "Options stat unlocks label"
+  },
+  "optCopiesSaved": {
+    "message": "Сохранено копий",
+    "description": "Options stat copies label"
+  },
+  "optWatermarksStripped": {
+    "message": "Удалено водяных знаков",
+    "description": "Options stat watermarks label"
+  },
+  "optNavGeneral": {
+    "message": "Общие",
+    "description": "Options nav general tab"
+  },
+  "optNavClipboard": {
+    "message": "Буфер",
+    "description": "Options nav clipboard tab"
+  },
+  "optNavSites": {
+    "message": "Сайты",
+    "description": "Options nav sites tab"
+  },
+  "optNavPro": {
+    "message": "Pro",
+    "description": "Options nav pro tab"
+  },
+  "optNavData": {
+    "message": "Данные",
+    "description": "Options nav data tab"
+  },
+  "optSaveFailed": {
+    "message": "Не удалось сохранить настройки",
+    "description": "Options save error toast"
+  },
+  "optImportSuccess": {
+    "message": "Данные успешно импортированы",
+    "description": "Options import success toast"
+  },
+  "optImportFailed": {
+    "message": "Ошибка импорта — недопустимый файл",
+    "description": "Options import error toast"
+  },
+  "optClearConfirm": {
+    "message": "Вы уверены, что хотите очистить все данные CopyUnlock? Это нельзя отменить.",
+    "description": "Options clear data confirm dialog"
+  },
+  "optAllDataCleared": {
+    "message": "Все данные очищены",
+    "description": "Options clear success toast"
+  },
+  "optClearFailed": {
+    "message": "Не удалось очистить данные",
+    "description": "Options clear error toast"
+  },
+  "optCheckingLicense": {
+    "message": "Проверка лицензии...",
+    "description": "Options license check toast"
+  },
+  "optProVerified": {
+    "message": "Лицензия Pro подтверждена!",
+    "description": "Options license verified toast"
+  },
+  "optNoLicense": {
+    "message": "Активная лицензия не найдена",
+    "description": "Options no license toast"
+  },
+  "optLicenseCheckFailed": {
+    "message": "Ошибка проверки лицензии",
+    "description": "Options license check error toast"
+  },
+  "optOpening": {
+    "message": "Открытие...",
+    "description": "Options manage subscription opening state"
+  },
+  "optOpeningPortal": {
+    "message": "Открытие портала оплаты...",
+    "description": "Options billing portal opening toast"
+  },
+  "optPortalFailed": {
+    "message": "Не удалось открыть портал оплаты. Обратитесь в поддержку.",
+    "description": "Options billing portal error toast"
+  },
+  "optPortalError": {
+    "message": "Ошибка открытия портала оплаты",
+    "description": "Options billing portal error toast"
+  },
+  "optExportFailed": {
+    "message": "Ошибка экспорта",
+    "description": "Options export error toast"
+  },
+  "optRenews": {
+    "message": "Продление $DATE$",
+    "description": "Options pro renewal date",
+    "placeholders": {
+      "DATE": {
+        "content": "$1",
+        "example": "Jan 15, 2026"
+      }
+    }
+  }
+}

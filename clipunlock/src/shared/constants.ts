@@ -2,12 +2,16 @@ export const EXT_NAME = 'CopyUnlock';
 export const EXT_VERSION = __VERSION__ ?? '1.0.0';
 
 // Clipboard limits
-export const FREE_MAX_ITEMS = 200;
+export const FREE_MAX_ITEMS = 500;
 export const FREE_RETENTION_DAYS = 30;
 export const FREE_MAX_PINS = 20;
 export const FREE_MAX_TAGS = 5;
+export const FREE_MAX_COLLECTIONS = 3;
 export const PRO_MAX_ITEMS = 100_000;
 export const PRO_RETENTION_DAYS = 3650; // 10 years
+export const PRO_MAX_COLLECTIONS = 1000;
+export const FREE_MAX_PROJECTS = 2;
+export const PRO_MAX_PROJECTS = 100;
 export const MAX_ITEM_SIZE_BYTES = 1_048_576; // 1MB
 export const PREVIEW_LENGTH = 200;
 export const DEDUP_WINDOW_MS = 5_000;
@@ -44,9 +48,22 @@ export const STORAGE_STATS = 'copyunlock_stats';
 
 // IDB
 export const IDB_NAME = 'copyunlock_db';
-export const IDB_VERSION = 1;
+export const IDB_VERSION = 3;
 export const IDB_STORE_CLIPS = 'clips';
 export const IDB_STORE_PROFILES = 'profiles';
+export const IDB_STORE_COLLECTIONS = 'collections';
+
+// Collection colors (flat, monochrome-friendly)
+export const COLLECTION_COLORS = [
+  '#3b82f6', // blue
+  '#8b5cf6', // violet
+  '#ec4899', // pink
+  '#f97316', // orange
+  '#eab308', // yellow
+  '#22c55e', // green
+  '#06b6d4', // cyan
+  '#64748b', // slate
+] as const;
 
 // Watermark characters to strip
 export const WATERMARK_CHARS: number[] = [

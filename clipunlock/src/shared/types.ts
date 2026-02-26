@@ -1,4 +1,4 @@
-// ─── Blocking Method Catalog (29 methods) ───
+// ─── Blocking Method Catalog (39 methods) ───
 
 export type BlockingCategory = 'css' | 'js-event' | 'js-advanced' | 'dom' | 'server';
 
@@ -42,6 +42,9 @@ export interface SiteProtectionProfile {
 
 export type ContentType = 'text' | 'html' | 'url' | 'email' | 'code' | 'image';
 
+export type CitationStyle = 'none' | 'url' | 'formatted';
+export type PasteFormat = 'plain' | 'rich' | 'clean' | 'with-citation';
+
 export interface ClipboardEntry {
   id: string;
   content: string;
@@ -60,6 +63,28 @@ export interface ClipboardEntry {
   wasUnlocked: boolean;
   watermarkStripped: boolean;
   searchText: string;
+  /** Collection this clip belongs to (null = uncategorized) */
+  collection: string | null;
+  /** Pre-generated citation string for this clip */
+  citation: string | null;
+  /** Whether PDF line break cleanup was applied */
+  pdfCleaned: boolean;
+}
+
+// ─── Collections ───
+
+export interface Collection {
+  id: string;
+  name: string;
+  color: string;
+  createdAt: number;
+  itemCount: number;
+  /** Whether this is a project (enhanced collection with auto-capture + export) */
+  isProject: boolean;
+  /** Domains that auto-file clips into this project */
+  autoCaptureDomains: string[];
+  /** Optional project description */
+  description: string;
 }
 
 // ─── Site Profiles ───
@@ -86,6 +111,14 @@ export interface ExtensionSettings {
   showNotifications: boolean;
   theme: 'dark' | 'light' | 'system';
   siteOverrides: Record<string, { enabled: boolean; mode: UnlockMode }>;
+  /** Auto-citation: 'none' | 'url' (free) | 'formatted' (pro) */
+  autoCitation: CitationStyle;
+  /** PDF line break cleanup on copy (Pro only) */
+  pdfCleanup: boolean;
+  /** Default paste format */
+  defaultPasteFormat: PasteFormat;
+  /** Show context menu (right-click menu) */
+  contextMenuEnabled: boolean;
 }
 
 export const DEFAULT_SETTINGS: ExtensionSettings = {
@@ -98,6 +131,10 @@ export const DEFAULT_SETTINGS: ExtensionSettings = {
   showNotifications: true,
   theme: 'dark',
   siteOverrides: {},
+  autoCitation: 'url',
+  pdfCleanup: false,
+  defaultPasteFormat: 'plain',
+  contextMenuEnabled: true,
 };
 
 // ─── Main World Detection Data (bridged from MAIN → ISOLATED via CustomEvent) ───

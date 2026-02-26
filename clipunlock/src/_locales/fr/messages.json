@@ -1,51 +1,83 @@
 {
   "extensionName": {
     "message": "CopyUnlock",
-    "description": "Nom de l'extension"
+    "description": "Extension name"
   },
   "extensionDescription": {
     "message": "Débloquez les restrictions de copie et gérez votre historique du presse-papiers facilement.",
-    "description": "Description de l'extension"
+    "description": "Extension description"
   },
   "commandToggle": {
     "message": "Basculer CopyUnlock",
-    "description": "Commande clavier pour basculer l'extension"
+    "description": "Keyboard command to toggle the extension"
   },
   "commandClipboard": {
     "message": "Ouvrir l'Historique du Presse-papiers",
-    "description": "Commande clavier pour ouvrir l'historique"
+    "description": "Keyboard command to open clipboard history"
   },
   "commandSearch": {
     "message": "Rechercher dans le Presse-papiers",
-    "description": "Commande clavier pour rechercher"
+    "description": "Keyboard command to search clipboard"
+  },
+  "contextMenuUnlock": {
+    "message": "Déverrouiller la Page",
+    "description": "Context menu toggle unlock"
+  },
+  "contextMenuLock": {
+    "message": "Verrouiller la Page (annuler)",
+    "description": "Context menu toggle lock"
   },
   "contextMenuCopy": {
-    "message": "Copier (CopyUnlock)",
-    "description": "Option de copie dans le menu contextuel"
+    "message": "Copier dans l'Historique",
+    "description": "Context menu copy option"
   },
   "contextMenuCopyClean": {
-    "message": "Copier le Texte Propre",
-    "description": "Copier sans filigranes"
+    "message": "Copier Propre (sans filigranes)",
+    "description": "Context menu copy without watermarks"
+  },
+  "contextMenuCopyCitation": {
+    "message": "Copier avec Citation",
+    "description": "Context menu copy with source citation"
   },
   "contextMenuPin": {
-    "message": "Épingler au Presse-papiers",
-    "description": "Option d'épinglage dans le menu contextuel"
+    "message": "Épingler la Sélection",
+    "description": "Context menu pin option"
   },
-  "contextMenuSearch": {
-    "message": "Rechercher dans l'Historique du Presse-papiers",
-    "description": "Option de recherche dans le menu contextuel"
+  "contextMenuSaveCollection": {
+    "message": "Enregistrer dans une Collection",
+    "description": "Context menu save to collection parent"
+  },
+  "contextMenuNewCollection": {
+    "message": "+ Nouvelle Collection...",
+    "description": "Context menu create new collection"
+  },
+  "contextMenuMode": {
+    "message": "Mode",
+    "description": "Context menu mode parent"
+  },
+  "contextMenuClipboardHistory": {
+    "message": "Historique du Presse-papiers",
+    "description": "Context menu open clipboard history"
+  },
+  "contextMenuQuickPaste": {
+    "message": "Collage Rapide",
+    "description": "Context menu quick paste overlay"
+  },
+  "contextMenuSettings": {
+    "message": "Paramètres",
+    "description": "Context menu open settings"
   },
   "popupEnable": {
     "message": "Activer",
-    "description": "Libellé du bouton d'activation"
+    "description": "Popup enable button label"
   },
   "popupActive": {
     "message": "Actif",
-    "description": "Libellé de l'état actif"
+    "description": "Popup active state label"
   },
   "popupProtections": {
     "message": "$COUNT$ protections supprimées",
-    "description": "Nombre de protections supprimées",
+    "description": "Number of protections removed",
     "placeholders": {
       "COUNT": {
         "content": "$1",
@@ -55,87 +87,91 @@
   },
   "modeAuto": {
     "message": "Auto",
-    "description": "Libellé du mode automatique"
+    "description": "Auto mode label"
   },
   "modeSafe": {
     "message": "Prudent",
-    "description": "Libellé du mode prudent"
+    "description": "Safe mode label"
   },
   "modeAggressive": {
     "message": "Agressif",
-    "description": "Libellé du mode agressif"
+    "description": "Aggressive mode label"
   },
   "recentCopies": {
     "message": "Copies Récentes",
-    "description": "En-tête des éléments récents"
+    "description": "Recent clipboard items header"
   },
   "noHistory": {
     "message": "Pas encore d'historique du presse-papiers",
-    "description": "État vide du presse-papiers"
+    "description": "Empty clipboard state"
   },
   "clipboardHistory": {
     "message": "Historique du Presse-papiers",
-    "description": "Titre de l'historique"
+    "description": "Clipboard history title"
   },
   "settings": {
     "message": "Paramètres",
-    "description": "Titre de la page de paramètres"
+    "description": "Settings page title"
   },
   "searchPlaceholder": {
     "message": "Rechercher dans l'historique...",
-    "description": "Placeholder du champ de recherche"
+    "description": "Search input placeholder"
   },
   "filterAll": {
     "message": "Tout",
-    "description": "Filtrer tout"
+    "description": "Filter all items"
   },
   "filterPinned": {
     "message": "Épinglés",
-    "description": "Filtrer les épinglés"
+    "description": "Filter pinned items"
   },
   "filterUrls": {
     "message": "URLs",
-    "description": "Filtrer les URLs"
+    "description": "Filter URL items"
   },
   "filterCode": {
     "message": "Code",
-    "description": "Filtrer le code"
+    "description": "Filter code items"
   },
   "filterText": {
     "message": "Texte",
-    "description": "Filtrer le texte"
+    "description": "Filter text items"
+  },
+  "typeAuto": {
+    "message": "Auto-detect",
+    "description": "Auto-detect content type option in add overlay"
   },
   "copy": {
     "message": "Copier",
-    "description": "Action de copie"
+    "description": "Copy action"
   },
   "copied": {
     "message": "Copié !",
-    "description": "Confirmation de copie"
+    "description": "Copy confirmation"
   },
   "pin": {
     "message": "Épingler",
-    "description": "Action d'épinglage"
+    "description": "Pin action"
   },
   "unpin": {
     "message": "Désépingler",
-    "description": "Action de désépinglage"
+    "description": "Unpin action"
   },
   "delete": {
     "message": "Supprimer",
-    "description": "Action de suppression"
+    "description": "Delete action"
   },
   "clearAll": {
     "message": "Tout Effacer",
-    "description": "Effacer tous les éléments"
+    "description": "Clear all items"
   },
   "clearConfirm": {
     "message": "Effacer tout l'historique du presse-papiers ? Cette action est irréversible.",
-    "description": "Dialogue de confirmation d'effacement"
+    "description": "Clear confirmation dialog"
   },
   "items": {
     "message": "$COUNT$ éléments",
-    "description": "Compteur d'éléments",
+    "description": "Item count display",
     "placeholders": {
       "COUNT": {
         "content": "$1",
@@ -145,11 +181,11 @@
   },
   "justNow": {
     "message": "À l'instant",
-    "description": "Temps - à l'instant"
+    "description": "Time ago - just now"
   },
   "minutesAgo": {
     "message": "il y a $MINUTES$m",
-    "description": "Temps - minutes",
+    "description": "Time ago - minutes",
     "placeholders": {
       "MINUTES": {
         "content": "$1",
@@ -159,7 +195,7 @@
   },
   "hoursAgo": {
     "message": "il y a $HOURS$h",
-    "description": "Temps - heures",
+    "description": "Time ago - hours",
     "placeholders": {
       "HOURS": {
         "content": "$1",
@@ -169,7 +205,7 @@
   },
   "daysAgo": {
     "message": "il y a $DAYS$j",
-    "description": "Temps - jours",
+    "description": "Time ago - days",
     "placeholders": {
       "DAYS": {
         "content": "$1",
@@ -179,14 +215,616 @@
   },
   "watermarkNotice": {
     "message": "Les caractères de filigrane ont été supprimés du texte copié.",
-    "description": "Notification de suppression de filigrane"
+    "description": "Watermark stripping notification"
   },
   "settingsSaved": {
     "message": "Paramètres enregistrés",
-    "description": "Confirmation d'enregistrement"
+    "description": "Settings save confirmation"
   },
   "exportSuccess": {
     "message": "Données exportées avec succès",
-    "description": "Message de succès d'exportation"
+    "description": "Export success message"
+  },
+  "protectionActive": {
+    "message": "Protection active",
+    "description": "Popup label when unlock is active"
+  },
+  "tapToEnable": {
+    "message": "Appuyer pour activer",
+    "description": "Popup label when unlock is inactive"
+  },
+  "statusActive": {
+    "message": "Actif",
+    "description": "Popup status pill when active"
+  },
+  "statusOff": {
+    "message": "Désactivé",
+    "description": "Popup status pill when off"
+  },
+  "noRecentCopies": {
+    "message": "Aucune copie récente",
+    "description": "Popup empty clipboard state"
+  },
+  "timeNow": {
+    "message": "maintenant",
+    "description": "Popup time ago - just now short form"
+  },
+  "removed": {
+    "message": "$COUNT$ supprimées",
+    "description": "Popup protection count label",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "history": {
+    "message": "Historique",
+    "description": "Popup button to open clipboard history"
+  },
+  "recentLabel": {
+    "message": "Récents",
+    "description": "Popup section header for recent clipboard items"
+  },
+  "allCollections": {
+    "message": "Toutes les collections",
+    "description": "Sidepanel collection filter default option"
+  },
+  "none": {
+    "message": "Aucune",
+    "description": "Sidepanel collection select no-collection option"
+  },
+  "saving": {
+    "message": "Enregistrement...",
+    "description": "Sidepanel add overlay saving indicator"
+  },
+  "save": {
+    "message": "Enregistrer",
+    "description": "Sidepanel add overlay save button"
+  },
+  "addTitle": {
+    "message": "Ajouter à l'historique du presse-papiers",
+    "description": "Sidepanel add overlay title"
+  },
+  "addPlaceholder": {
+    "message": "Collez ou tapez n'importe quoi — URLs, texte, code...",
+    "description": "Sidepanel add overlay placeholder"
+  },
+  "addButton": {
+    "message": "+ Ajouter",
+    "description": "Sidepanel footer add button label"
+  },
+  "back": {
+    "message": "Retour",
+    "description": "Detail panel back button"
+  },
+  "cite": {
+    "message": "+ Citer",
+    "description": "Detail panel copy with citation button"
+  },
+  "open": {
+    "message": "Ouvrir",
+    "description": "Detail panel open source URL button"
+  },
+  "emptyUrlIcon": {
+    "message": "&#128279;",
+    "description": "Empty state icon for URLs filter"
+  },
+  "emptyUrlText": {
+    "message": "Aucune URL enregistrée",
+    "description": "Empty state text for URLs filter"
+  },
+  "emptyUrlHint": {
+    "message": "Copiez une URL depuis votre navigateur pour l'enregistrer ici, ou cliquez sur + Ajouter ci-dessous.",
+    "description": "Empty state hint for URLs filter"
+  },
+  "emptyCodeText": {
+    "message": "Aucun extrait de code",
+    "description": "Empty state text for Code filter"
+  },
+  "emptyCodeHint": {
+    "message": "Copiez du code depuis un éditeur ou un site web pour l'enregistrer ici.",
+    "description": "Empty state hint for Code filter"
+  },
+  "emptyTextText": {
+    "message": "Aucun clip de texte",
+    "description": "Empty state text for Text filter"
+  },
+  "emptyTextHint": {
+    "message": "Copiez du texte depuis n'importe quelle page pour commencer à construire votre historique.",
+    "description": "Empty state hint for Text filter"
+  },
+  "emptyPinnedText": {
+    "message": "Aucun élément épinglé",
+    "description": "Empty state text for Pinned filter"
+  },
+  "emptyPinnedHint": {
+    "message": "Ouvrez un élément et cliquez sur Épingler pour le garder en haut.",
+    "description": "Empty state hint for Pinned filter"
+  },
+  "emptyDefaultHint": {
+    "message": "Copiez n'importe quoi sur le web — ça apparaît ici automatiquement.",
+    "description": "Empty state hint for All filter"
+  },
+  "words": {
+    "message": "$COUNT$ mots",
+    "description": "Word count display in clip items",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "42"
+      }
+    }
+  },
+  "pdfCleaned": {
+    "message": "PDF nettoyé",
+    "description": "PDF cleaned indicator in detail view"
+  },
+  "type": {
+    "message": "Type",
+    "description": "Type label in detail view"
+  },
+  "source": {
+    "message": "Source",
+    "description": "Source label in detail view"
+  },
+  "optGeneralSettings": {
+    "message": "Paramètres généraux",
+    "description": "Options page general settings header"
+  },
+  "optGeneralDesc": {
+    "message": "Configurez le comportement principal de CopyUnlock.",
+    "description": "Options page general settings description"
+  },
+  "optEnableCopyUnlock": {
+    "message": "Activer CopyUnlock",
+    "description": "Options enable toggle label"
+  },
+  "optEnableHint": {
+    "message": "Interrupteur principal pour toutes les fonctions de déblocage",
+    "description": "Options enable toggle hint"
+  },
+  "optDefaultMode": {
+    "message": "Mode par défaut",
+    "description": "Options default mode label"
+  },
+  "optDefaultModeHint": {
+    "message": "Agressivité de la suppression des protections de copie",
+    "description": "Options default mode hint"
+  },
+  "optShowNotifications": {
+    "message": "Afficher les notifications",
+    "description": "Options notifications toggle label"
+  },
+  "optNotificationsHint": {
+    "message": "Afficher un toast quand les protections sont supprimées",
+    "description": "Options notifications hint"
+  },
+  "optContextMenu": {
+    "message": "Menu contextuel",
+    "description": "Options context menu toggle label"
+  },
+  "optContextMenuHint": {
+    "message": "Afficher CopyUnlock dans le menu clic-droit",
+    "description": "Options context menu hint"
+  },
+  "optKeyboardShortcuts": {
+    "message": "Raccourcis clavier",
+    "description": "Options keyboard shortcuts header"
+  },
+  "optToggleCopyUnlock": {
+    "message": "Basculer CopyUnlock",
+    "description": "Options shortcut action label"
+  },
+  "optOpenClipboardHistory": {
+    "message": "Ouvrir l'historique du presse-papiers",
+    "description": "Options shortcut action label"
+  },
+  "optSearchClipboard": {
+    "message": "Rechercher dans le presse-papiers",
+    "description": "Options shortcut action label"
+  },
+  "optQuickPaste": {
+    "message": "Collage rapide",
+    "description": "Options shortcut action label"
+  },
+  "optConfigureShortcuts": {
+    "message": "Configurer dans les paramètres Chrome",
+    "description": "Options link to chrome shortcuts page"
+  },
+  "optClipboardHistory": {
+    "message": "Historique du presse-papiers",
+    "description": "Options clipboard section header"
+  },
+  "optClipboardDesc": {
+    "message": "Gérer le stockage des éléments du presse-papiers.",
+    "description": "Options clipboard section description"
+  },
+  "optEnableClipboard": {
+    "message": "Activer l'historique du presse-papiers",
+    "description": "Options clipboard enable label"
+  },
+  "optEnableClipboardHint": {
+    "message": "Sauvegarder automatiquement le contenu du presse-papiers",
+    "description": "Options clipboard enable hint"
+  },
+  "optMaxItems": {
+    "message": "Éléments max",
+    "description": "Options max items label"
+  },
+  "optMaxItemsHint": {
+    "message": "Nombre maximum d'entrées du presse-papiers",
+    "description": "Options max items hint"
+  },
+  "optRetentionPeriod": {
+    "message": "Période de rétention",
+    "description": "Options retention period label"
+  },
+  "optRetentionHint": {
+    "message": "Jours avant la purge automatique des anciennes entrées",
+    "description": "Options retention hint"
+  },
+  "optDays": {
+    "message": "jours",
+    "description": "Options retention days suffix"
+  },
+  "optWatermarkStripping": {
+    "message": "Suppression des filigranes",
+    "description": "Options watermark stripping label"
+  },
+  "optWatermarkHint": {
+    "message": "Supprimer les caractères de suivi invisibles du texte copié",
+    "description": "Options watermark hint"
+  },
+  "optAutoCitation": {
+    "message": "Citation automatique",
+    "description": "Options auto citation label"
+  },
+  "optAutoCitationHint": {
+    "message": "Générer automatiquement la citation source du texte copié",
+    "description": "Options auto citation hint"
+  },
+  "optCitationOff": {
+    "message": "Désactivé",
+    "description": "Options citation mode off"
+  },
+  "optCitationUrl": {
+    "message": "URL uniquement (Gratuit)",
+    "description": "Options citation mode url"
+  },
+  "optCitationFormatted": {
+    "message": "Formaté (Pro)",
+    "description": "Options citation mode formatted"
+  },
+  "optDefaultPasteFormat": {
+    "message": "Format de collage par défaut",
+    "description": "Options paste format label"
+  },
+  "optPasteFormatHint": {
+    "message": "Format utilisé lors du collage depuis l'historique",
+    "description": "Options paste format hint"
+  },
+  "optPastePlain": {
+    "message": "Texte brut",
+    "description": "Options paste format plain"
+  },
+  "optPasteRich": {
+    "message": "Texte enrichi (avec mise en forme)",
+    "description": "Options paste format rich"
+  },
+  "optPasteClean": {
+    "message": "Nettoyé (réduire les espaces)",
+    "description": "Options paste format clean"
+  },
+  "optPasteCitation": {
+    "message": "Avec citation",
+    "description": "Options paste format with citation"
+  },
+  "optPdfCleanup": {
+    "message": "Nettoyage des sauts de ligne PDF",
+    "description": "Options PDF cleanup label"
+  },
+  "optPdfCleanupHint": {
+    "message": "Corriger les sauts de ligne artificiels du texte PDF copié",
+    "description": "Options PDF cleanup hint"
+  },
+  "optSiteOverrides": {
+    "message": "Exceptions de sites",
+    "description": "Options site overrides header"
+  },
+  "optSiteOverridesDesc": {
+    "message": "Définir des modes de déblocage personnalisés pour des sites spécifiques.",
+    "description": "Options site overrides description"
+  },
+  "optNoOverrides": {
+    "message": "Aucune exception de site configurée.",
+    "description": "Options empty overrides state"
+  },
+  "optDisabled": {
+    "message": "Désactivé",
+    "description": "Options override mode disabled"
+  },
+  "optAdd": {
+    "message": "Ajouter",
+    "description": "Options add override button"
+  },
+  "optProTitle": {
+    "message": "CopyUnlock Pro",
+    "description": "Options pro section header"
+  },
+  "optProLicenseActive": {
+    "message": "Licence Pro active",
+    "description": "Options pro active status"
+  },
+  "optProPlan": {
+    "message": "Plan",
+    "description": "Options pro plan label"
+  },
+  "optRefresh": {
+    "message": "Actualiser",
+    "description": "Options refresh license button"
+  },
+  "optManageSubscription": {
+    "message": "Gérer l'abonnement",
+    "description": "Options manage subscription label"
+  },
+  "optManageHint": {
+    "message": "Mettre à jour le paiement, changer de plan ou annuler",
+    "description": "Options manage subscription hint"
+  },
+  "optManage": {
+    "message": "Gérer",
+    "description": "Options manage button"
+  },
+  "optPrioritySupport": {
+    "message": "Support prioritaire",
+    "description": "Options priority support label"
+  },
+  "optPrioritySupportHint": {
+    "message": "Les membres Pro bénéficient de temps de réponse rapides",
+    "description": "Options priority support hint"
+  },
+  "optEmailUs": {
+    "message": "Nous contacter",
+    "description": "Options email support button"
+  },
+  "optUnlockPower": {
+    "message": "Débloquez toute la puissance",
+    "description": "Options pro hero title"
+  },
+  "optUnlockDesc": {
+    "message": "Moteur de déblocage complet, presse-papiers illimité, collections, nettoyage PDF, citations formatées et support prioritaire.",
+    "description": "Options pro hero description"
+  },
+  "optProFeatureItems": {
+    "message": "100 000 éléments du presse-papiers",
+    "description": "Options pro feature"
+  },
+  "optProFeatureItemsSub": {
+    "message": "vs 500 en version gratuite",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureRetention": {
+    "message": "Rétention de 10 ans",
+    "description": "Options pro feature"
+  },
+  "optProFeatureRetentionSub": {
+    "message": "vs 30 jours en gratuit",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureCollections": {
+    "message": "1 000 collections",
+    "description": "Options pro feature"
+  },
+  "optProFeatureCollectionsSub": {
+    "message": "vs 3 en gratuit",
+    "description": "Options pro feature sub"
+  },
+  "optProFeaturePdf": {
+    "message": "Nettoyage des sauts de ligne PDF",
+    "description": "Options pro feature"
+  },
+  "optProFeaturePdfSub": {
+    "message": "Corriger le texte PDF cassé",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureCitations": {
+    "message": "Citations formatées",
+    "description": "Options pro feature"
+  },
+  "optProFeatureCitationsSub": {
+    "message": "Citez vos sources automatiquement",
+    "description": "Options pro feature sub"
+  },
+  "optProFeatureSupport": {
+    "message": "Support prioritaire",
+    "description": "Options pro feature"
+  },
+  "optProFeatureSupportSub": {
+    "message": "Réponse rapide par email",
+    "description": "Options pro feature sub"
+  },
+  "optMonthly": {
+    "message": "Mensuel",
+    "description": "Options plan monthly"
+  },
+  "optAnnual": {
+    "message": "Annuel",
+    "description": "Options plan annual"
+  },
+  "optLifetime": {
+    "message": "À vie",
+    "description": "Options plan lifetime"
+  },
+  "optBestValue": {
+    "message": "Meilleure valeur",
+    "description": "Options plan best value badge"
+  },
+  "optSave44": {
+    "message": "Économisez 44%",
+    "description": "Options annual savings"
+  },
+  "optOneTime": {
+    "message": "Paiement unique",
+    "description": "Options lifetime one-time label"
+  },
+  "optProLegal": {
+    "message": "Powered by Stripe. Annulez à tout moment. Licence liée à l'email de votre profil Chrome.",
+    "description": "Options pro legal text"
+  },
+  "optAlreadyPurchased": {
+    "message": "Déjà acheté ? Actualiser la licence",
+    "description": "Options refresh license link"
+  },
+  "optDataManagement": {
+    "message": "Gestion des données",
+    "description": "Options data section header"
+  },
+  "optDataDesc": {
+    "message": "Exporter, importer ou effacer les données de l'extension.",
+    "description": "Options data section description"
+  },
+  "optExportData": {
+    "message": "Exporter les données",
+    "description": "Options export label"
+  },
+  "optExportHint": {
+    "message": "Télécharger tous les paramètres et l'historique en JSON",
+    "description": "Options export hint"
+  },
+  "optExport": {
+    "message": "Exporter",
+    "description": "Options export button"
+  },
+  "optImportData": {
+    "message": "Importer les données",
+    "description": "Options import label"
+  },
+  "optImportHint": {
+    "message": "Restaurer depuis un fichier JSON précédemment exporté",
+    "description": "Options import hint"
+  },
+  "optImport": {
+    "message": "Importer",
+    "description": "Options import button"
+  },
+  "optClearAllData": {
+    "message": "Effacer toutes les données",
+    "description": "Options clear data label"
+  },
+  "optClearHint": {
+    "message": "Supprimer définitivement tous les paramètres, l'historique et les exceptions",
+    "description": "Options clear data hint"
+  },
+  "optClear": {
+    "message": "Effacer",
+    "description": "Options clear button"
+  },
+  "optStatistics": {
+    "message": "Statistiques",
+    "description": "Options statistics header"
+  },
+  "optUnlocks": {
+    "message": "Déblocages",
+    "description": "Options stat unlocks label"
+  },
+  "optCopiesSaved": {
+    "message": "Copies sauvegardées",
+    "description": "Options stat copies label"
+  },
+  "optWatermarksStripped": {
+    "message": "Filigranes supprimés",
+    "description": "Options stat watermarks label"
+  },
+  "optNavGeneral": {
+    "message": "Général",
+    "description": "Options nav general tab"
+  },
+  "optNavClipboard": {
+    "message": "Presse-papiers",
+    "description": "Options nav clipboard tab"
+  },
+  "optNavSites": {
+    "message": "Sites",
+    "description": "Options nav sites tab"
+  },
+  "optNavPro": {
+    "message": "Pro",
+    "description": "Options nav pro tab"
+  },
+  "optNavData": {
+    "message": "Données",
+    "description": "Options nav data tab"
+  },
+  "optSaveFailed": {
+    "message": "Échec de la sauvegarde des paramètres",
+    "description": "Options save error toast"
+  },
+  "optImportSuccess": {
+    "message": "Données importées avec succès",
+    "description": "Options import success toast"
+  },
+  "optImportFailed": {
+    "message": "Échec de l'importation — fichier invalide",
+    "description": "Options import error toast"
+  },
+  "optClearConfirm": {
+    "message": "Êtes-vous sûr de vouloir effacer toutes les données CopyUnlock ? Cette action est irréversible.",
+    "description": "Options clear data confirm dialog"
+  },
+  "optAllDataCleared": {
+    "message": "Toutes les données effacées",
+    "description": "Options clear success toast"
+  },
+  "optClearFailed": {
+    "message": "Échec de la suppression des données",
+    "description": "Options clear error toast"
+  },
+  "optCheckingLicense": {
+    "message": "Vérification de la licence...",
+    "description": "Options license check toast"
+  },
+  "optProVerified": {
+    "message": "Licence Pro vérifiée !",
+    "description": "Options license verified toast"
+  },
+  "optNoLicense": {
+    "message": "Aucune licence active trouvée",
+    "description": "Options no license toast"
+  },
+  "optLicenseCheckFailed": {
+    "message": "Échec de la vérification de la licence",
+    "description": "Options license check error toast"
+  },
+  "optOpening": {
+    "message": "Ouverture...",
+    "description": "Options manage subscription opening state"
+  },
+  "optOpeningPortal": {
+    "message": "Ouverture du portail de facturation...",
+    "description": "Options billing portal opening toast"
+  },
+  "optPortalFailed": {
+    "message": "Impossible d'ouvrir le portail de facturation. Contactez le support.",
+    "description": "Options billing portal error toast"
+  },
+  "optPortalError": {
+    "message": "Échec de l'ouverture du portail de facturation",
+    "description": "Options billing portal error toast"
+  },
+  "optExportFailed": {
+    "message": "Échec de l'exportation",
+    "description": "Options export error toast"
+  },
+  "optRenews": {
+    "message": "Renouvellement le $DATE$",
+    "description": "Options pro renewal date",
+    "placeholders": {
+      "DATE": {
+        "content": "$1",
+        "example": "Jan 15, 2026"
+      }
+    }
   }
 }

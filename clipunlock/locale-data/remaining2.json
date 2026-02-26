@@ -1,0 +1,180 @@
+{
+  "hi": {
+    "extensionDescription": "कॉपी प्रतिबंधों को अनलॉक करें और अपने क्लिपबोर्ड इतिहास को आसानी से प्रबंधित करें।",
+    "popupEnable": "सक्षम करें", "popupActive": "सक्रिय", "modeAuto": "ऑटो", "modeSafe": "सुरक्षित", "modeAggressive": "आक्रामक",
+    "copy": "कॉपी", "copied": "कॉपी हो गया!", "pin": "पिन", "unpin": "अनपिन", "delete": "हटाएँ", "settings": "सेटिंग्स",
+    "protectionActive": "सुरक्षा सक्रिय", "tapToEnable": "सक्षम करने के लिए टैप करें", "statusActive": "सक्रिय", "statusOff": "बंद",
+    "noRecentCopies": "कोई हाल की कॉपी नहीं", "timeNow": "अभी", "history": "इतिहास", "save": "सहेजें", "back": "वापस", "open": "खोलें"
+  },
+  "bn": {
+    "extensionDescription": "কপি সীমাবদ্ধতা আনলক করুন এবং সহজেই আপনার ক্লিপবোর্ড ইতিহাস পরিচালনা করুন।",
+    "popupEnable": "সক্রিয় করুন", "popupActive": "সক্রিয়", "modeAuto": "স্বয়ংক্রিয়", "modeSafe": "নিরাপদ", "modeAggressive": "আক্রমণাত্মক",
+    "copy": "কপি", "copied": "কপি হয়েছে!", "pin": "পিন", "delete": "মুছুন", "settings": "সেটিংস",
+    "protectionActive": "সুরক্ষা সক্রিয়", "tapToEnable": "সক্রিয় করতে ট্যাপ করুন", "statusActive": "সক্রিয়", "statusOff": "বন্ধ",
+    "timeNow": "এখন", "history": "ইতিহাস", "save": "সংরক্ষণ", "back": "পিছনে", "open": "খুলুন"
+  },
+  "ca": {
+    "extensionDescription": "Desbloqueja les restriccions de còpia i gestiona l'historial del porta-retalls fàcilment.",
+    "popupEnable": "Activar", "popupActive": "Actiu", "modeAuto": "Auto", "modeSafe": "Segur", "modeAggressive": "Agressiu",
+    "copy": "Copiar", "copied": "Copiat!", "pin": "Fixar", "delete": "Eliminar", "settings": "Configuració",
+    "protectionActive": "Protecció activa", "tapToEnable": "Toca per activar", "statusActive": "Actiu", "statusOff": "Desactivat",
+    "timeNow": "ara", "history": "Historial", "save": "Desar", "back": "Enrere", "open": "Obrir"
+  },
+  "cs": {
+    "extensionDescription": "Odemkněte omezení kopírování a snadno spravujte historii schránky.",
+    "popupEnable": "Povolit", "popupActive": "Aktivní", "modeAuto": "Auto", "modeSafe": "Bezpečný", "modeAggressive": "Agresivní",
+    "copy": "Kopírovat", "copied": "Zkopírováno!", "pin": "Připnout", "delete": "Smazat", "settings": "Nastavení",
+    "protectionActive": "Ochrana aktivní", "tapToEnable": "Klepnutím aktivujte", "statusActive": "Aktivní", "statusOff": "Vypnuto",
+    "timeNow": "nyní", "history": "Historie", "save": "Uložit", "back": "Zpět", "open": "Otevřít"
+  },
+  "el": {
+    "extensionDescription": "Ξεκλειδώστε τους περιορισμούς αντιγραφής και διαχειριστείτε εύκολα το ιστορικό του πρόχειρου.",
+    "popupEnable": "Ενεργοποίηση", "popupActive": "Ενεργό", "modeAuto": "Αυτόματο", "modeSafe": "Ασφαλές", "modeAggressive": "Επιθετικό",
+    "copy": "Αντιγραφή", "copied": "Αντιγράφηκε!", "pin": "Καρφίτσωμα", "delete": "Διαγραφή", "settings": "Ρυθμίσεις",
+    "protectionActive": "Προστασία ενεργή", "tapToEnable": "Πατήστε για ενεργοποίηση", "statusActive": "Ενεργό", "statusOff": "Απενεργοποιημένο",
+    "timeNow": "τώρα", "history": "Ιστορικό", "save": "Αποθήκευση", "back": "Πίσω", "open": "Άνοιγμα"
+  },
+  "et": {
+    "extensionDescription": "Avage kopeerimispiirangud ja hallake lõikelaua ajalugu lihtsalt.",
+    "popupEnable": "Luba", "popupActive": "Aktiivne", "copy": "Kopeeri", "copied": "Kopeeritud!", "delete": "Kustuta", "settings": "Seaded",
+    "protectionActive": "Kaitse aktiivne", "tapToEnable": "Puudutage lubamiseks", "statusActive": "Aktiivne", "statusOff": "Väljas",
+    "timeNow": "praegu", "history": "Ajalugu", "save": "Salvesta", "back": "Tagasi", "open": "Ava"
+  },
+  "fa": {
+    "extensionDescription": "محدودیت‌های کپی را باز کنید و تاریخچه کلیپ‌بورد خود را به راحتی مدیریت کنید.",
+    "popupEnable": "فعال‌سازی", "popupActive": "فعال", "copy": "کپی", "copied": "کپی شد!", "delete": "حذف", "settings": "تنظیمات",
+    "protectionActive": "محافظت فعال", "tapToEnable": "برای فعال‌سازی ضربه بزنید", "statusActive": "فعال", "statusOff": "خاموش",
+    "timeNow": "الان", "history": "تاریخچه", "save": "ذخیره", "back": "بازگشت", "open": "باز کردن"
+  },
+  "fil": {
+    "extensionDescription": "I-unlock ang mga copy restriction at pamahalaan ang iyong clipboard history nang madali.",
+    "popupEnable": "I-enable", "popupActive": "Aktibo", "copy": "Kopyahin", "copied": "Nakopya!", "delete": "Tanggalin", "settings": "Mga Setting",
+    "protectionActive": "Proteksyon aktibo", "tapToEnable": "I-tap para i-enable", "statusActive": "Aktibo", "statusOff": "Naka-off",
+    "timeNow": "ngayon", "history": "Kasaysayan", "save": "I-save", "back": "Bumalik", "open": "Buksan"
+  },
+  "gu": {
+    "extensionDescription": "કૉપી પ્રતિબંધો અનલૉક કરો અને તમારા ક્લિપબોર્ડ ઇતિહાસનું સરળતાથી સંચાલન કરો.",
+    "popupEnable": "સક્ષમ કરો", "popupActive": "સક્રિય", "copy": "કૉપી", "copied": "કૉપી થયું!", "settings": "સેટિંગ્સ",
+    "protectionActive": "સુરક્ષા સક્રિય", "statusActive": "સક્રિય", "statusOff": "બંધ", "save": "સાચવો", "back": "પાછા", "open": "ખોલો"
+  },
+  "he": {
+    "extensionDescription": "בטלו הגבלות העתקה ונהלו את היסטוריית הלוח בקלות.",
+    "popupEnable": "הפעל", "popupActive": "פעיל", "modeAuto": "אוטומטי", "modeSafe": "בטוח", "modeAggressive": "אגרסיבי",
+    "copy": "העתק", "copied": "הועתק!", "pin": "הצמד", "delete": "מחק", "settings": "הגדרות",
+    "protectionActive": "הגנה פעילה", "tapToEnable": "הקש להפעלה", "statusActive": "פעיל", "statusOff": "כבוי",
+    "timeNow": "עכשיו", "history": "היסטוריה", "save": "שמור", "back": "חזרה", "open": "פתח"
+  },
+  "hr": {
+    "extensionDescription": "Otključajte ograničenja kopiranja i jednostavno upravljajte poviješću međuspremnika.",
+    "popupEnable": "Omogući", "popupActive": "Aktivno", "copy": "Kopiraj", "copied": "Kopirano!", "delete": "Obriši", "settings": "Postavke",
+    "protectionActive": "Zaštita aktivna", "tapToEnable": "Dodirnite za aktivaciju", "statusActive": "Aktivno", "statusOff": "Isključeno",
+    "timeNow": "sada", "history": "Povijest", "save": "Spremi", "back": "Natrag", "open": "Otvori"
+  },
+  "hu": {
+    "extensionDescription": "Oldja fel a másolási korlátozásokat és kezelje a vágólap-előzményeket könnyedén.",
+    "popupEnable": "Engedélyezés", "popupActive": "Aktív", "copy": "Másolás", "copied": "Másolva!", "delete": "Törlés", "settings": "Beállítások",
+    "protectionActive": "Védelem aktív", "tapToEnable": "Koppintson az engedélyezéshez", "statusActive": "Aktív", "statusOff": "Ki",
+    "timeNow": "most", "history": "Előzmények", "save": "Mentés", "back": "Vissza", "open": "Megnyitás"
+  },
+  "id": {
+    "extensionDescription": "Buka kunci pembatasan salin dan kelola riwayat clipboard dengan mudah.",
+    "popupEnable": "Aktifkan", "popupActive": "Aktif", "modeAuto": "Otomatis", "modeSafe": "Aman", "modeAggressive": "Agresif",
+    "copy": "Salin", "copied": "Disalin!", "pin": "Sematkan", "delete": "Hapus", "settings": "Pengaturan",
+    "protectionActive": "Perlindungan aktif", "tapToEnable": "Ketuk untuk mengaktifkan", "statusActive": "Aktif", "statusOff": "Nonaktif",
+    "timeNow": "sekarang", "history": "Riwayat", "save": "Simpan", "back": "Kembali", "open": "Buka"
+  },
+  "kn": {
+    "extensionDescription": "ನಕಲು ನಿರ್ಬಂಧಗಳನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಿ ಮತ್ತು ನಿಮ್ಮ ಕ್ಲಿಪ್‌ಬೋರ್ಡ್ ಇತಿಹಾಸವನ್ನು ಸುಲಭವಾಗಿ ನಿರ್ವಹಿಸಿ.",
+    "popupEnable": "ಸಕ್ರಿಯಗೊಳಿಸಿ", "popupActive": "ಸಕ್ರಿಯ", "copy": "ನಕಲಿಸಿ", "copied": "ನಕಲಿಸಲಾಗಿದೆ!", "settings": "ಸೆಟ್ಟಿಂಗ್‌ಗಳು",
+    "statusActive": "ಸಕ್ರಿಯ", "statusOff": "ಆಫ್", "save": "ಉಳಿಸಿ", "back": "ಹಿಂದೆ", "open": "ತೆರೆಯಿರಿ"
+  },
+  "lt": {
+    "extensionDescription": "Atrakinkite kopijavimo apribojimus ir lengvai tvarkykite iškarpinės istoriją.",
+    "popupEnable": "Įjungti", "popupActive": "Aktyvus", "copy": "Kopijuoti", "copied": "Nukopijuota!", "delete": "Ištrinti", "settings": "Nustatymai",
+    "protectionActive": "Apsauga aktyvi", "statusActive": "Aktyvus", "statusOff": "Išjungta",
+    "timeNow": "dabar", "history": "Istorija", "save": "Išsaugoti", "back": "Atgal", "open": "Atidaryti"
+  },
+  "lv": {
+    "extensionDescription": "Atbloķējiet kopēšanas ierobežojumus un viegli pārvaldiet starpliktuves vēsturi.",
+    "popupEnable": "Iespējot", "popupActive": "Aktīvs", "copy": "Kopēt", "copied": "Nokopēts!", "delete": "Dzēst", "settings": "Iestatījumi",
+    "protectionActive": "Aizsardzība aktīva", "statusActive": "Aktīvs", "statusOff": "Izslēgts",
+    "timeNow": "tagad", "history": "Vēsture", "save": "Saglabāt", "back": "Atpakaļ", "open": "Atvērt"
+  },
+  "ml": {
+    "extensionDescription": "കോപ്പി നിയന്ത്രണങ്ങൾ അൺലോക്ക് ചെയ്യുക, ക്ലിപ്ബോർഡ് ചരിത്രം എളുപ്പത്തിൽ കൈകാര്യം ചെയ്യുക.",
+    "popupEnable": "പ്രവർത്തനക്ഷമമാക്കുക", "popupActive": "സജീവം", "copy": "കോപ്പി", "copied": "കോപ്പി ചെയ്തു!",
+    "statusActive": "സജീവം", "statusOff": "ഓഫ്", "save": "സേവ്", "back": "മടങ്ങുക", "open": "തുറക്കുക"
+  },
+  "mr": {
+    "extensionDescription": "कॉपी निर्बंध अनलॉक करा आणि क्लिपबोर्ड इतिहास सहज व्यवस्थापित करा.",
+    "popupEnable": "सक्षम करा", "popupActive": "सक्रिय", "copy": "कॉपी", "copied": "कॉपी झाले!",
+    "statusActive": "सक्रिय", "statusOff": "बंद", "save": "जतन करा", "back": "मागे", "open": "उघडा"
+  },
+  "ms": {
+    "extensionDescription": "Buka kunci sekatan salin dan urus sejarah papan klip anda dengan mudah.",
+    "popupEnable": "Dayakan", "popupActive": "Aktif", "copy": "Salin", "copied": "Disalin!", "delete": "Padam", "settings": "Tetapan",
+    "protectionActive": "Perlindungan aktif", "statusActive": "Aktif", "statusOff": "Mati",
+    "timeNow": "sekarang", "history": "Sejarah", "save": "Simpan", "back": "Kembali", "open": "Buka"
+  },
+  "ro": {
+    "extensionDescription": "Deblocați restricțiile de copiere și gestionați cu ușurință istoricul clipboard-ului.",
+    "popupEnable": "Activare", "popupActive": "Activ", "copy": "Copiază", "copied": "Copiat!", "delete": "Șterge", "settings": "Setări",
+    "protectionActive": "Protecție activă", "tapToEnable": "Atingeți pentru activare", "statusActive": "Activ", "statusOff": "Oprit",
+    "timeNow": "acum", "history": "Istoric", "save": "Salvează", "back": "Înapoi", "open": "Deschide"
+  },
+  "sk": {
+    "extensionDescription": "Odomknite obmedzenia kopírovania a jednoducho spravujte históriu schránky.",
+    "popupEnable": "Povoliť", "popupActive": "Aktívne", "copy": "Kopírovať", "copied": "Skopírované!", "delete": "Odstrániť", "settings": "Nastavenia",
+    "protectionActive": "Ochrana aktívna", "statusActive": "Aktívne", "statusOff": "Vypnuté",
+    "timeNow": "teraz", "history": "História", "save": "Uložiť", "back": "Späť", "open": "Otvoriť"
+  },
+  "sl": {
+    "extensionDescription": "Odklenite omejitve kopiranja in enostavno upravljajte zgodovino odložišča.",
+    "popupEnable": "Omogoči", "popupActive": "Aktivno", "copy": "Kopiraj", "copied": "Kopirano!", "delete": "Izbriši", "settings": "Nastavitve",
+    "protectionActive": "Zaščita aktivna", "statusActive": "Aktivno", "statusOff": "Izklopljeno",
+    "timeNow": "zdaj", "history": "Zgodovina", "save": "Shrani", "back": "Nazaj", "open": "Odpri"
+  },
+  "sr": {
+    "extensionDescription": "Откључајте ограничења копирања и лако управљајте историјом оставе.",
+    "popupEnable": "Омогући", "popupActive": "Активно", "copy": "Копирај", "copied": "Копирано!", "delete": "Обриши", "settings": "Подешавања",
+    "protectionActive": "Заштита активна", "statusActive": "Активно", "statusOff": "Искључено",
+    "timeNow": "сада", "history": "Историја", "save": "Сачувај", "back": "Назад", "open": "Отвори"
+  },
+  "sw": {
+    "extensionDescription": "Fungua vizuizi vya kunakili na udhibiti historia ya ubao wa kunakili kwa urahisi.",
+    "popupEnable": "Washa", "popupActive": "Hai", "copy": "Nakili", "copied": "Imenakiliwa!", "delete": "Futa", "settings": "Mipangilio",
+    "protectionActive": "Ulinzi hai", "statusActive": "Hai", "statusOff": "Imezimwa",
+    "timeNow": "sasa", "history": "Historia", "save": "Hifadhi", "back": "Rudi", "open": "Fungua"
+  },
+  "ta": {
+    "extensionDescription": "நகல் கட்டுப்பாடுகளை திறக்கவும் மற்றும் உங்கள் கிளிப்போர்டு வரலாற்றை எளிதாக நிர்வகிக்கவும்.",
+    "popupEnable": "இயக்கு", "popupActive": "செயலில்", "copy": "நகல்", "copied": "நகலெடுக்கப்பட்டது!",
+    "statusActive": "செயலில்", "statusOff": "அணைப்பு", "save": "சேமி", "back": "பின்செல்", "open": "திற"
+  },
+  "te": {
+    "extensionDescription": "కాపీ పరిమితులను అన్‌లాక్ చేయండి మరియు మీ క్లిప్‌బోర్డ్ చరిత్రను సులభంగా నిర్వహించండి.",
+    "popupEnable": "ఎనేబుల్", "popupActive": "యాక్టివ్", "copy": "కాపీ", "copied": "కాపీ అయింది!",
+    "statusActive": "యాక్టివ్", "statusOff": "ఆఫ్", "save": "సేవ్", "back": "వెనుకకు", "open": "తెరువు"
+  },
+  "th": {
+    "extensionDescription": "ปลดล็อกข้อจำกัดการคัดลอกและจัดการประวัติคลิปบอร์ดอย่างง่ายดาย",
+    "popupEnable": "เปิดใช้งาน", "popupActive": "ใช้งานอยู่", "modeAuto": "อัตโนมัติ", "modeSafe": "ปลอดภัย", "modeAggressive": "เข้มข้น",
+    "copy": "คัดลอก", "copied": "คัดลอกแล้ว!", "pin": "ปักหมุด", "delete": "ลบ", "settings": "การตั้งค่า",
+    "protectionActive": "การป้องกันทำงานอยู่", "tapToEnable": "แตะเพื่อเปิดใช้งาน", "statusActive": "ใช้งานอยู่", "statusOff": "ปิด",
+    "timeNow": "ตอนนี้", "history": "ประวัติ", "save": "บันทึก", "back": "กลับ", "open": "เปิด"
+  },
+  "uk": {
+    "extensionDescription": "Розблокуйте обмеження копіювання та легко керуйте історією буфера обміну.",
+    "popupEnable": "Увімкнути", "popupActive": "Активно", "modeAuto": "Авто", "modeSafe": "Безпечний", "modeAggressive": "Агресивний",
+    "copy": "Копіювати", "copied": "Скопійовано!", "pin": "Закріпити", "delete": "Видалити", "settings": "Налаштування",
+    "protectionActive": "Захист активний", "tapToEnable": "Натисніть для увімкнення", "statusActive": "Активно", "statusOff": "Вимкнено",
+    "timeNow": "зараз", "history": "Історія", "save": "Зберегти", "back": "Назад", "open": "Відкрити"
+  },
+  "vi": {
+    "extensionDescription": "Mở khóa hạn chế sao chép và quản lý lịch sử bảng tạm dễ dàng.",
+    "popupEnable": "Bật", "popupActive": "Đang hoạt động", "modeAuto": "Tự động", "modeSafe": "An toàn", "modeAggressive": "Mạnh",
+    "copy": "Sao chép", "copied": "Đã sao chép!", "pin": "Ghim", "delete": "Xóa", "settings": "Cài đặt",
+    "protectionActive": "Bảo vệ đang hoạt động", "tapToEnable": "Nhấn để bật", "statusActive": "Hoạt động", "statusOff": "Tắt",
+    "timeNow": "bây giờ", "history": "Lịch sử", "save": "Lưu", "back": "Quay lại", "open": "Mở"
+  }
+}

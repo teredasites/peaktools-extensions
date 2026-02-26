@@ -35,13 +35,16 @@ CopyUnlock requests the following permissions:
 | Permission | Why It's Needed |
 |---|---|
 | `activeTab` | To detect and remove copy/paste protections on the current page |
+| `scripting` | To dynamically inject content scripts as a fallback when they fail to load |
 | `clipboardRead` | To read clipboard contents for clipboard history feature |
 | `clipboardWrite` | To write to clipboard when user copies from history |
 | `storage` | To save your extension settings and per-site profiles |
 | `sidePanel` | To display clipboard history in the Chrome side panel |
 | `contextMenus` | To add right-click menu options for copy/paste operations |
-| `alarms` | To schedule periodic cleanup of expired clipboard items |
+| `alarms` | To schedule periodic cleanup of expired clipboard items and license re-checks |
 | `offscreen` | To perform clipboard operations in Manifest V3 (required by Chrome) |
+| `identity` | To authenticate users for Pro license verification |
+| `identity.email` | To look up Pro license status by email (sent only to our license API) |
 | `<all_urls>` (host) | To inject the copy/paste unlocker on any website you visit |
 
 ### Optional Permission
