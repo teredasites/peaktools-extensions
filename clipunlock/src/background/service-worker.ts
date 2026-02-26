@@ -671,11 +671,11 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     return;
   }
 
-  // ── New Project (from right-click) ──
+  // ── New Project (from right-click) — open sidepanel with project creation form ──
   if (menuId === CTX.COLLECTION_NEW) {
     const text = info.selectionText ?? '';
     if (!text) return;
-    // Save the item first, then create a project with the current domain
+    // Save the item first
     const addResult = await addClipboardItem({
       content: text,
       html: null,
@@ -685,12 +685,18 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
       watermarkStripped: false,
     }, proStatus);
     if (addResult) {
-      const domain = tab.url ? new URL(tab.url).hostname.replace('www.', '') : 'Untitled';
-      const result = await createProject(domain, [domain], '', proStatus);
-      if (result.ok && result.collection) {
-        await setItemCollection(addResult.entry.id, result.collection.id);
-        refreshCollectionMenuItems();
-      }
+      // Store pending project creation data so sidepanel can pick it up
+      let domain = '';
+      try { domain = new URL(tab.url ?? '').hostname.replace('www.', ''); } catch { /* */ }
+      await chrome.storage.session.set({
+        pendingProjectCreation: {
+          itemId: addResult.entry.id,
+          suggestedName: domain || 'New Project',
+          suggestedDomain: domain,
+        },
+      });
+      // Open the sidepanel — it will detect the pending data and show the form
+      chrome.sidePanel.open({ tabId: tab.id }).catch(() => {});
     }
     return;
   }
@@ -1161,8 +1167,9 @@ onMessage((msg: Message, sender, sendResponse) => {
 
     // ─── Projects ───
     case 'CREATE_PROJECT': {
-      const { name, domains, description } = payload as { name: string; domains: string[]; description: string };
-      createProject(name, domains, description, proStatus).then((result) => {
+      const p = payload as { name: string; domains?: string[]; autoCaptureDomains?: string[]; description: string; color?: string };
+      const domains = p.domains ?? p.autoCaptureDomains ?? [];
+      createProject(p.name, domains, p.description, proStatus, p.color).then((result) => {
         refreshCollectionMenuItems();
         sendResponse(result);
       });

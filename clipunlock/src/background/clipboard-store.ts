@@ -521,6 +521,7 @@ export async function createProject(
   domains: string[],
   description: string,
   proStatus: ProStatus,
+  color?: string,
 ): Promise<{ ok: boolean; collection?: Collection; error?: string }> {
   const database = await getDB();
 
@@ -541,7 +542,7 @@ export async function createProject(
   const project: Collection = {
     id: crypto.randomUUID(),
     name: name.trim(),
-    color: COLLECTION_COLORS[colorIndex] ?? COLLECTION_COLORS[0] ?? '#3b82f6',
+    color: color || (COLLECTION_COLORS[colorIndex] ?? COLLECTION_COLORS[0] ?? '#3b82f6'),
     createdAt: Date.now(),
     itemCount: 0,
     isProject: true,

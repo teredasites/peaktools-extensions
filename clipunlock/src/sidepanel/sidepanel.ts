@@ -43,6 +43,7 @@ let activeProjectId: string | null = null;
 let projectFormDomains: string[] = [];
 let projectFormColor = '#3b82f6';
 let editingProjectId: string | null = null;
+let pendingItemIdForProject: string | null = null; // Item to assign after project creation (from right-click)
 
 // DOM Refs
 const searchInput = document.getElementById('search-input') as HTMLInputElement;
@@ -1300,10 +1301,14 @@ function renderColorPicker(): void {
 
 projectOverlayClose.addEventListener('click', () => {
   projectOverlay.classList.add('hidden');
+  pendingItemIdForProject = null;
 });
 
 projectOverlay.addEventListener('keydown', (e: KeyboardEvent) => {
-  if (e.key === 'Escape') projectOverlay.classList.add('hidden');
+  if (e.key === 'Escape') {
+    projectOverlay.classList.add('hidden');
+    pendingItemIdForProject = null;
+  }
 });
 
 projectSaveBtn.addEventListener('click', async () => {
@@ -1337,17 +1342,28 @@ projectSaveBtn.addEventListener('click', async () => {
           color: projectFormColor,
         },
       });
-      const res = result as { ok?: boolean; error?: string } | null;
+      const res = result as { ok?: boolean; error?: string; collection?: { id: string } } | null;
       if (res && res.ok === false && res.error) {
         showUpgradeBanner(res.error);
         projectSaveBtn.disabled = false;
         projectSaveBtn.textContent = editingProjectId ? 'Save Changes' : 'Create Project';
         return;
       }
+      // If there's a pending item from right-click, assign it to the new project
+      if (pendingItemIdForProject && res?.collection?.id) {
+        try {
+          await chrome.runtime.sendMessage({
+            type: 'SET_ITEM_COLLECTION',
+            payload: { itemId: pendingItemIdForProject, collectionId: res.collection.id },
+          });
+        } catch { /* */ }
+        pendingItemIdForProject = null;
+      }
     }
 
     projectOverlay.classList.add('hidden');
     await loadCollections();
+    await loadItems();
 
     if (editingProjectId && activeProjectId === editingProjectId) {
       // Re-open project detail with updated data
@@ -1394,6 +1410,13 @@ detailNewProject.addEventListener('click', async () => {
   openProjectOverlay(null);
 });
 
+// Check for pending project creation when sidepanel regains focus
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') {
+    checkPendingProjectCreation();
+  }
+});
+
 // Auto-refresh every 3 seconds
 refreshInterval = setInterval(() => {
   loadItems();
@@ -1403,6 +1426,37 @@ refreshInterval = setInterval(() => {
 // Apply i18n translations to static HTML elements
 applyI18n();
 
+// Check for pending project creation (from right-click "New Project")
+async function checkPendingProjectCreation(): Promise<void> {
+  try {
+    const data = await chrome.storage.session.get('pendingProjectCreation');
+    const pending = data.pendingProjectCreation as {
+      itemId: string;
+      suggestedName: string;
+      suggestedDomain: string;
+    } | undefined;
+    if (!pending) return;
+    // Clear it immediately so it doesn't trigger again
+    await chrome.storage.session.remove('pendingProjectCreation');
+    // Store the item ID to assign after project creation
+    pendingItemIdForProject = pending.itemId;
+    // Open project overlay pre-filled with suggested values
+    editingProjectId = null;
+    projectNameInput.value = pending.suggestedName || '';
+    projectDescInput.value = '';
+    projectFormDomains = pending.suggestedDomain ? [pending.suggestedDomain] : [];
+    projectFormColor = COLLECTION_COLORS[0];
+    projectSaveBtn.textContent = 'Create Project';
+    renderDomainChips();
+    renderColorPicker();
+    projectOverlay.classList.remove('hidden');
+    projectNameInput.focus();
+    projectNameInput.select();
+  } catch { /* */ }
+}
+
 // Init
 loadItems();
-loadCollections();
+loadCollections().then(() => {
+  checkPendingProjectCreation();
+});
