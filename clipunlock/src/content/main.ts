@@ -88,10 +88,11 @@ onMessage((msg: Message, _sender, sendResponse) => {
         sendResponse({ unlocked: false });
       } else {
         runDetection().then((profile) => {
+          // Show animation BEFORE starting CounterObserver so it doesn't get killed
+          showLockAnimation(true);
           if (profile.methods.length > 0) {
             runUnlock(profile);
           }
-          showLockAnimation(true);
           sendResponse({ unlocked: isUnlocked, protectionsRemoved: profile.methods.length, profile });
         });
         return true;
