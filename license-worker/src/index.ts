@@ -86,16 +86,29 @@ function cleanupRateLimits(): void {
 // CORS helpers
 // ---------------------------------------------------------------------------
 
+// Known extension IDs — add new extensions here as they're published
+const KNOWN_EXTENSION_IDS = new Set([
+  'fepnibopopogakkkjaimedepnpkgcgbb', // CopyUnlock (Chrome Web Store)
+]);
+
 const ALLOWED_ORIGIN_PATTERNS = [
-  /^chrome-extension:\/\//,
-  /^moz-extension:\/\//,
-  /^https?:\/\/localhost(:\d+)?$/,
-  /^https?:\/\/127\.0\.0\.1(:\d+)?$/,
+  // Only allow known Chrome extensions by ID
+  (origin: string) => {
+    const match = origin.match(/^chrome-extension:\/\/([a-z]+)$/);
+    return match !== null && KNOWN_EXTENSION_IDS.has(match[1]);
+  },
+  // Firefox extensions use random UUIDs — allow all moz-extension:// for now
+  (origin: string) => /^moz-extension:\/\//.test(origin),
+  // Localhost for development only
+  (origin: string) => /^https?:\/\/localhost(:\d+)?$/.test(origin),
+  (origin: string) => /^https?:\/\/127\.0\.0\.1(:\d+)?$/.test(origin),
+  // PeakTools website (for checkout redirects)
+  (origin: string) => /^https:\/\/(www\.)?peaktools\.dev$/.test(origin),
 ];
 
 function isAllowedOrigin(origin: string | null): boolean {
   if (!origin) return false;
-  return ALLOWED_ORIGIN_PATTERNS.some((p) => p.test(origin));
+  return ALLOWED_ORIGIN_PATTERNS.some((check) => check(origin));
 }
 
 function corsHeaders(request: Request): Record<string, string> {
