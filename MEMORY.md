@@ -119,8 +119,36 @@ chrome extensions/
 **Business**: Tereda Software LLC
 **Publishable Key**: `pk_live_51SwbVnCqKgR2sHD4panyEJIx5GP5LtiXlo8vs3aiKFeYVVRc6CeNrQNxOmCOpSjrUd1MVti8Ed6UDEm6D1KKIRfN00vuqHWe5c`
 **Secret Key**: `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`
-**Webhook Secret**: `(PENDING — created with license worker deployment)`
+**Webhook Endpoint ID**: `we_1T52M9CqKgR2sHD4bfUAQI48`
+**Webhook Secret**: `whsec_RMSRR2safe3CSnnYmoke73Y22P4I8lSl`
+**Webhook URL**: `https://peaktools-license.teredasoftware.workers.dev/api/webhook`
+**Events**: checkout.session.completed, customer.subscription.deleted, customer.subscription.updated, invoice.payment_failed
 **Note**: Stripe powers ALL extension Pro payments via Cloudflare Worker + D1 license system
+
+### CopyUnlock Stripe IDs
+- **Product**: `prod_U38dTFnfVZxrlX`
+- **Monthly Price ($3.99)**: `price_1T52NaCqKgR2sHD4q1eGzttf`
+- **Annual Price ($29.99)**: `price_1T52NaCqKgR2sHD4rVvY9WcN`
+- **Lifetime Price ($49.99)**: `price_1T52NaCqKgR2sHD40lU7ZMfj`
+
+### License Worker (Cloudflare Workers + D1)
+- **Worker URL**: `https://peaktools-license.teredasoftware.workers.dev`
+- **D1 Database**: `peaktools-licenses` (ID: `9de3579b-780c-4107-ac08-ea8c99171589`)
+- **Secrets**: STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET (set via `wrangler secret put`)
+- **Endpoints**: POST /api/checkout, POST /api/webhook, GET /api/license, GET /api/health
+- **Tables**: licenses, extensions, webhook_events
+
+### GitHub Repository
+- **Repo**: `teredasites/peaktools-extensions` (PRIVATE)
+- **URL**: https://github.com/teredasites/peaktools-extensions
+- **Secrets Set**: CLOUDFLARE_API_TOKEN, CWS_CLIENT_ID, CWS_CLIENT_SECRET, CWS_REFRESH_TOKEN, CWS_ITEM_ID
+- **CI/CD**: 3 GitHub Actions workflows (ci.yml, deploy-worker.yml, publish-extension.yml)
+
+### Adding a New Extension to Payment System
+1. Run: `STRIPE_SECRET_KEY=sk_live_... node license-worker/scripts/create-stripe-product.mjs --name "ExtName" --slug ext-slug --monthly X.XX --annual XX.XX --lifetime XX.XX`
+2. Insert the SQL output into D1: `npx wrangler d1 execute peaktools-licenses --remote --file=insert.sql`
+3. In the new extension's constants.ts, set `LICENSE_API_BASE` and `EXTENSION_SLUG`
+4. Wire up same `checkLicense()` / `openCheckout()` pattern from CopyUnlock's service-worker.ts
 
 ---
 
@@ -236,3 +264,24 @@ chrome extensions/
 - **Fixed service-worker.ts tabId bugs**: Added `if (!tabId || tabId <= 0) return;` guard to updateBadge()
 - **Ran full stub audit**: Found 22 issues (5 critical, 6 medium, 11 low) — documented above
 - **Test results**: 13/16 methods passing on webbrowsertools.com/test-right-click/ (tests 12, 13, 14 were the last fixed — test 14 needs retest)
+
+### Accomplished (Session 3 — Infrastructure & Deployment)
+- **Implemented 3 real features** (were deleted by mistake, recreated from scratch):
+  - CSS content extraction (`css-content-extractor.ts`): scans ::before/::after, injects real text nodes
+  - Font cipher reversal (`font-reversal.ts`): detects custom fonts, builds char maps via canvas, intercepts copy
+  - OCR text detection (`ocr-extractor.ts`): edge/contrast analysis, overlays selectable text on images
+- **Wired real Stripe payment**: Replaced `initExtPay()` stub with `checkLicense()` using chrome.identity + license worker API
+  - 3 plan buttons (monthly/annual/lifetime) in options page
+  - Daily license re-check alarm, 24-hour cache in chrome.storage.local
+- **Initialized git monorepo**: `chrome extensions/` as root with clipunlock + license-worker + sprints
+- **Pushed to GitHub**: teredasites/peaktools-extensions (private)
+- **Set up GitHub Actions CI/CD**: 3 workflows (ci, deploy-worker, publish-extension)
+- **Set 5 GitHub repo secrets**: Cloudflare token, CWS OAuth (client ID, secret, refresh token), CWS item ID
+- **Deployed license-worker to Cloudflare**: Worker live at peaktools-license.teredasoftware.workers.dev
+- **Created D1 database** (peaktools-licenses): schema with licenses, extensions, webhook_events tables
+- **Created Stripe webhook**: endpoint we_1T52M9CqKgR2sHD4bfUAQI48 listening for 4 event types
+- **Created CopyUnlock Stripe product + 3 prices**: All 3 tiers live in Stripe + D1
+- **Fixed LICENSE_API_BASE**: Updated from incorrect `.peaktools.workers.dev` to `.teredasoftware.workers.dev`
+- **Fixed create-stripe-product.mjs**: Removed bug where `recurring: undefined` was sent as form param
+- **Verified end-to-end**: Health check + license check endpoints both responding correctly
+- **All 117 tests still passing**, build clean
