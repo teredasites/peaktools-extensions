@@ -1,10 +1,14 @@
 // DOM Refs
 const toggleBtn = document.getElementById('toggle-btn') as HTMLButtonElement;
-const toggleLabel = toggleBtn.querySelector('.toggle-label') as HTMLSpanElement;
+const toggleLabel = document.getElementById('toggle-label') as HTMLDivElement;
+const statusPill = document.getElementById('status-pill') as HTMLDivElement;
+const statusText = document.getElementById('status-text') as HTMLSpanElement;
 const siteDomain = document.getElementById('site-domain') as HTMLSpanElement;
 const protectionBadge = document.getElementById('protection-badge') as HTMLDivElement;
 const protectionCount = document.getElementById('protection-count') as HTMLSpanElement;
+const modeIndicator = document.getElementById('mode-indicator') as HTMLDivElement;
 const modeButtons = document.querySelectorAll('.mode-btn') as NodeListOf<HTMLButtonElement>;
+const clipCount = document.getElementById('clip-count') as HTMLSpanElement;
 const recentItemsContainer = document.getElementById('recent-items') as HTMLDivElement;
 const openSidepanelBtn = document.getElementById('open-sidepanel') as HTMLButtonElement;
 const openOptionsBtn = document.getElementById('open-options') as HTMLButtonElement;
@@ -14,65 +18,78 @@ let currentTabId: number | null = null;
 // Helpers
 function timeAgo(timestamp: number): string {
   const seconds = Math.floor((Date.now() - timestamp) / 1000);
-  if (seconds < 60) return chrome.i18n.getMessage('justNow') || 'Just now';
+  if (seconds < 60) return 'now';
   const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) return chrome.i18n.getMessage('minutesAgo', [String(minutes)]) || `${minutes}m ago`;
+  if (minutes < 60) return `${minutes}m`;
   const hours = Math.floor(minutes / 60);
-  if (hours < 24) return chrome.i18n.getMessage('hoursAgo', [String(hours)]) || `${hours}h ago`;
+  if (hours < 24) return `${hours}h`;
   const days = Math.floor(hours / 24);
-  return chrome.i18n.getMessage('daysAgo', [String(days)]) || `${days}d ago`;
+  return `${days}d`;
 }
 
 function setUnlockedState(active: boolean, protections: number = 0): void {
   if (active) {
     toggleBtn.classList.add('active');
-    toggleLabel.textContent = chrome.i18n.getMessage('popupActive') || 'Active';
+    toggleLabel.textContent = 'Protection active';
+    statusPill.classList.remove('off');
+    statusPill.classList.add('on');
+    statusText.textContent = 'Active';
   } else {
     toggleBtn.classList.remove('active');
-    toggleLabel.textContent = chrome.i18n.getMessage('popupEnable') || 'Enable';
+    toggleLabel.textContent = 'Tap to enable';
+    statusPill.classList.remove('on');
+    statusPill.classList.add('off');
+    statusText.textContent = 'Off';
   }
 
   if (protections > 0) {
     protectionBadge.classList.remove('hidden');
-    protectionCount.textContent =
-      chrome.i18n.getMessage('popupProtections', [String(protections)]) ||
-      `${protections} protections removed`;
+    protectionCount.textContent = `${protections} removed`;
   } else {
     protectionBadge.classList.add('hidden');
   }
 }
 
+const MODE_POSITIONS: Record<string, string> = { auto: '0', safe: '1', aggressive: '2' };
+
 function setMode(mode: string): void {
   modeButtons.forEach((btn) => {
     btn.classList.toggle('active', btn.dataset.mode === mode);
   });
+  modeIndicator.setAttribute('data-pos', MODE_POSITIONS[mode] || '0');
 }
 
 function renderRecentItems(items: Array<{ id: string; preview: string; contentType: string; timestamp: number }>): void {
-  if (!items || items.length === 0) {
-    recentItemsContainer.innerHTML = `<div class="no-items">${chrome.i18n.getMessage('noHistory') || 'No recent copies'}</div>`;
+  const list = Array.isArray(items) ? items : [];
+  clipCount.textContent = String(list.length);
+
+  if (list.length === 0) {
+    recentItemsContainer.innerHTML = '<div class="no-items">No recent copies</div>';
     return;
   }
 
-  recentItemsContainer.innerHTML = items
+  recentItemsContainer.innerHTML = list
     .slice(0, 5)
     .map(
       (item) => `
-    <div class="recent-item" data-id="${item.id}" title="${escapeHtml(item.preview)}">
-      <span class="type-badge">${item.contentType}</span>
-      <span class="preview">${escapeHtml(item.preview)}</span>
-      <span class="time">${timeAgo(item.timestamp)}</span>
+    <div class="clip-item" data-id="${item.id}" title="${escapeHtml(item.preview)}">
+      <span class="clip-type">${item.contentType}</span>
+      <span class="clip-preview">${escapeHtml(item.preview)}</span>
+      <span class="clip-time">${timeAgo(item.timestamp)}</span>
     </div>
   `
     )
     .join('');
 
   // Click to copy
-  recentItemsContainer.querySelectorAll('.recent-item').forEach((el) => {
+  recentItemsContainer.querySelectorAll('.clip-item').forEach((el) => {
     el.addEventListener('click', () => {
       const id = (el as HTMLElement).dataset.id;
       if (id) {
         chrome.runtime.sendMessage({ type: 'COPY_ITEM', payload: { id } });
+        // Brief feedback
+        el.classList.add('copied');
+        setTimeout(() => el.classList.remove('copied'), 600);
       }
     });
   });
@@ -98,7 +115,7 @@ async function init(): Promise<void> {
     }
   }
 
-  // Get tab state — relay through background to content script
+  // Get tab state
   try {
     const response = await chrome.runtime.sendMessage({
       type: 'GET_TAB_STATE',
@@ -113,7 +130,7 @@ async function init(): Promise<void> {
     setMode('auto');
   }
 
-  // Load recent clipboard items from background (IDB)
+  // Load recent clipboard items
   try {
     const items = await chrome.runtime.sendMessage({
       type: 'GET_CLIPBOARD_HISTORY',
@@ -163,7 +180,6 @@ openSidepanelBtn.addEventListener('click', async () => {
       await chrome.sidePanel.open({ windowId: (await chrome.windows.getCurrent()).id });
     }
   } catch {
-    // Fallback: open sidepanel page in new tab
     chrome.tabs.create({ url: chrome.runtime.getURL('src/sidepanel/sidepanel.html') });
   }
 });

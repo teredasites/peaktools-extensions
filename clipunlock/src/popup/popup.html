@@ -8,40 +8,74 @@
 </head>
 <body>
   <div id="popup-root">
+    <!-- Top bar -->
     <header>
-      <div class="logo-row">
-        <img src="../../assets/icons/icon-48.png" alt="CopyUnlock" class="icon" width="28" height="28">
-        <h1>CopyUnlock</h1>
+      <div class="brand">
+        <div class="logo-mark">
+          <img src="../../assets/icons/icon-48.png" alt="" width="24" height="24">
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">CopyUnlock</span>
+          <span id="site-domain" class="site-url"></span>
+        </div>
       </div>
-      <span id="site-domain" class="site-domain"></span>
+      <div id="status-pill" class="status-pill off">
+        <span class="status-dot"></span>
+        <span id="status-text" class="status-label">Off</span>
+      </div>
     </header>
 
-    <section class="toggle-section">
-      <button id="toggle-btn" class="toggle-btn" aria-label="Toggle unlock">
-        <span class="toggle-label">Enable</span>
-        <span class="toggle-switch"></span>
+    <!-- Main toggle -->
+    <section class="power-section">
+      <button id="toggle-btn" class="power-btn" aria-label="Toggle unlock">
+        <svg class="power-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="2" x2="12" y2="12"></line>
+          <path d="M16.24 7.76a6 6 0 1 1-8.49 0"></path>
+        </svg>
       </button>
+      <div id="toggle-label" class="power-label">Tap to enable</div>
     </section>
 
-    <div id="protection-badge" class="protection-badge hidden">
-      <span class="badge-icon">&#x1f6e1;</span>
-      <span id="protection-count" class="badge-text">0 protections removed</span>
+    <!-- Protection stats (hidden until active) -->
+    <div id="protection-badge" class="stats-bar hidden">
+      <div class="stat-chip">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span id="protection-count">0 removed</span>
+      </div>
     </div>
 
+    <!-- Mode selector -->
     <section class="mode-section">
-      <button class="mode-btn" data-mode="auto">Auto</button>
-      <button class="mode-btn" data-mode="safe">Safe</button>
-      <button class="mode-btn" data-mode="aggressive">Aggressive</button>
+      <div class="mode-track">
+        <div id="mode-indicator" class="mode-indicator"></div>
+        <button class="mode-btn" data-mode="auto">Auto</button>
+        <button class="mode-btn" data-mode="safe">Safe</button>
+        <button class="mode-btn" data-mode="aggressive">Aggressive</button>
+      </div>
     </section>
 
-    <section class="quick-clipboard">
-      <h2>Recent Copies</h2>
-      <div id="recent-items" class="recent-items"></div>
+    <!-- Divider -->
+    <div class="divider"></div>
+
+    <!-- Recent clipboard -->
+    <section class="clipboard-section">
+      <div class="section-header">
+        <span class="section-title">Recent</span>
+        <span id="clip-count" class="section-count">0</span>
+      </div>
+      <div id="recent-items" class="clip-list"></div>
     </section>
 
+    <!-- Bottom actions -->
     <footer>
-      <button id="open-sidepanel" class="footer-btn">Clipboard History</button>
-      <button id="open-options" class="footer-btn">Settings</button>
+      <button id="open-sidepanel" class="action-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+        <span>History</span>
+      </button>
+      <button id="open-options" class="action-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>Settings</span>
+      </button>
     </footer>
   </div>
 
