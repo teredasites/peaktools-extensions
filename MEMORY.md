@@ -285,3 +285,62 @@ chrome extensions/
 - **Fixed create-stripe-product.mjs**: Removed bug where `recurring: undefined` was sent as form param
 - **Verified end-to-end**: Health check + license check endpoints both responding correctly
 - **All 117 tests still passing**, build clean
+
+### Accomplished (Session 4 — UI Redesign & Fixes)
+- **Fixed Canvas2D `willReadFrequently` warnings**: Added `{ willReadFrequently: true }` to `canvas.getContext('2d')` in:
+  - `font-reversal.ts` line 90 (buildCharMap)
+  - `ocr-extractor.ts` line 133 (extractFromElement for canvas elements)
+- **Complete popup redesign** — Premium dark UI:
+  - Power button with radial glow ring animation
+  - Status pill (Active/Off) with pulsing green dot
+  - Sliding mode selector with animated track indicator
+  - Shield icon protection badge with slide-in animation
+  - Clipboard items with hover gradient reveal, type badges
+  - Footer actions with SVG icons (sidepanel, settings)
+  - Deep dark theme (`#0c0c14` base), accent `#6366f1` (indigo)
+- **Complete settings page redesign** — Tabbed navigation:
+  - 5 tabs: General, Clipboard, Sites, Pro, Data (with SVG icons)
+  - Custom iOS-style toggle switches (replaced native checkboxes)
+  - Every setting has label + descriptive hint subtitle
+  - Pro section: gradient hero banner, 2x2 feature grid, 3 plan cards with hover lift
+  - Data section: export/import/clear rows with danger zone highlighting
+  - Stats dashboard: 3 stat cards with large accent numbers
+  - Keyboard shortcuts section with `kbd` styled keys
+  - Responsive design (collapses on mobile)
+- **Verified all 20 settings functions** — every control wired correctly:
+  - Tab navigation, save/load, overrides CRUD, export/import/clear
+  - Shortcuts link, Stripe checkout (3 plans), license refresh (2 buttons)
+  - Version display, stats loading, pro status loading
+- **Build clean**, committed & pushed to GitHub
+
+---
+
+## Architecture — How Updates Flow
+
+### The Update Pipeline
+```
+Local code → git push → GitHub (teredasites/peaktools-extensions)
+                              ↓ (automatic on push)
+                         CI runs (build + test)
+                              ↓ (manual trigger)
+                    publish-extension.yml workflow
+                              ↓
+                   Chrome Web Store API (via OAuth)
+                              ↓ (Chrome auto-updates every few hours)
+                         Users' browsers
+```
+
+### Key Points
+- **GitHub is the source of truth** — all code lives in `teredasites/peaktools-extensions` (private monorepo)
+- **GitHub does NOT auto-publish** — you must manually trigger the publish workflow
+- **CI runs automatically** on every push (builds, tests, typechecks)
+- **To publish an update**: GitHub.com → Actions tab → "Publish Extension to Chrome Web Store" → Run workflow → enter folder name (e.g., "clipunlock")
+- **License worker auto-deploys**: Any push that changes `license-worker/` triggers `deploy-worker.yml` automatically
+- **Chrome auto-updates**: CWS pushes updates to users within hours of publish
+
+### Per-Extension Safety
+- Each extension has its own CWS Item ID (stored as GitHub secret `CWS_ITEM_ID`)
+- Each extension has its own Stripe Product + Prices
+- Each extension has its own slug in D1 database
+- Extensions can't affect each other — separate builds, separate packages, separate CWS listings
+- Deleting from CWS requires manual dashboard action (no API for delete)
