@@ -46,6 +46,23 @@
   let lastMouseDown = 0;
   let removeAllRangesPatched = false;
 
+  // ─── Master kill-switch: all capture-phase blockers check this ───
+  let unlockActive = false;
+
+  // ─── Saved document handlers for revert ───
+  let savedDocHandlers: {
+    oncopy: typeof document.oncopy;
+    oncut: typeof document.oncut;
+    onpaste: typeof document.onpaste;
+    oncontextmenu: typeof document.oncontextmenu;
+    onselectstart: typeof document.onselectstart;
+  } | null = null;
+
+  // ─── Saved prototype descriptors for revert ───
+  let origInputDesc: PropertyDescriptor | undefined;
+  let origTextareaDesc: PropertyDescriptor | undefined;
+  let inputOverridden = false;
+
   // ─── Command handler: ISOLATED world dispatches events, we execute here ───
   window.addEventListener('__copyunlock_cmd', function (e: Event) {
     const detail = (e as CustomEvent).detail;
@@ -53,6 +70,7 @@
 
     switch (detail.action) {
       case 'prototype-intercept': {
+        unlockActive = true;
         const blocked = new Set(['copy', 'cut', 'paste', 'contextmenu', 'selectstart']);
         const storedListeners: Array<{ target: EventTarget; type: string; fn: EventListenerOrEventListenerObject; opts: unknown }> = [];
         EventTarget.prototype.addEventListener = function (
@@ -61,7 +79,7 @@
           fn: EventListenerOrEventListenerObject,
           opts?: boolean | AddEventListenerOptions,
         ) {
-          if (blocked.has(type)) {
+          if (unlockActive && blocked.has(type)) {
             storedListeners.push({ target: this, type, fn, opts });
             return;
           }
@@ -72,11 +90,13 @@
       }
 
       case 'selective-intercept': {
+        unlockActive = true;
         // Capture phase: block keydown for Ctrl+C/X/V/A from site scripts
         origAddEventListener.call(
           document,
           'keydown',
           function (ev: Event) {
+            if (!unlockActive) return;
             const ke = ev as KeyboardEvent;
             if ((ke.ctrlKey || ke.metaKey) && (ke.key === 'c' || ke.key === 'x' || ke.key === 'v' || ke.key === 'a')) {
               ke.stopImmediatePropagation();
@@ -91,6 +111,7 @@
             document,
             evtType,
             function (ev: Event) {
+              if (!unlockActive) return;
               ev.stopImmediatePropagation();
             },
             true,
@@ -102,6 +123,7 @@
           document,
           'mousedown',
           function (ev: Event) {
+            if (!unlockActive) return;
             const target = ev.target as HTMLElement;
             if (!target) return;
             const tag = target.tagName;
@@ -120,17 +142,18 @@
       }
 
       case 'force-enable-paste': {
+        unlockActive = true;
         origAddEventListener.call(
           document,
           'paste',
           function (ev: Event) {
+            if (!unlockActive) return;
             const ce = ev as ClipboardEvent;
             const target = ce.target as HTMLInputElement | HTMLTextAreaElement;
             if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) {
               ce.stopImmediatePropagation();
 
               let wasPrevented = false;
-              const origPD = ce.preventDefault.bind(ce);
               ce.preventDefault = function () {
                 wasPrevented = true;
               };
@@ -160,6 +183,15 @@
       }
 
       case 'null-handler': {
+        unlockActive = true;
+        // Save originals before nulling
+        savedDocHandlers = {
+          oncopy: document.oncopy,
+          oncut: document.oncut,
+          onpaste: document.onpaste,
+          oncontextmenu: document.oncontextmenu,
+          onselectstart: document.onselectstart,
+        };
         document.oncopy = null;
         document.oncut = null;
         document.onpaste = null;
@@ -169,6 +201,7 @@
       }
 
       case 'override-removeAllRanges': {
+        unlockActive = true;
         if (removeAllRangesPatched) break;
         removeAllRangesPatched = true;
 
@@ -176,6 +209,7 @@
           document,
           'mousedown',
           function () {
+            if (!unlockActive) return;
             userSelecting = true;
             lastMouseDown = Date.now();
           },
@@ -185,6 +219,7 @@
           document,
           'mouseup',
           function () {
+            if (!unlockActive) return;
             setTimeout(function () {
               if (Date.now() - lastMouseDown > 1500) {
                 userSelecting = false;
@@ -197,6 +232,7 @@
           document,
           'keydown',
           function (ev: Event) {
+            if (!unlockActive) return;
             const ke = ev as KeyboardEvent;
             if (ke.shiftKey && (ke.key.startsWith('Arrow') || ke.key === 'Home' || ke.key === 'End')) {
               userSelecting = true;
@@ -209,11 +245,13 @@
         );
 
         Selection.prototype.removeAllRanges = function () {
-          if (userSelecting) return;
-          try {
-            if (this.toString().length > 0) return;
-          } catch {
-            // ignore
+          if (unlockActive && userSelecting) return;
+          if (unlockActive) {
+            try {
+              if (this.toString().length > 0) return;
+            } catch {
+              // ignore
+            }
           }
           return origRemoveAllRanges.call(this);
         };
@@ -221,6 +259,7 @@
       }
 
       case 'prototype-restore': {
+        unlockActive = true;
         const native = origGetSelection;
         if (window.getSelection !== native) {
           // Page has overridden getSelection, restore it
@@ -230,12 +269,13 @@
       }
 
       case 'force-input-override': {
+        unlockActive = true;
         // Block input event validators that revert paste (e.g. paste length restrictions)
-        // Approach 1: Block input event propagation during paste
         origAddEventListener.call(
           document,
           'input',
           function (ev: Event) {
+            if (!unlockActive) return;
             const ie = ev as InputEvent;
             if (ie.inputType === 'insertFromPaste' || ie.inputType === 'insertFromDrop') {
               ev.stopImmediatePropagation();
@@ -244,10 +284,12 @@
           true,
         );
 
-        // Approach 2: Protect input value from being reverted via requestAnimationFrame/setTimeout
         // Override value setter to block revert within 500ms of a paste
-        const origInputDesc = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
-        const origTextareaDesc = Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value');
+        if (!inputOverridden) {
+          inputOverridden = true;
+          origInputDesc = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value');
+          origTextareaDesc = Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value');
+        }
         let protectUntil = 0;
         let protectedValue = '';
 
@@ -255,6 +297,7 @@
           document,
           'input',
           function (ev: Event) {
+            if (!unlockActive) return;
             const ie = ev as InputEvent;
             if (ie.inputType === 'insertFromPaste' || ie.inputType === 'insertFromDrop') {
               const target = ev.target as HTMLInputElement;
@@ -270,8 +313,7 @@
           Object.defineProperty(HTMLInputElement.prototype, 'value', {
             get: origInputDesc.get,
             set: function (val: string) {
-              // During protection window, block value shortening (revert attempts)
-              if (Date.now() < protectUntil && val.length < protectedValue.length) {
+              if (unlockActive && Date.now() < protectUntil && val.length < protectedValue.length) {
                 return;
               }
               origSet.call(this, val);
@@ -286,7 +328,7 @@
           Object.defineProperty(HTMLTextAreaElement.prototype, 'value', {
             get: origTextareaDesc.get,
             set: function (val: string) {
-              if (Date.now() < protectUntil && val.length < protectedValue.length) {
+              if (unlockActive && Date.now() < protectUntil && val.length < protectedValue.length) {
                 return;
               }
               origSetTA.call(this, val);
@@ -319,12 +361,47 @@
       }
 
       case 'revert': {
-        // Restore all originals
+        // Kill-switch: all capture-phase listeners now pass through
+        unlockActive = false;
+
+        // Restore prototypes
         EventTarget.prototype.addEventListener = origAddEventListener;
         Selection.prototype.removeAllRanges = origRemoveAllRanges;
         window.getSelection = origGetSelection;
         removeAllRangesPatched = false;
         userSelecting = false;
+
+        // Restore document handlers that were nulled
+        if (savedDocHandlers) {
+          document.oncopy = savedDocHandlers.oncopy;
+          document.oncut = savedDocHandlers.oncut;
+          document.onpaste = savedDocHandlers.onpaste;
+          document.oncontextmenu = savedDocHandlers.oncontextmenu;
+          document.onselectstart = savedDocHandlers.onselectstart;
+          savedDocHandlers = null;
+        }
+
+        // Restore input/textarea value setters
+        if (inputOverridden) {
+          if (origInputDesc) {
+            Object.defineProperty(HTMLInputElement.prototype, 'value', origInputDesc);
+          }
+          if (origTextareaDesc) {
+            Object.defineProperty(HTMLTextAreaElement.prototype, 'value', origTextareaDesc);
+          }
+          inputOverridden = false;
+        }
+
+        // Re-register blocked listeners that were captured during prototype-intercept
+        const blocked = (window as Record<string, unknown>).__copyunlock_blocked_listeners as Array<{
+          target: EventTarget; type: string; fn: EventListenerOrEventListenerObject; opts: unknown;
+        }> | undefined;
+        if (blocked && blocked.length > 0) {
+          for (const entry of blocked) {
+            origAddEventListener.call(entry.target, entry.type, entry.fn, entry.opts as boolean | AddEventListenerOptions);
+          }
+          blocked.length = 0;
+        }
         break;
       }
     }
