@@ -1,0 +1,15 @@
+name = "peaktools-license"
+main = "src/index.ts"
+compatibility_date = "2026-02-26"
+
+[vars]
+STRIPE_PUBLISHABLE_KEY = "(set via wrangler secret)"
+
+# Secrets (set via `wrangler secret put`):
+#   STRIPE_SECRET_KEY
+#   STRIPE_WEBHOOK_SECRET
+
+[[d1_databases]]
+binding = "DB"
+database_name = "peaktools-licenses"
+database_id = "(created after wrangler d1 create)"
