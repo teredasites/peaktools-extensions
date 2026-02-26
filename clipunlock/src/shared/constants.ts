@@ -32,7 +32,7 @@ export const ALARM_LICENSE_CHECK = 'copyunlock-license-check';
 export const ALARM_LICENSE_CHECK_INTERVAL_MIN = 1440; // daily
 
 // License API — PeakTools License Worker (Cloudflare Worker + D1 + Stripe)
-export const LICENSE_API_BASE = 'https://peaktools-license.peaktools.workers.dev';
+export const LICENSE_API_BASE = 'https://peaktools-license.teredasoftware.workers.dev';
 export const EXTENSION_SLUG = 'copyunlock';
 export const LICENSE_CACHE_KEY = 'copyunlock_license_cache';
 export const LICENSE_CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
