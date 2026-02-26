@@ -2,9 +2,9 @@ name: CI — Build & Test Extensions
 
 on:
   push:
-    branches: [master, main]
+    branches: [dev, master, main]
   pull_request:
-    branches: [master, main]
+    branches: [dev, master, main]
 
 jobs:
   # ─── Build & test each extension ───
