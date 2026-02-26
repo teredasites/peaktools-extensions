@@ -87,17 +87,7 @@
             </label>
           </div>
 
-          <div class="setting-row">
-            <div class="setting-info">
-              <span class="setting-label">Theme</span>
-              <span class="setting-hint">Appearance preference for extension UI</span>
-            </div>
-            <select id="theme" class="select-control">
-              <option value="dark">Dark</option>
-              <option value="light">Light</option>
-              <option value="system">System</option>
-            </select>
-          </div>
+          <!-- Theme removed: dark-by-design, premium aesthetic -->
         </div>
 
         <!-- Keyboard Shortcuts -->
@@ -212,6 +202,15 @@
           </div>
           <button id="refresh-license-btn" class="btn-ghost">Refresh</button>
         </div>
+        <div id="pro-support-section" class="setting-card hidden" style="margin-top: 12px;">
+          <div class="data-action-row">
+            <div class="data-action-info">
+              <span class="setting-label">Priority Support</span>
+              <span class="setting-hint">Pro members get fast response times</span>
+            </div>
+            <a href="mailto:support@peaktools.dev?subject=CopyUnlock%20Pro%20Support" class="btn-outline" id="support-email-btn">Email Us</a>
+          </div>
+        </div>
 
         <div id="pro-upgrade-section">
           <div class="pro-hero">
@@ -255,7 +254,7 @@
               </div>
               <div class="feature-text">
                 <strong>Priority support</strong>
-                <span>Direct email access</span>
+                <span>Fast response via email</span>
               </div>
             </div>
           </div>

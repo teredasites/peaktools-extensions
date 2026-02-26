@@ -5,7 +5,7 @@ import { getSettings, saveSettings } from '../shared/storage';
 import { addClipboardItem, getClipboardItems, searchClipboard, deleteClipboardItem, pinClipboardItem, tagClipboardItem, clearClipboard, cleanupExpired, exportClipboard, importClipboard } from './clipboard-store';
 import { getProfile, saveProfile, clearProfile } from './site-profiles';
 import { trackUnlock, trackCopy, trackSession, getUsageStats } from './analytics';
-import { ALARM_CLEANUP, ALARM_CLEANUP_INTERVAL_MIN, ALARM_LICENSE_CHECK, ALARM_LICENSE_CHECK_INTERVAL_MIN, LICENSE_API_BASE, EXTENSION_SLUG, LICENSE_CACHE_KEY, LICENSE_CACHE_TTL_MS } from '../shared/constants';
+import { ALARM_CLEANUP, ALARM_CLEANUP_INTERVAL_MIN, ALARM_LICENSE_CHECK, ALARM_LICENSE_CHECK_INTERVAL_MIN, LICENSE_API_BASE, EXTENSION_SLUG, LICENSE_CACHE_KEY, LICENSE_CACHE_TTL_MS, FREE_RETENTION_DAYS, PRO_RETENTION_DAYS } from '../shared/constants';
 import { createLogger } from '../shared/logger';
 
 const log = createLogger('service-worker');
@@ -349,9 +349,12 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 
 chrome.alarms.onAlarm.addListener(async (alarm) => {
   if (alarm.name === ALARM_CLEANUP) {
+    const maxRetention = proStatus.isPro ? PRO_RETENTION_DAYS : FREE_RETENTION_DAYS;
     const settings = await getSettings();
-    await cleanupExpired(settings.retentionDays);
-    log.info('cleanup alarm fired');
+    // Use the stricter of user setting and plan limit
+    const effectiveRetention = Math.min(settings.retentionDays, maxRetention);
+    await cleanupExpired(effectiveRetention);
+    log.info(`cleanup alarm fired (retention: ${effectiveRetention}d, plan max: ${maxRetention}d)`);
   } else if (alarm.name === ALARM_LICENSE_CHECK) {
     // Clear cache so we fetch fresh from API
     await chrome.storage.local.remove(LICENSE_CACHE_KEY);
@@ -525,12 +528,12 @@ onMessage((msg: Message, sender, sendResponse) => {
     }
     case 'PIN_CLIPBOARD_ITEM': {
       const { id, pinned } = payload as { id: string; pinned: boolean };
-      pinClipboardItem(id, pinned).then(() => sendResponse({ ok: true }));
+      pinClipboardItem(id, pinned, proStatus).then((result) => sendResponse(result));
       return true;
     }
     case 'TAG_CLIPBOARD_ITEM': {
       const { id, tags } = payload as ClipboardTagPayload;
-      tagClipboardItem(id, tags).then(() => sendResponse({ ok: true }));
+      tagClipboardItem(id, tags, proStatus).then((result) => sendResponse(result));
       return true;
     }
     case 'CLEAR_CLIPBOARD': {

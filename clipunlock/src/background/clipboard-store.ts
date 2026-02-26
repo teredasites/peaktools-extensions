@@ -1,6 +1,6 @@
 import { openDB, type IDBPDatabase } from 'idb';
 import type { ClipboardEntry, ContentType, ProStatus } from '../shared/types';
-import { IDB_NAME, IDB_VERSION, IDB_STORE_CLIPS, FREE_MAX_ITEMS, PRO_MAX_ITEMS, MAX_ITEM_SIZE_BYTES, PREVIEW_LENGTH, DEDUP_WINDOW_MS } from '../shared/constants';
+import { IDB_NAME, IDB_VERSION, IDB_STORE_CLIPS, FREE_MAX_ITEMS, PRO_MAX_ITEMS, FREE_MAX_PINS, FREE_MAX_TAGS, MAX_ITEM_SIZE_BYTES, PREVIEW_LENGTH, DEDUP_WINDOW_MS } from '../shared/constants';
 import { createLogger } from '../shared/logger';
 
 const log = createLogger('clipboard-store');
@@ -145,20 +145,43 @@ export async function deleteClipboardItem(id: string): Promise<void> {
   log.info(`deleted clipboard item: ${id}`);
 }
 
-export async function pinClipboardItem(id: string, pinned: boolean): Promise<void> {
+export async function pinClipboardItem(id: string, pinned: boolean, proStatus?: ProStatus): Promise<{ ok: boolean; error?: string }> {
   const database = await getDB();
   const entry = await database.get(IDB_STORE_CLIPS, id) as ClipboardEntry | undefined;
-  if (!entry) return;
+  if (!entry) return { ok: false, error: 'Item not found' };
+
+  // Enforce pin limit for free users
+  if (pinned && !(proStatus?.isPro)) {
+    const tx = database.transaction(IDB_STORE_CLIPS, 'readonly');
+    let pinnedCount = 0;
+    let cursor = await tx.store.openCursor();
+    while (cursor) {
+      if ((cursor.value as ClipboardEntry).pinned) pinnedCount++;
+      cursor = await cursor.continue();
+    }
+    if (pinnedCount >= FREE_MAX_PINS) {
+      return { ok: false, error: `Free plan limited to ${FREE_MAX_PINS} pins. Upgrade to Pro for unlimited.` };
+    }
+  }
+
   entry.pinned = pinned;
   await database.put(IDB_STORE_CLIPS, entry);
+  return { ok: true };
 }
 
-export async function tagClipboardItem(id: string, tags: string[]): Promise<void> {
+export async function tagClipboardItem(id: string, tags: string[], proStatus?: ProStatus): Promise<{ ok: boolean; error?: string }> {
   const database = await getDB();
   const entry = await database.get(IDB_STORE_CLIPS, id) as ClipboardEntry | undefined;
-  if (!entry) return;
+  if (!entry) return { ok: false, error: 'Item not found' };
+
+  // Enforce tag limit for free users
+  if (!(proStatus?.isPro) && tags.length > FREE_MAX_TAGS) {
+    return { ok: false, error: `Free plan limited to ${FREE_MAX_TAGS} tags per item. Upgrade to Pro for unlimited.` };
+  }
+
   entry.tags = tags;
   await database.put(IDB_STORE_CLIPS, entry);
+  return { ok: true };
 }
 
 export async function clearClipboard(): Promise<void> {

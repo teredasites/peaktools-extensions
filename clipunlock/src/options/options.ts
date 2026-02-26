@@ -25,7 +25,7 @@ interface Stats {
 const enabledCheckbox = document.getElementById('enabled') as HTMLInputElement;
 const defaultModeSelect = document.getElementById('default-mode') as HTMLSelectElement;
 const notificationsCheckbox = document.getElementById('notifications') as HTMLInputElement;
-const themeSelect = document.getElementById('theme') as HTMLSelectElement;
+// Theme removed — dark-by-design aesthetic
 const clipboardEnabledCheckbox = document.getElementById('clipboard-enabled') as HTMLInputElement;
 const maxItemsInput = document.getElementById('max-items') as HTMLInputElement;
 const retentionDaysInput = document.getElementById('retention-days') as HTMLInputElement;
@@ -46,6 +46,7 @@ const proPlanName = document.getElementById('pro-plan-name') as HTMLElement;
 const planButtons = document.querySelectorAll('.plan-card') as NodeListOf<HTMLButtonElement>;
 const refreshLicenseBtn = document.getElementById('refresh-license-btn') as HTMLButtonElement;
 const refreshLicenseBtnFree = document.getElementById('refresh-license-btn-free') as HTMLButtonElement;
+const proSupportSection = document.getElementById('pro-support-section') as HTMLDivElement;
 const versionEl = document.getElementById('version') as HTMLSpanElement;
 const statUnlocks = document.getElementById('stat-unlocks') as HTMLSpanElement;
 const statCopies = document.getElementById('stat-copies') as HTMLSpanElement;
@@ -114,7 +115,7 @@ async function loadSettings(): Promise<void> {
     enabledCheckbox.checked = currentSettings.enabled;
     defaultModeSelect.value = currentSettings.defaultMode;
     notificationsCheckbox.checked = currentSettings.showNotifications;
-    themeSelect.value = currentSettings.theme;
+    // theme is always 'dark'
     clipboardEnabledCheckbox.checked = currentSettings.clipboardHistoryEnabled;
     maxItemsInput.value = String(currentSettings.maxItems);
     retentionDaysInput.value = String(currentSettings.retentionDays);
@@ -177,6 +178,10 @@ async function loadProStatus(): Promise<void> {
       proBadge.classList.remove('hidden');
       proActiveInfo.classList.remove('hidden');
       proUpgradeSection.classList.add('hidden');
+      if (proSupportSection) proSupportSection.classList.remove('hidden');
+      // Pro users get full limits
+      maxItemsInput.max = '100000';
+      retentionDaysInput.max = '3650';
       const cache = await chrome.storage.local.get('copyunlock_license_cache');
       const cached = cache['copyunlock_license_cache'];
       if (cached?.plan) {
@@ -187,10 +192,20 @@ async function loadProStatus(): Promise<void> {
     } else {
       proActiveInfo.classList.add('hidden');
       proUpgradeSection.classList.remove('hidden');
+      if (proSupportSection) proSupportSection.classList.add('hidden');
+      // Free users get capped limits
+      maxItemsInput.max = '200';
+      retentionDaysInput.max = '30';
+      // Clamp values down if needed
+      if (parseInt(maxItemsInput.value, 10) > 200) maxItemsInput.value = '200';
+      if (parseInt(retentionDaysInput.value, 10) > 30) retentionDaysInput.value = '30';
     }
   } catch {
     proActiveInfo.classList.add('hidden');
     proUpgradeSection.classList.remove('hidden');
+    if (proSupportSection) proSupportSection.classList.add('hidden');
+    maxItemsInput.max = '200';
+    retentionDaysInput.max = '30';
   }
 }
 
@@ -199,7 +214,7 @@ async function save(): Promise<void> {
   currentSettings.enabled = enabledCheckbox.checked;
   currentSettings.defaultMode = defaultModeSelect.value;
   currentSettings.showNotifications = notificationsCheckbox.checked;
-  currentSettings.theme = themeSelect.value;
+  // theme stays 'dark'
   currentSettings.clipboardHistoryEnabled = clipboardEnabledCheckbox.checked;
   currentSettings.maxItems = parseInt(maxItemsInput.value, 10) || 5000;
   currentSettings.retentionDays = parseInt(retentionDaysInput.value, 10) || 90;
@@ -218,7 +233,7 @@ async function save(): Promise<void> {
 enabledCheckbox.addEventListener('change', save);
 defaultModeSelect.addEventListener('change', save);
 notificationsCheckbox.addEventListener('change', save);
-themeSelect.addEventListener('change', save);
+
 clipboardEnabledCheckbox.addEventListener('change', save);
 maxItemsInput.addEventListener('change', save);
 retentionDaysInput.addEventListener('change', save);
@@ -291,6 +306,9 @@ clearDataBtn.addEventListener('click', async () => {
   if (!confirm('Are you sure you want to clear all CopyUnlock data? This cannot be undone.')) return;
 
   try {
+    // Clear clipboard history (IndexedDB) via service worker
+    await chrome.runtime.sendMessage({ type: 'CLEAR_CLIPBOARD', payload: {} });
+    // Clear settings and stats (chrome.storage)
     await chrome.storage.local.clear();
     await chrome.storage.sync.clear();
     showToast('All data cleared');
