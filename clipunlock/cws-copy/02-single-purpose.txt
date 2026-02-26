@@ -1,0 +1,1 @@
+CopyUnlock enables users to copy text from websites that block copy, paste, right-click, and text selection. It detects and removes 29 types of copy restrictions. Secondary feature: clipboard history for managing copied items.

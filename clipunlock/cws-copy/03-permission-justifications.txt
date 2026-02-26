@@ -1,0 +1,58 @@
+PERMISSION JUSTIFICATIONS
+Paste each one into the corresponding permission field on the Privacy tab.
+
+
+activeTab
+---------
+Required to inject the unlock script into the currently active tab when the user clicks the extension icon or uses the keyboard shortcut. Only activates on user gesture.
+
+
+clipboardRead
+-------------
+Required to read clipboard contents for the clipboard history feature. Items are stored locally in IndexedDB and never transmitted.
+
+
+clipboardWrite
+--------------
+Required to restore clipboard items when users paste from their clipboard history.
+
+
+storage
+-------
+Required to save user preferences (Smart Mode on/off, Safe Mode domains, theme) and sync settings across devices via Chrome Sync.
+
+
+sidePanel
+---------
+Required to display the clipboard history panel as a Chrome side panel, allowing users to browse and search their copied items without leaving the current page.
+
+
+contextMenus
+-------------
+Required to add "Copy with CopyUnlock" and "Paste from history" options to the right-click context menu for quick access.
+
+
+alarms
+------
+Required to schedule clipboard history cleanup (removing expired items for free-tier 24-hour retention) and periodic safe domain list updates.
+
+
+offscreen
+---------
+Required to read clipboard contents in the background when the extension popup is not open, using an offscreen document to access the Clipboard API.
+
+
+host_permissions: <all_urls>
+----------------------------
+Required because copy protection can exist on any website. The content script must run on all pages to detect and remove copy/paste restrictions when the user activates the extension. The content script only modifies page behavior — it does not read or transmit page content.
+
+
+REMOTE CODE DECLARATION
+-----------------------
+This extension does not execute remote code. All JavaScript is bundled locally. No external scripts are loaded at runtime.
+
+
+DATA COLLECTION
+---------------
+Select: "This extension does NOT collect or use user data"
+Check: I certify that this extension complies with the Chrome Web Store Developer Program Policies regarding user data

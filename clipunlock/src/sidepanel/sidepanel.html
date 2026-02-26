@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CopyUnlock - Clipboard History</title>
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  <header class="search-header">
+    <input type="text" id="search-input" class="search-input" placeholder="Search clipboard history..." autocomplete="off">
+  </header>
+
+  <nav class="filter-bar">
+    <button class="filter-chip active" data-filter="all">All</button>
+    <button class="filter-chip" data-filter="pinned">Pinned</button>
+    <button class="filter-chip" data-filter="url">URLs</button>
+    <button class="filter-chip" data-filter="code">Code</button>
+    <button class="filter-chip" data-filter="text">Text</button>
+  </nav>
+
+  <main id="clip-list" class="clip-list"></main>
+
+  <div id="detail-panel" class="detail-panel hidden">
+    <div class="detail-header">
+      <button id="detail-back" class="detail-back-btn" aria-label="Back">&larr; Back</button>
+      <div class="detail-actions">
+        <button id="detail-copy" class="detail-action-btn">Copy</button>
+        <button id="detail-pin" class="detail-action-btn">Pin</button>
+        <button id="detail-delete" class="detail-action-btn danger">Delete</button>
+      </div>
+    </div>
+    <div id="detail-content" class="detail-content"></div>
+    <div id="detail-meta" class="detail-meta"></div>
+    <div id="detail-tags" class="detail-tags"></div>
+  </div>
+
+  <footer class="panel-footer">
+    <span id="item-count" class="item-count">0 items</span>
+    <button id="clear-all" class="clear-all-btn">Clear All</button>
+  </footer>
+
+  <script src="../../dist/sidepanel/sidepanel.js"></script>
+</body>
+</html>

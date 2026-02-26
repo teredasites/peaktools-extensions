@@ -1,0 +1,192 @@
+{
+  "extensionName": {
+    "message": "CopyUnlock",
+    "description": "Nombre de la extensión"
+  },
+  "extensionDescription": {
+    "message": "Desbloquea restricciones de copia y gestiona tu historial del portapapeles con facilidad.",
+    "description": "Descripción de la extensión"
+  },
+  "commandToggle": {
+    "message": "Alternar CopyUnlock",
+    "description": "Comando de teclado para alternar la extensión"
+  },
+  "commandClipboard": {
+    "message": "Abrir Historial del Portapapeles",
+    "description": "Comando de teclado para abrir el historial"
+  },
+  "commandSearch": {
+    "message": "Buscar en el Portapapeles",
+    "description": "Comando de teclado para buscar"
+  },
+  "contextMenuCopy": {
+    "message": "Copiar (CopyUnlock)",
+    "description": "Opción de copiar en el menú contextual"
+  },
+  "contextMenuCopyClean": {
+    "message": "Copiar Texto Limpio",
+    "description": "Copiar sin marcas de agua"
+  },
+  "contextMenuPin": {
+    "message": "Fijar al Portapapeles",
+    "description": "Opción de fijar en el menú contextual"
+  },
+  "contextMenuSearch": {
+    "message": "Buscar en Historial del Portapapeles",
+    "description": "Opción de búsqueda en el menú contextual"
+  },
+  "popupEnable": {
+    "message": "Activar",
+    "description": "Etiqueta del botón de activar"
+  },
+  "popupActive": {
+    "message": "Activo",
+    "description": "Etiqueta de estado activo"
+  },
+  "popupProtections": {
+    "message": "$COUNT$ protecciones eliminadas",
+    "description": "Número de protecciones eliminadas",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "modeAuto": {
+    "message": "Auto",
+    "description": "Etiqueta del modo automático"
+  },
+  "modeSafe": {
+    "message": "Seguro",
+    "description": "Etiqueta del modo seguro"
+  },
+  "modeAggressive": {
+    "message": "Agresivo",
+    "description": "Etiqueta del modo agresivo"
+  },
+  "recentCopies": {
+    "message": "Copias Recientes",
+    "description": "Encabezado de elementos recientes"
+  },
+  "noHistory": {
+    "message": "Aún no hay historial del portapapeles",
+    "description": "Estado vacío del portapapeles"
+  },
+  "clipboardHistory": {
+    "message": "Historial del Portapapeles",
+    "description": "Título del historial"
+  },
+  "settings": {
+    "message": "Configuración",
+    "description": "Título de configuración"
+  },
+  "searchPlaceholder": {
+    "message": "Buscar en el historial...",
+    "description": "Placeholder del campo de búsqueda"
+  },
+  "filterAll": {
+    "message": "Todo",
+    "description": "Filtrar todos"
+  },
+  "filterPinned": {
+    "message": "Fijados",
+    "description": "Filtrar fijados"
+  },
+  "filterUrls": {
+    "message": "URLs",
+    "description": "Filtrar URLs"
+  },
+  "filterCode": {
+    "message": "Código",
+    "description": "Filtrar código"
+  },
+  "filterText": {
+    "message": "Texto",
+    "description": "Filtrar texto"
+  },
+  "copy": {
+    "message": "Copiar",
+    "description": "Acción de copiar"
+  },
+  "copied": {
+    "message": "¡Copiado!",
+    "description": "Confirmación de copia"
+  },
+  "pin": {
+    "message": "Fijar",
+    "description": "Acción de fijar"
+  },
+  "unpin": {
+    "message": "Desfijar",
+    "description": "Acción de desfijar"
+  },
+  "delete": {
+    "message": "Eliminar",
+    "description": "Acción de eliminar"
+  },
+  "clearAll": {
+    "message": "Borrar Todo",
+    "description": "Borrar todos los elementos"
+  },
+  "clearConfirm": {
+    "message": "¿Borrar todo el historial del portapapeles? Esto no se puede deshacer.",
+    "description": "Diálogo de confirmación de borrado"
+  },
+  "items": {
+    "message": "$COUNT$ elementos",
+    "description": "Contador de elementos",
+    "placeholders": {
+      "COUNT": {
+        "content": "$1",
+        "example": "42"
+      }
+    }
+  },
+  "justNow": {
+    "message": "Ahora mismo",
+    "description": "Tiempo - ahora mismo"
+  },
+  "minutesAgo": {
+    "message": "hace $MINUTES$m",
+    "description": "Tiempo - minutos",
+    "placeholders": {
+      "MINUTES": {
+        "content": "$1",
+        "example": "5"
+      }
+    }
+  },
+  "hoursAgo": {
+    "message": "hace $HOURS$h",
+    "description": "Tiempo - horas",
+    "placeholders": {
+      "HOURS": {
+        "content": "$1",
+        "example": "2"
+      }
+    }
+  },
+  "daysAgo": {
+    "message": "hace $DAYS$d",
+    "description": "Tiempo - días",
+    "placeholders": {
+      "DAYS": {
+        "content": "$1",
+        "example": "3"
+      }
+    }
+  },
+  "watermarkNotice": {
+    "message": "Se eliminaron caracteres de marca de agua del texto copiado.",
+    "description": "Notificación de eliminación de marca de agua"
+  },
+  "settingsSaved": {
+    "message": "Configuración guardada",
+    "description": "Confirmación de guardado"
+  },
+  "exportSuccess": {
+    "message": "Datos exportados exitosamente",
+    "description": "Mensaje de éxito de exportación"
+  }
+}
