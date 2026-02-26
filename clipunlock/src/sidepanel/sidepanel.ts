@@ -1130,18 +1130,14 @@ async function openProjectDetail(projectId: string): Promise<void> {
           });
           return;
         }
-        // Open detail from project items - find in allItems
+        // Open detail from project items — use single-item array to avoid corrupting filter state
         const itemId = (el as HTMLElement).dataset.id;
-        const idx = filteredItems.findIndex((fi) => fi.id === itemId);
-        if (idx >= 0) {
-          openDetail(idx);
-        } else {
-          // Item might not be in filtered list — temporarily set filteredItems
-          const allIdx = allItems.findIndex((ai) => ai.id === itemId);
-          if (allIdx >= 0) {
-            filteredItems = allItems;
-            openDetail(allIdx);
-          }
+        const item = allItems.find((ai) => ai.id === itemId);
+        if (item) {
+          // Set filteredItems to just this item so openDetail(0) works correctly
+          // closeDetail() calls applyFilter() which rebuilds filteredItems properly
+          filteredItems = [item];
+          openDetail(0);
         }
       });
     });
