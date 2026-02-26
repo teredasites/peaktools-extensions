@@ -480,22 +480,26 @@ async function refreshCollectionMenuItems(): Promise<void> {
     // Snapshot and clear immediately to prevent stale clicks during async removals
     const idsToRemove = [...activeCollectionMenuIds];
     activeCollectionMenuIds = [];
-    // Remove previously created dynamic items
-    await Promise.allSettled(idsToRemove.map((id) => {
-      try { chrome.contextMenus.remove(id); } catch { /* already gone */ }
-    }));
+    // Remove previously created dynamic items — use callback to suppress runtime.lastError
+    await Promise.allSettled(idsToRemove.map((id) => new Promise<void>((resolve) => {
+      chrome.contextMenus.remove(id, () => {
+        void chrome.runtime.lastError; // consume error to prevent console noise
+        resolve();
+      });
+    })));
     // Fetch current collections and create menu items — projects first
     const collections = await getCollections();
     const projects = collections.filter((c) => c.isProject);
     const regularCollections = collections.filter((c) => !c.isProject);
     const newIds: string[] = [];
 
-    // Helper: safely create a menu item, removing any existing duplicate first
+    // Helper: safely create a menu item — uses callback to suppress runtime.lastError
     const safeCreate = (props: chrome.contextMenus.CreateProperties): boolean => {
       try {
-        // Remove first to prevent "duplicate id" errors if a prior removal was missed
-        try { chrome.contextMenus.remove(props.id as string); } catch { /* */ }
-        chrome.contextMenus.create(props);
+        chrome.contextMenus.create(props, () => {
+          // Check runtime.lastError to suppress "duplicate id" console noise
+          void chrome.runtime.lastError;
+        });
         return true;
       } catch { return false; }
     };
@@ -537,15 +541,16 @@ async function refreshCollectionMenuItems(): Promise<void> {
 // Update toggle menu title based on tab unlock state
 function updateToggleTitle(unlocked: boolean): void {
   const title = unlocked ? '\u{1F512} Lock Page (revert)' : '\u{1F513} Unlock Page';
-  try { chrome.contextMenus.update(CTX.TOGGLE, { title }); } catch { /* menu may not exist */ }
+  chrome.contextMenus.update(CTX.TOGGLE, { title }, () => { void chrome.runtime.lastError; });
 }
 
 // Update mode radio buttons to reflect current mode
 function updateModeRadios(mode: import('../shared/types').UnlockMode): void {
   contextMenuMode = mode;
-  try { chrome.contextMenus.update(CTX.MODE_AUTO, { checked: mode === 'auto' }); } catch { /* */ }
-  try { chrome.contextMenus.update(CTX.MODE_SAFE, { checked: mode === 'safe' }); } catch { /* */ }
-  try { chrome.contextMenus.update(CTX.MODE_AGGRESSIVE, { checked: mode === 'aggressive' }); } catch { /* */ }
+  const cb = () => { void chrome.runtime.lastError; };
+  chrome.contextMenus.update(CTX.MODE_AUTO, { checked: mode === 'auto' }, cb);
+  chrome.contextMenus.update(CTX.MODE_SAFE, { checked: mode === 'safe' }, cb);
+  chrome.contextMenus.update(CTX.MODE_AGGRESSIVE, { checked: mode === 'aggressive' }, cb);
 }
 
 // Helper: check if a tab URL supports content scripts
