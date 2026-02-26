@@ -115,6 +115,27 @@ export function findTextImages(): Array<HTMLImageElement | HTMLCanvasElement> {
 }
 
 /**
+ * Copy a page canvas into a new canvas we own, so we can set willReadFrequently.
+ * Calling getContext on an existing page canvas returns its already-created context
+ * (ignoring our options), which triggers Chrome's willReadFrequently warning.
+ */
+function copyCanvasToOwned(src: HTMLCanvasElement): { canvas: HTMLCanvasElement; ctx: CanvasRenderingContext2D } | null {
+  if (src.width === 0 || src.height === 0) return null;
+  const canvas = document.createElement('canvas');
+  canvas.width = src.width;
+  canvas.height = src.height;
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
+  if (!ctx) return null;
+  try {
+    ctx.drawImage(src, 0, 0);
+    ctx.getImageData(0, 0, 1, 1); // test readability
+  } catch {
+    return null;
+  }
+  return { canvas, ctx };
+}
+
+/**
  * Extract text from an image using the canvas-based approach.
  * Creates a high-contrast version and uses OCR-like line detection.
  */
@@ -130,11 +151,12 @@ function extractFromElement(el: HTMLImageElement | HTMLCanvasElement): OCRResult
     width = result.canvas.width;
     height = result.canvas.height;
   } else {
-    const c = el.getContext('2d', { willReadFrequently: true });
-    if (!c) return null;
-    ctx = c;
-    width = el.width;
-    height = el.height;
+    // Copy page canvas into our own canvas to avoid willReadFrequently warning
+    const result = copyCanvasToOwned(el);
+    if (!result) return null;
+    ctx = result.ctx;
+    width = result.canvas.width;
+    height = result.canvas.height;
   }
 
   const analysis = analyzeForText(ctx, width, height);

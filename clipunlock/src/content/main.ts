@@ -6,6 +6,7 @@ import { detectProtections } from './detector';
 import { applyUnlock, revertUnlock } from './unlocker';
 import { CounterObserver } from './counter-observer';
 import { startInterceptor, stopInterceptor, setWatermarkStripping } from './clipboard-interceptor';
+import { showLockAnimation } from './lock-animation';
 import { createLogger } from '../shared/logger';
 
 const log = createLogger('main');
@@ -83,12 +84,14 @@ onMessage((msg: Message, _sender, sendResponse) => {
     case 'TOGGLE_UNLOCK': {
       if (isUnlocked) {
         runRevert();
+        showLockAnimation(false);
         sendResponse({ unlocked: false });
       } else {
         runDetection().then((profile) => {
           if (profile.methods.length > 0) {
             runUnlock(profile);
           }
+          showLockAnimation(true);
           sendResponse({ unlocked: isUnlocked, protectionsRemoved: profile.methods.length, profile });
         });
         return true;

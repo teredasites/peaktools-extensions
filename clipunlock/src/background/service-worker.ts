@@ -171,9 +171,11 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
         const response = await chrome.tabs.sendMessage(tab.id, { type: 'TOGGLE_UNLOCK', payload: {} });
         if (response?.unlocked) {
           chrome.action.setBadgeText({ text: '\u2713', tabId: tab.id });
-          chrome.action.setBadgeBackgroundColor({ color: '#22C55E', tabId: tab.id });
+          chrome.action.setBadgeBackgroundColor({ color: '#3b82f6', tabId: tab.id });
+          chrome.contextMenus.update('copyunlock-toggle-page', { title: 'CopyUnlock: ON \u2713' });
         } else {
           chrome.action.setBadgeText({ text: '', tabId: tab.id });
+          chrome.contextMenus.update('copyunlock-toggle-page', { title: 'Unlock Page with CopyUnlock' });
         }
       } catch (err) {
         log.error('failed to toggle unlock via context menu:', err);
@@ -241,7 +243,7 @@ function updateBadge(tabId: number, methodCount: number, unlocked: boolean): voi
   }
   chrome.action.setBadgeText({ text: unlocked ? '\u2713' : String(methodCount), tabId });
   chrome.action.setBadgeBackgroundColor({
-    color: unlocked ? '#22C55E' : '#EF4444',
+    color: unlocked ? '#3b82f6' : '#EF4444',
     tabId,
   });
 }
@@ -451,6 +453,21 @@ onMessage((msg: Message, sender, sendResponse) => {
     }
     default:
       sendResponse({ error: 'unknown message type' });
+  }
+});
+
+// Sync context menu title when switching tabs
+chrome.tabs.onActivated.addListener(async (activeInfo) => {
+  try {
+    const response = await chrome.tabs.sendMessage(activeInfo.tabId, { type: 'GET_TAB_STATE', payload: {} });
+    if (response?.unlocked) {
+      chrome.contextMenus.update('copyunlock-toggle-page', { title: 'CopyUnlock: ON \u2713' });
+    } else {
+      chrome.contextMenus.update('copyunlock-toggle-page', { title: 'Unlock Page with CopyUnlock' });
+    }
+  } catch {
+    // Content script not available on this tab (e.g. chrome:// pages)
+    chrome.contextMenus.update('copyunlock-toggle-page', { title: 'Unlock Page with CopyUnlock' });
   }
 });
 
