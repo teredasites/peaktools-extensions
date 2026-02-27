@@ -30,24 +30,30 @@ FREE FEATURES (Free Forever — No Trial, No Credit Card)
 ✓ Counter-observer — when sites re-apply copy protection, CopyUnlock fights back automatically
 ✓ Safe Mode — won't break Google Docs, YouTube, Netflix, Figma, or other web apps
 ✓ Keyboard shortcuts: Alt+Shift+U (unlock), Alt+Shift+C (clipboard), Alt+Shift+S (search), Ctrl+Shift+V (quick paste)
-✓ Clipboard history — 500 items with instant search
-✓ 3 collections for organizing copied items
+✓ Clipboard history — 500 items, 30-day retention, instant search
+✓ Smart content detection — auto-categorizes clips as Text, URL, Code, Email, or HTML
+✓ Time-grouped history — items organized under Today, Yesterday, This Week, Older
+✓ Pin items to top — pinned clips always show first in a dedicated section
+✓ Projects — organize clips into folders with auto-capture by domain
+✓ 3 free projects with color coding and domain auto-filing
+✓ Right-click menu on every clip — copy, pin, assign to project, open source, delete
+✓ Manual add — paste or type any text directly into your clipboard history
 ✓ URL auto-citation on every copy
 ✓ Quick Paste popup (Ctrl+Shift+V) with keyboard navigation
-✓ 5 languages: English, Spanish, Portuguese, Chinese, French
+✓ 54 languages supported
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 PRO FEATURES
 
 ⚡ 100,000 clipboard items with 10-year retention
-⚡ 1,000 color-coded collections
+⚡ 100 projects with unlimited items per project
 ⚡ Formatted auto-citation (Title — Domain — Date)
 ⚡ PDF Line Break Cleanup — fixes broken line breaks and hyphenated words from PDF copies
 ⚡ Smart Paste in 4 formats: plain, rich, clean, or with citation
-⚡ Fuzzy search, tags, and pinned favorites
-⚡ Export and import clipboard history (JSON)
+⚡ Export projects as TXT, HTML, or PDF
 ⚡ Per-site unlock profiles — save custom settings per domain
+⚡ Manage subscription directly from settings — update payment, change plan, or cancel anytime
 ⚡ Priority support
 
 Pro: $1.99/month · $19.99/year (save 16%) · $49.99 lifetime
@@ -65,6 +71,23 @@ Unlike simple copy unlockers that only remove CSS user-select, CopyUnlock detect
 5. Server-side protections — watermark injection, homoglyph substitution, custom font ciphers, image-based text, SVG path rendering, debugger traps, print blocking
 
 Most copy protection uses 3-5 of these simultaneously. Other extensions only handle 1-2 categories and fail on heavily protected pages. CopyUnlock handles all 39 methods across all 5 categories.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+CLIPBOARD MANAGER + PROJECTS
+
+Every copy is automatically saved to your clipboard history with smart content detection:
+• URLs get one-click Open and Copy buttons
+• Code snippets show detected language (JS, Python, CSS, SQL, Shell, Go, Rust, and more)
+• Items grouped by time: Today, Yesterday, This Week, Older
+• Pinned items always stay at the top
+
+Projects let you organize clips by topic or domain:
+• Set auto-capture domains — clips from those sites file themselves automatically
+• Color-coded project folders with description and domain badges
+• Content organized by type inside each project (Text, URLs, Code, Emails, HTML)
+• Export any project as TXT, HTML, or PDF
+• Right-click any clip to assign, reassign, or remove from a project
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -106,7 +129,7 @@ PERFECT FOR
 • Students copying text from research sites and academic databases
 • Developers copying code snippets from documentation
 • Researchers saving content from news articles and journals
-• Writers collecting quotes and references
+• Writers collecting quotes and references with auto-citation
 • Anyone tired of right-click being disabled
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

@@ -14,7 +14,7 @@ Name (in manifest.json):
 CopyUnlock — Enable Copy, Right Click & Text Selection
 
 Short Description (in manifest.json, 132 chars):
-Enable copy paste on any website. Remove right-click restrictions, unblock text selection, strip watermarks. Free. No data collected.
+Enable copy paste on any website. Remove right-click restrictions, unblock text selection, strip watermarks. Free.
 
 Category: Productivity
 Language: English (US)
@@ -31,14 +31,27 @@ Store Icon: assets/store-icon-128.png (128x128)
 1. HERO — Popup showing "Page Unlocked" on a protected site
    Overlay text: "Enable Copy & Paste on Any Website"
 
-2. DETECTION — Popup showing detected protections with green checkmarks
-   Overlay text: "Detects & Removes 39 Types of Copy Protection"
+2. CLIPBOARD HISTORY — Side panel showing time-grouped clips (Today, Yesterday) with pinned items at top
+   Overlay text: "Clipboard History — Auto-Saves Every Copy"
 
-3. CLIPBOARD — Side panel with clipboard history and search bar
-   Overlay text: "Built-in Clipboard Manager — Search, Tag, Pin"
+3. PROJECTS — Side panel showing project folders with color-coded cards and domain badges
+   Overlay text: "Organize Clips into Projects by Domain"
 
-4. SAFE MODE — Settings showing protected apps (Google Docs, YouTube)
-   Overlay text: "Safe Mode — Won't Break Google Docs or YouTube"
+4. RIGHT-CLICK MENU — Context menu on a clip item showing Copy, Pin, Move to Project, Delete options
+   Overlay text: "Full Right-Click Menu on Every Item"
 
-5. BEFORE/AFTER — Split: blocked text on left, selected text on right
-   Overlay text: "Before / After — One Click"
+5. SETTINGS — In-panel settings modal showing unlock mode, clipboard toggles, Pro status
+   Overlay text: "3 Unlock Modes — Auto, Safe, Aggressive"
+
+## Key Features to Highlight in Screenshots
+
+- Time-grouped history (PINNED → TODAY → YESTERDAY → THIS WEEK → OLDER)
+- Content-type accent bars (blue=URL, purple=Code, gray=Text, green=Email, orange=HTML)
+- Language detection badges on code clips (JS, Python, CSS, SQL, Shell, etc.)
+- URL items with one-click Open and Copy buttons
+- Project cards with color dots, item counts, and domain badges
+- Project detail view with content grouped by type (Text, URLs, Code, etc.)
+- Pin to top — pinned items in dedicated PINNED section
+- Quick Paste popup overlay on a webpage (Ctrl+Shift+V)
+- Clear Data modal with granular toggles (History, Pinned, Projects)
+- Manage Subscription button in settings for Pro users
