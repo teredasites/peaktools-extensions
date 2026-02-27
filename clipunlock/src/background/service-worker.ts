@@ -5,7 +5,7 @@ import { getSettings, saveSettings } from '../shared/storage';
 import { addClipboardItem, getClipboardItems, getClipboardItem, searchClipboard, deleteClipboardItem, pinClipboardItem, tagClipboardItem, clearClipboard, cleanupExpired, getCollections, createCollection, deleteCollection, renameCollection, setItemCollection, getQuickPasteItems, createProject, updateProject, exportProjectAsText, exportProjectAsHtml } from './clipboard-store';
 import { getProfile, clearProfile } from './site-profiles';
 import { trackUnlock, trackCopy, trackSession } from './analytics';
-import { ALARM_CLEANUP, ALARM_CLEANUP_INTERVAL_MIN, ALARM_LICENSE_CHECK, ALARM_LICENSE_CHECK_INTERVAL_MIN, LICENSE_API_BASE, EXTENSION_SLUG, LICENSE_CACHE_KEY, LICENSE_CACHE_TTL_MS, FREE_RETENTION_DAYS, PRO_RETENTION_DAYS } from '../shared/constants';
+import { ALARM_CLEANUP, ALARM_CLEANUP_INTERVAL_MIN, ALARM_LICENSE_CHECK, ALARM_LICENSE_CHECK_INTERVAL_MIN, LICENSE_API_BASE, EXTENSION_SLUG, LICENSE_CACHE_KEY, LICENSE_CACHE_TTL_MS, FREE_RETENTION_DAYS, PRO_RETENTION_DAYS, FREE_MAX_PROJECTS, PRO_MAX_PROJECTS } from '../shared/constants';
 import { createLogger } from '../shared/logger';
 
 const log = createLogger('service-worker');
@@ -281,9 +281,13 @@ const CTX = {
   COPY_CITATION: 'copyunlock-copy-citation',
   SEP_2: 'copyunlock-sep-2',
   PIN: 'copyunlock-pin',
-  SAVE_PAGE_URL: 'copyunlock-save-page-url',
+  SEP_2B: 'copyunlock-sep-2b',
+  // Unified "Save to Project" — works on BOTH selection AND page context
   COLLECTION_PARENT: 'copyunlock-collection',
+  COLLECTION_NONE: 'copyunlock-collection-none',  // Save to history (no project)
   COLLECTION_NEW: 'copyunlock-collection-new',
+  // Quick save page URL (no project, quick action)
+  SAVE_PAGE_URL: 'copyunlock-save-page-url',
   SEP_3: 'copyunlock-sep-3',
   MODE_PARENT: 'copyunlock-mode',
   MODE_AUTO: 'copyunlock-mode-auto',
@@ -359,7 +363,7 @@ function setupContextMenus(): void {
       contexts: ['selection'],
     });
 
-    // ── Pin & Collection (selection only) ──
+    // ── Pin (selection only) ──
     chrome.contextMenus.create({
       id: CTX.PIN,
       parentId: CTX.ROOT,
@@ -368,24 +372,40 @@ function setupContextMenus(): void {
     });
 
     chrome.contextMenus.create({
-      id: CTX.SAVE_PAGE_URL,
+      id: CTX.SEP_2B,
       parentId: CTX.ROOT,
-      title: '\u{1F517} Save Page URL',
-      contexts: ['page', 'frame'],
+      type: 'separator',
+      contexts: ['page', 'frame', 'selection'],
     });
 
+    // ── Save to Project — unified for BOTH text selection AND page URLs ──
     chrome.contextMenus.create({
       id: CTX.COLLECTION_PARENT,
       parentId: CTX.ROOT,
-      title: 'Save to Project',
-      contexts: ['selection'],
+      title: '\u{1F4C1} Save to Project',
+      contexts: ['page', 'frame', 'selection'],
+    });
+
+    chrome.contextMenus.create({
+      id: CTX.COLLECTION_NONE,
+      parentId: CTX.COLLECTION_PARENT,
+      title: 'Save to History (no project)',
+      contexts: ['page', 'frame', 'selection'],
     });
 
     chrome.contextMenus.create({
       id: CTX.COLLECTION_NEW,
       parentId: CTX.COLLECTION_PARENT,
       title: '+ New Project...',
-      contexts: ['selection'],
+      contexts: ['page', 'frame', 'selection'],
+    });
+
+    // ── Quick Save Page URL (no project, one-click) ──
+    chrome.contextMenus.create({
+      id: CTX.SAVE_PAGE_URL,
+      parentId: CTX.ROOT,
+      title: '\u{1F517} Save Page URL',
+      contexts: ['page', 'frame'],
     });
 
     chrome.contextMenus.create({
@@ -512,10 +532,10 @@ async function refreshCollectionMenuItems(): Promise<void> {
       } catch { return false; }
     };
 
-    // Projects first with folder icon
+    // Projects first with folder icon — available on page + frame + selection
     for (const proj of projects) {
       const id = COLLECTION_ITEM_PREFIX + proj.id;
-      if (safeCreate({ id, parentId: CTX.COLLECTION_PARENT, title: `\u{1F4C1} ${proj.name}`, contexts: ['selection'] })) {
+      if (safeCreate({ id, parentId: CTX.COLLECTION_PARENT, title: `\u{1F4C1} ${proj.name}`, contexts: ['page', 'frame', 'selection'] })) {
         newIds.push(id);
       }
     }
@@ -523,7 +543,7 @@ async function refreshCollectionMenuItems(): Promise<void> {
     // Separator between projects and collections
     if (projects.length > 0 && regularCollections.length > 0) {
       const sepId = 'copyunlock-col-sep';
-      if (safeCreate({ id: sepId, parentId: CTX.COLLECTION_PARENT, type: 'separator', contexts: ['selection'] })) {
+      if (safeCreate({ id: sepId, parentId: CTX.COLLECTION_PARENT, type: 'separator', contexts: ['page', 'frame', 'selection'] })) {
         newIds.push(sepId);
       }
     }
@@ -531,7 +551,7 @@ async function refreshCollectionMenuItems(): Promise<void> {
     // Regular collections
     for (const col of regularCollections) {
       const id = COLLECTION_ITEM_PREFIX + col.id;
-      if (safeCreate({ id, parentId: CTX.COLLECTION_PARENT, title: col.name, contexts: ['selection'] })) {
+      if (safeCreate({ id, parentId: CTX.COLLECTION_PARENT, title: col.name, contexts: ['page', 'frame', 'selection'] })) {
         newIds.push(id);
       }
     }
@@ -565,6 +585,31 @@ function updateModeRadios(mode: import('../shared/types').UnlockMode): void {
 function isScriptableUrl(url: string | undefined): boolean {
   if (!url) return false;
   return url.startsWith('http://') || url.startsWith('https://');
+}
+
+// Send a message to the sidepanel. Returns true if delivered, false if sidepanel not open.
+async function sendToSidepanel(type: string, payload: Record<string, unknown>): Promise<boolean> {
+  try {
+    await chrome.runtime.sendMessage({ type, payload });
+    return true;
+  } catch {
+    // Sidepanel not open or no listener — message not delivered
+    return false;
+  }
+}
+
+// Open sidepanel reliably — tries windowId first, then tabId fallback
+async function openSidePanel(tab: chrome.tabs.Tab): Promise<void> {
+  try {
+    if (tab.windowId) {
+      await chrome.sidePanel.open({ windowId: tab.windowId });
+    } else {
+      await chrome.sidePanel.open({ tabId: tab.id! });
+    }
+  } catch {
+    // Last resort: try without options
+    try { await chrome.sidePanel.open({ tabId: tab.id! }); } catch { /* give up */ }
+  }
 }
 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
@@ -666,10 +711,45 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
       watermarkStripped: false,
       contentTypeOverride: 'url',
     }, proStatus);
+    // Flash badge to confirm save
+    chrome.action.setBadgeText({ text: '✓', tabId: tab.id });
+    chrome.action.setBadgeBackgroundColor({ color: '#3b82f6', tabId: tab.id });
+    setTimeout(() => { chrome.action.setBadgeText({ text: '', tabId: tab.id }); }, 2000);
     return;
   }
 
-  // ── Save to Project/Collection (dynamic items) ──
+  // ── "Save to History" (no project) from the Save to Project submenu ──
+  if (menuId === CTX.COLLECTION_NONE) {
+    const text = info.selectionText ?? '';
+    if (text) {
+      // Text selection — save text to history
+      await addClipboardItem({
+        content: text,
+        html: null,
+        sourceUrl: tab.url ?? '',
+        sourceTitle: tab.title ?? '',
+        wasUnlocked: false,
+        watermarkStripped: false,
+      }, proStatus);
+    } else {
+      // No selection — save page URL to history
+      const pageUrl = tab.url ?? info.pageUrl ?? '';
+      if (pageUrl && pageUrl.startsWith('http')) {
+        await addClipboardItem({
+          content: pageUrl,
+          html: null,
+          sourceUrl: pageUrl,
+          sourceTitle: tab.title ?? '',
+          wasUnlocked: false,
+          watermarkStripped: false,
+          contentTypeOverride: 'url',
+        }, proStatus);
+      }
+    }
+    return;
+  }
+
+  // ── Save to Project/Collection (dynamic items) — handles BOTH text AND page URL ──
   if (menuId.startsWith(COLLECTION_ITEM_PREFIX)) {
     const collectionId = menuId.slice(COLLECTION_ITEM_PREFIX.length);
     // Verify this collection still exists (menu item may be stale from a race condition)
@@ -680,15 +760,31 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
       return;
     }
     const text = info.selectionText ?? '';
-    if (!text) return;
-    const result = await addClipboardItem({
-      content: text,
-      html: null,
-      sourceUrl: tab.url ?? '',
-      sourceTitle: tab.title ?? '',
-      wasUnlocked: false,
-      watermarkStripped: false,
-    }, proStatus);
+    let result;
+    if (text) {
+      // Has text selection — save the selected text
+      result = await addClipboardItem({
+        content: text,
+        html: null,
+        sourceUrl: tab.url ?? '',
+        sourceTitle: tab.title ?? '',
+        wasUnlocked: false,
+        watermarkStripped: false,
+      }, proStatus);
+    } else {
+      // No text selection — save the page URL
+      const pageUrl = tab.url ?? info.pageUrl ?? '';
+      if (!pageUrl || !pageUrl.startsWith('http')) return;
+      result = await addClipboardItem({
+        content: pageUrl,
+        html: null,
+        sourceUrl: pageUrl,
+        sourceTitle: tab.title ?? '',
+        wasUnlocked: false,
+        watermarkStripped: false,
+        contentTypeOverride: 'url',
+      }, proStatus);
+    }
     if (result) {
       await setItemCollection(result.entry.id, collectionId);
     }
@@ -697,31 +793,51 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 
   // ── New Project (from right-click) — open sidepanel with project creation form ──
   if (menuId === CTX.COLLECTION_NEW) {
-    const text = info.selectionText ?? '';
-    if (!text) return;
-    // Save the item first
-    const addResult = await addClipboardItem({
-      content: text,
-      html: null,
-      sourceUrl: tab.url ?? '',
-      sourceTitle: tab.title ?? '',
-      wasUnlocked: false,
-      watermarkStripped: false,
-    }, proStatus);
-    if (addResult) {
-      // Store pending project creation data so sidepanel can pick it up
-      let domain = '';
-      try { domain = new URL(tab.url ?? '').hostname.replace('www.', ''); } catch { /* */ }
-      await chrome.storage.session.set({
-        pendingProjectCreation: {
-          itemId: addResult.entry.id,
-          suggestedName: domain || 'New Project',
-          suggestedDomain: domain,
-        },
-      });
-      // Open the sidepanel — it will detect the pending data and show the form
-      chrome.sidePanel.open({ tabId: tab.id }).catch(() => {});
+    // Open side panel IMMEDIATELY — must be the first async call to preserve user gesture
+    await openSidePanel(tab);
+
+    // Now do the rest of the work
+    const existingCollections = await getCollections();
+    const projectCount = existingCollections.filter((c) => c.isProject).length;
+    const projectLimit = proStatus.isPro ? PRO_MAX_PROJECTS : FREE_MAX_PROJECTS;
+    if (projectCount >= projectLimit) {
+      chrome.action.setBadgeText({ text: '!', tabId: tab.id });
+      chrome.action.setBadgeBackgroundColor({ color: '#ef4444', tabId: tab.id });
+      setTimeout(() => { chrome.action.setBadgeText({ text: '', tabId: tab.id }); }, 3000);
+      const limitMsg = `Project limit reached (${projectCount}/${projectLimit}). Upgrade to Pro for more projects.`;
+      await sendToSidepanel('SIDEPANEL_SHOW_LIMIT_MESSAGE', { message: limitMsg });
+      await chrome.storage.session.set({ pendingLimitMessage: limitMsg });
+      return;
     }
+    const text = info.selectionText ?? '';
+    let addResult;
+    if (text) {
+      addResult = await addClipboardItem({
+        content: text, html: null,
+        sourceUrl: tab.url ?? '', sourceTitle: tab.title ?? '',
+        wasUnlocked: false, watermarkStripped: false,
+      }, proStatus);
+    } else {
+      const pageUrl = tab.url ?? info.pageUrl ?? '';
+      if (pageUrl && pageUrl.startsWith('http')) {
+        addResult = await addClipboardItem({
+          content: pageUrl, html: null,
+          sourceUrl: pageUrl, sourceTitle: tab.title ?? '',
+          wasUnlocked: false, watermarkStripped: false, contentTypeOverride: 'url',
+        }, proStatus);
+      }
+    }
+    let domain = '';
+    try { domain = new URL(tab.url ?? '').hostname.replace('www.', ''); } catch { /* */ }
+    const projectData = {
+      itemId: addResult?.entry?.id ?? null,
+      suggestedName: domain || 'New Project',
+      suggestedDomain: domain,
+    };
+    // Store in session storage — sidepanel picks it up on init or via onChanged
+    await chrome.storage.session.set({ pendingProjectCreation: projectData });
+    // Also try direct message (works if sidepanel already loaded)
+    await sendToSidepanel('SIDEPANEL_OPEN_NEW_PROJECT', projectData);
     return;
   }
 
@@ -751,7 +867,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 
   // ── Clipboard History ──
   if (menuId === CTX.CLIPBOARD_HISTORY) {
-    chrome.sidePanel.open({ tabId: tab.id }).catch(() => {});
+    await openSidePanel(tab);
     return;
   }
 
@@ -768,7 +884,11 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 
   // ── Settings ──
   if (menuId === CTX.SETTINGS) {
-    chrome.runtime.openOptionsPage();
+    // Open side panel IMMEDIATELY — must be the first async call to preserve user gesture
+    await openSidePanel(tab);
+    // Store flag + try direct message
+    await chrome.storage.session.set({ openSettingsModal: true });
+    await sendToSidepanel('SIDEPANEL_OPEN_SETTINGS', {});
     return;
   }
 });

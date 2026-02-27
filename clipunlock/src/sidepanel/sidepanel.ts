@@ -110,6 +110,24 @@ const newProjectFooterBtn = document.getElementById('new-project-footer-btn') as
 const openSettingsBtn = document.getElementById('open-settings') as HTMLButtonElement;
 const detailNewProject = document.getElementById('detail-new-project') as HTMLButtonElement;
 
+// Settings modal refs
+const settingsOverlay = document.getElementById('settings-overlay') as HTMLDivElement;
+const settingsOverlayClose = document.getElementById('settings-overlay-close') as HTMLButtonElement;
+const sEnabled = document.getElementById('s-enabled') as HTMLInputElement;
+const sMode = document.getElementById('s-mode') as HTMLSelectElement;
+const sNotifications = document.getElementById('s-notifications') as HTMLInputElement;
+const sContextMenu = document.getElementById('s-context-menu') as HTMLInputElement;
+const sClipboard = document.getElementById('s-clipboard') as HTMLInputElement;
+const sMaxItems = document.getElementById('s-max-items') as HTMLInputElement;
+const sRetention = document.getElementById('s-retention') as HTMLInputElement;
+const sWatermark = document.getElementById('s-watermark') as HTMLInputElement;
+const sCitation = document.getElementById('s-citation') as HTMLSelectElement;
+const sPasteFormat = document.getElementById('s-paste-format') as HTMLSelectElement;
+const sPdfCleanup = document.getElementById('s-pdf-cleanup') as HTMLInputElement;
+const sProStatusLabel = document.getElementById('s-pro-status-label') as HTMLSpanElement;
+const sUpgradeBtn = document.getElementById('s-upgrade-btn') as HTMLButtonElement;
+const sFullSettings = document.getElementById('s-full-settings') as HTMLButtonElement;
+
 // Virtual Scrolling
 const ITEM_HEIGHT = 62;
 const BUFFER_SIZE = 5;
@@ -759,13 +777,18 @@ function closeDetail(): void {
 }
 
 function applyFilter(): void {
+  // Projects view is handled separately — don't render clipList
+  if (currentView === 'projects') {
+    return;
+  }
+
   let items = [...allItems];
 
   // Apply view filter
   if (currentView === 'pinned') {
     items = items.filter((i) => i.pinned);
   }
-  // 'recent' shows everything, 'projects' is handled separately
+  // 'recent' shows everything
 
   // Apply search
   if (searchQuery.trim()) {
@@ -846,7 +869,9 @@ document.addEventListener('keydown', (e: KeyboardEvent) => {
   const isTyping = active instanceof HTMLInputElement || active instanceof HTMLTextAreaElement || (active as HTMLElement)?.isContentEditable;
 
   if (e.key === 'Escape') {
-    if (!projectOverlay.classList.contains('hidden')) {
+    if (!settingsOverlay.classList.contains('hidden')) {
+      closeSettingsModal();
+    } else if (!projectOverlay.classList.contains('hidden')) {
       projectOverlay.classList.add('hidden');
       pendingItemIdForProject = null;
     } else if (!addOverlay.classList.contains('hidden')) {
@@ -997,6 +1022,8 @@ function escapeHtml(str: string): string {
 
 // ─── Collections ───
 
+const projectsCountBadge = document.getElementById('projects-count-badge') as HTMLSpanElement;
+
 async function loadCollections(): Promise<void> {
   try {
     const response = await chrome.runtime.sendMessage({
@@ -1006,6 +1033,14 @@ async function loadCollections(): Promise<void> {
     collections = Array.isArray(response) ? response : [];
   } catch {
     collections = [];
+  }
+  // Update projects count badge
+  const projectCount = collections.filter((c) => c.isProject).length;
+  if (projectCount > 0) {
+    projectsCountBadge.textContent = String(projectCount);
+    projectsCountBadge.classList.remove('hidden');
+  } else {
+    projectsCountBadge.classList.add('hidden');
   }
 }
 
@@ -1207,7 +1242,7 @@ function renderProjectsList(): void {
   }
 
   projectsList.innerHTML = projects.map((p) => `
-    <div class="project-card" data-project-id="${p.id}">
+    <div class="project-card" data-project-id="${p.id}" style="border-left-color:${p.color}">
       <div class="project-card-top">
         <span class="project-color-dot" style="background:${p.color}"></span>
         <span class="project-card-name">${escapeHtml(p.name)}</span>
@@ -1398,14 +1433,14 @@ projectDeleteBtn.addEventListener('click', async () => {
 // Shared: check project limit then open overlay
 async function tryOpenNewProject(): Promise<void> {
   const projects = collections.filter((c) => c.isProject);
-  let limit = 2;
+  let limit = 3;
   try {
     const proRes = await chrome.runtime.sendMessage({ type: 'GET_PRO_STATUS', payload: {} });
     const pro = proRes as { isPro: boolean } | null;
     if (pro?.isPro) limit = 100;
   } catch { /* fallback to free limit */ }
   if (projects.length >= limit) {
-    showUpgradeBanner(`Project limit reached (${projects.length}/${limit}). Upgrade to Pro for unlimited projects.`);
+    showUpgradeBanner(`Project limit reached (${projects.length}/${limit}). Upgrade to Pro for more projects.`);
     return;
   }
   editingProjectId = null;
@@ -1415,14 +1450,14 @@ async function tryOpenNewProject(): Promise<void> {
 // Smart new project from a clip item — pre-fills domain + suggested name
 async function tryOpenNewProjectFromItem(item: ClipItem): Promise<void> {
   const projects = collections.filter((c) => c.isProject);
-  let limit = 2;
+  let limit = 3;
   try {
     const proRes = await chrome.runtime.sendMessage({ type: 'GET_PRO_STATUS', payload: {} });
     const pro = proRes as { isPro: boolean } | null;
     if (pro?.isPro) limit = 100;
   } catch { /* fallback to free limit */ }
   if (projects.length >= limit) {
-    showUpgradeBanner(`Project limit reached (${projects.length}/${limit}). Upgrade to Pro for unlimited projects.`);
+    showUpgradeBanner(`Project limit reached (${projects.length}/${limit}). Upgrade to Pro for more projects.`);
     return;
   }
   editingProjectId = null;
@@ -1600,18 +1635,186 @@ projectSaveBtn.addEventListener('click', async () => {
 // Footer "+ Project" button — always accessible from any view
 newProjectFooterBtn.addEventListener('click', () => { tryOpenNewProject(); });
 
-// Settings button — opens extension options page
-openSettingsBtn.addEventListener('click', () => { chrome.runtime.openOptionsPage(); });
+// Settings button — opens in-panel settings modal
+openSettingsBtn.addEventListener('click', () => {
+  openSettingsModal().catch(() => { chrome.runtime.openOptionsPage(); });
+});
 
 // Detail panel: "+ new project" button
 detailNewProject.addEventListener('click', () => { tryOpenNewProject(); });
+
+// ─── Settings Modal ───
+
+let settingsIsPro = false;
+
+async function openSettingsModal(): Promise<void> {
+  // Load current settings from storage
+  try {
+    const result = await chrome.storage.sync.get('copyunlock_settings');
+    const s = result.copyunlock_settings || {};
+    sEnabled.checked = s.enabled !== false;
+    sMode.value = s.defaultMode || 'auto';
+    sNotifications.checked = s.showNotifications !== false;
+    sContextMenu.checked = s.contextMenuEnabled !== false;
+    sClipboard.checked = s.clipboardHistoryEnabled !== false;
+    sMaxItems.value = String(s.maxItems || 500);
+    sRetention.value = String(s.retentionDays || 30);
+    sWatermark.checked = s.watermarkStripping !== false;
+    sCitation.value = s.autoCitation || 'url';
+    sPasteFormat.value = s.defaultPasteFormat || 'plain';
+    sPdfCleanup.checked = s.pdfCleanup || false;
+  } catch { /* use defaults */ }
+
+  // Check pro status
+  try {
+    const proRes = await chrome.runtime.sendMessage({ type: 'GET_PRO_STATUS', payload: {} });
+    settingsIsPro = !!(proRes as { isPro: boolean })?.isPro;
+  } catch {
+    settingsIsPro = false;
+  }
+
+  if (settingsIsPro) {
+    sProStatusLabel.textContent = 'Pro Plan Active';
+    sUpgradeBtn.classList.add('hidden');
+    sMaxItems.max = '100000';
+    sRetention.max = '3650';
+    sPdfCleanup.disabled = false;
+    const fmtOpt = sCitation.querySelector('option[value="formatted"]') as HTMLOptionElement;
+    if (fmtOpt) fmtOpt.disabled = false;
+  } else {
+    sProStatusLabel.textContent = 'Free Plan';
+    sUpgradeBtn.classList.remove('hidden');
+    sMaxItems.max = '500';
+    sRetention.max = '30';
+    if (parseInt(sMaxItems.value, 10) > 500) sMaxItems.value = '500';
+    if (parseInt(sRetention.value, 10) > 30) sRetention.value = '30';
+    sPdfCleanup.disabled = true;
+    sPdfCleanup.checked = false;
+    const fmtOpt = sCitation.querySelector('option[value="formatted"]') as HTMLOptionElement;
+    if (fmtOpt) fmtOpt.disabled = true;
+    if (sCitation.value === 'formatted') sCitation.value = 'url';
+  }
+
+  settingsOverlay.classList.remove('hidden');
+}
+
+function closeSettingsModal(): void {
+  settingsOverlay.classList.add('hidden');
+}
+
+async function saveSettings(): Promise<void> {
+  const updated: Record<string, unknown> = {
+    enabled: sEnabled.checked,
+    defaultMode: sMode.value,
+    showNotifications: sNotifications.checked,
+    contextMenuEnabled: sContextMenu.checked,
+    clipboardHistoryEnabled: sClipboard.checked,
+    maxItems: parseInt(sMaxItems.value, 10) || 500,
+    retentionDays: parseInt(sRetention.value, 10) || 30,
+    watermarkStripping: sWatermark.checked,
+    autoCitation: sCitation.value,
+    defaultPasteFormat: sPasteFormat.value,
+    pdfCleanup: sPdfCleanup.checked,
+  };
+  try {
+    await chrome.runtime.sendMessage({ type: 'UPDATE_SETTINGS', payload: updated });
+  } catch { /* */ }
+}
+
+// Auto-save on every change
+[sEnabled, sNotifications, sContextMenu, sClipboard, sWatermark, sPdfCleanup].forEach((el) => {
+  el.addEventListener('change', saveSettings);
+});
+[sMode, sCitation, sPasteFormat].forEach((el) => {
+  el.addEventListener('change', saveSettings);
+});
+[sMaxItems, sRetention].forEach((el) => {
+  el.addEventListener('change', saveSettings);
+});
+
+settingsOverlayClose.addEventListener('click', closeSettingsModal);
+settingsOverlay.addEventListener('keydown', (e: KeyboardEvent) => {
+  if (e.key === 'Escape') closeSettingsModal();
+});
+
+sUpgradeBtn.addEventListener('click', () => {
+  chrome.runtime.sendMessage({ type: 'OPEN_CHECKOUT', payload: { plan: 'monthly' } });
+});
+
+sFullSettings.addEventListener('click', () => {
+  chrome.runtime.openOptionsPage();
+  closeSettingsModal();
+});
+
+// Check for pending settings modal open (from right-click menu "Settings")
+async function checkPendingSettingsOpen(): Promise<void> {
+  try {
+    const data = await chrome.storage.session.get('openSettingsModal');
+    if (data.openSettingsModal) {
+      await chrome.storage.session.remove('openSettingsModal');
+      openSettingsModal();
+    }
+  } catch { /* */ }
+}
+
+// Check for pending limit message (from right-click when project limit hit)
+async function checkPendingLimitMessage(): Promise<void> {
+  try {
+    const data = await chrome.storage.session.get('pendingLimitMessage');
+    if (data.pendingLimitMessage) {
+      await chrome.storage.session.remove('pendingLimitMessage');
+      showUpgradeBanner(data.pendingLimitMessage as string);
+    }
+  } catch { /* */ }
+}
 
 // Check for pending project creation when sidepanel regains focus
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible') {
     checkPendingProjectCreation();
+    checkPendingSettingsOpen();
+    checkPendingLimitMessage();
   }
 });
+
+// ─── Direct message listener — receives commands from service worker ───
+chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
+  if (!msg?.type) return;
+  switch (msg.type) {
+    case 'SIDEPANEL_OPEN_NEW_PROJECT': {
+      const p = msg.payload as { itemId?: string; suggestedName?: string; suggestedDomain?: string } | undefined;
+      doOpenNewProjectForm(p?.itemId ?? null, p?.suggestedName ?? '', p?.suggestedDomain ?? '');
+      sendResponse({ ok: true });
+      break;
+    }
+    case 'SIDEPANEL_OPEN_SETTINGS': {
+      openSettingsModal().catch(() => {});
+      sendResponse({ ok: true });
+      break;
+    }
+    case 'SIDEPANEL_SHOW_LIMIT_MESSAGE': {
+      const message = (msg.payload as { message?: string })?.message ?? 'Project limit reached. Upgrade to Pro for more projects.';
+      showUpgradeBanner(message);
+      sendResponse({ ok: true });
+      break;
+    }
+  }
+});
+
+function doOpenNewProjectForm(itemId: string | null, suggestedName: string, suggestedDomain: string): void {
+  pendingItemIdForProject = itemId;
+  editingProjectId = null;
+  projectNameInput.value = suggestedName;
+  projectDescInput.value = '';
+  projectFormDomains = suggestedDomain ? [suggestedDomain] : [];
+  projectFormColor = COLLECTION_COLORS[collections.filter((c) => c.isProject).length % COLLECTION_COLORS.length];
+  projectSaveBtn.textContent = 'Create Project';
+  renderDomainChips();
+  renderColorPicker();
+  projectOverlay.classList.remove('hidden');
+  projectNameInput.focus();
+  projectNameInput.select();
+}
 
 // Auto-refresh every 3 seconds
 refreshInterval = setInterval(() => {
@@ -1622,7 +1825,7 @@ refreshInterval = setInterval(() => {
 // Apply i18n translations to static HTML elements
 applyI18n();
 
-// Check for pending project creation (from right-click "New Project")
+// Check for pending project creation (from right-click "New Project") — fallback for when sidepanel wasn't open
 async function checkPendingProjectCreation(): Promise<void> {
   try {
     const data = await chrome.storage.session.get('pendingProjectCreation');
@@ -1632,22 +1835,8 @@ async function checkPendingProjectCreation(): Promise<void> {
       suggestedDomain: string;
     } | undefined;
     if (!pending) return;
-    // Clear it immediately so it doesn't trigger again
     await chrome.storage.session.remove('pendingProjectCreation');
-    // Store the item ID to assign after project creation
-    pendingItemIdForProject = pending.itemId;
-    // Open project overlay pre-filled with suggested values
-    editingProjectId = null;
-    projectNameInput.value = pending.suggestedName || '';
-    projectDescInput.value = '';
-    projectFormDomains = pending.suggestedDomain ? [pending.suggestedDomain] : [];
-    projectFormColor = COLLECTION_COLORS[0];
-    projectSaveBtn.textContent = 'Create Project';
-    renderDomainChips();
-    renderColorPicker();
-    projectOverlay.classList.remove('hidden');
-    projectNameInput.focus();
-    projectNameInput.select();
+    doOpenNewProjectForm(pending.itemId, pending.suggestedName || '', pending.suggestedDomain || '');
   } catch { /* */ }
 }
 
@@ -1655,4 +1844,6 @@ async function checkPendingProjectCreation(): Promise<void> {
 loadItems();
 loadCollections().then(() => {
   checkPendingProjectCreation();
+  checkPendingSettingsOpen();
+  checkPendingLimitMessage();
 });

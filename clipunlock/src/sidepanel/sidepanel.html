@@ -14,7 +14,11 @@
   <nav class="view-tabs">
     <button class="view-tab active" data-view="recent">Recent</button>
     <button class="view-tab" data-view="pinned">Pinned</button>
-    <button class="view-tab" data-view="projects">Projects</button>
+    <button class="view-tab view-tab-projects" data-view="projects">
+      <svg class="projects-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+      Projects
+      <span id="projects-count-badge" class="projects-count-badge hidden">0</span>
+    </button>
   </nav>
 
   <!-- Upgrade banner -->
@@ -130,6 +134,111 @@
       </div>
       <div class="add-overlay-footer">
         <button id="project-save" class="add-save-btn">Create Project</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal Overlay -->
+  <div id="settings-overlay" class="add-overlay hidden">
+    <div class="add-overlay-content settings-overlay-content">
+      <div class="add-overlay-header">
+        <span class="add-overlay-title">Settings</span>
+        <button id="settings-overlay-close" class="add-overlay-close">&times;</button>
+      </div>
+      <div class="settings-form">
+        <div class="settings-section-label">General</div>
+        <div class="settings-row">
+          <div class="settings-row-info">
+            <span class="settings-row-label">Enable CopyUnlock</span>
+          </div>
+          <label class="settings-toggle"><input type="checkbox" id="s-enabled" checked><span class="settings-toggle-track"></span></label>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-info">
+            <span class="settings-row-label">Unlock Mode</span>
+          </div>
+          <select id="s-mode" class="settings-select">
+            <option value="auto">Auto</option>
+            <option value="safe">Safe</option>
+            <option value="aggressive">Aggressive</option>
+          </select>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-info">
+            <span class="settings-row-label">Notifications</span>
+          </div>
+          <label class="settings-toggle"><input type="checkbox" id="s-notifications" checked><span class="settings-toggle-track"></span></label>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-info">
+            <span class="settings-row-label">Context Menu</span>
+          </div>
+          <label class="settings-toggle"><input type="checkbox" id="s-context-menu" checked><span class="settings-toggle-track"></span></label>
+        </div>
+
+        <div class="settings-section-label">Clipboard</div>
+        <div class="settings-row">
+          <div class="settings-row-info">
+            <span class="settings-row-label">Clipboard History</span>
+          </div>
+          <label class="settings-toggle"><input type="checkbox" id="s-clipboard" checked><span class="settings-toggle-track"></span></label>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-info">
+            <span class="settings-row-label">Max Items</span>
+          </div>
+          <input type="number" id="s-max-items" class="settings-num" min="10" max="100000" value="500">
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-info">
+            <span class="settings-row-label">Retention</span>
+          </div>
+          <div class="settings-inline"><input type="number" id="s-retention" class="settings-num" min="1" max="3650" value="30"><span class="settings-suffix">days</span></div>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-info">
+            <span class="settings-row-label">Watermark Strip</span>
+          </div>
+          <label class="settings-toggle"><input type="checkbox" id="s-watermark" checked><span class="settings-toggle-track"></span></label>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-info">
+            <span class="settings-row-label">Citation Style</span>
+          </div>
+          <select id="s-citation" class="settings-select">
+            <option value="none">Off</option>
+            <option value="url">URL only</option>
+            <option value="formatted">Formatted (Pro)</option>
+          </select>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-info">
+            <span class="settings-row-label">Paste Format</span>
+          </div>
+          <select id="s-paste-format" class="settings-select">
+            <option value="plain">Plain text</option>
+            <option value="rich">Rich text</option>
+            <option value="clean">Clean</option>
+            <option value="with-citation">With citation</option>
+          </select>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-info">
+            <span class="settings-row-label">PDF Cleanup <span class="settings-pro-tag">PRO</span></span>
+          </div>
+          <label class="settings-toggle"><input type="checkbox" id="s-pdf-cleanup"><span class="settings-toggle-track"></span></label>
+        </div>
+
+        <div class="settings-section-label">Account</div>
+        <div class="settings-row">
+          <div class="settings-row-info">
+            <span class="settings-row-label" id="s-pro-status-label">Free Plan</span>
+          </div>
+          <button id="s-upgrade-btn" class="settings-upgrade-btn">Upgrade</button>
+        </div>
+        <div class="settings-row settings-row-last">
+          <button id="s-full-settings" class="settings-link-btn">Open Full Settings Page</button>
+        </div>
       </div>
     </div>
   </div>
