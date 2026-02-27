@@ -11,30 +11,11 @@
     <input type="text" id="search-input" class="search-input" data-i18n-placeholder="searchPlaceholder" placeholder="Search clipboard history..." autocomplete="off">
   </header>
 
-  <nav class="filter-bar">
-    <button class="filter-chip active" data-filter="all" data-i18n="filterAll">All</button>
-    <button class="filter-chip" data-filter="pinned" data-i18n="filterPinned">Pinned</button>
-    <button class="filter-chip" data-filter="url" data-i18n="filterUrls">URLs</button>
-    <button class="filter-chip" data-filter="code" data-i18n="filterCode">Code</button>
-    <button class="filter-chip" data-filter="text" data-i18n="filterText">Text</button>
-    <button id="projects-btn" class="filter-chip projects-chip" data-filter="projects">Projects</button>
+  <nav class="view-tabs">
+    <button class="view-tab active" data-view="recent">Recent</button>
+    <button class="view-tab" data-view="pinned">Pinned</button>
+    <button class="view-tab" data-view="projects">Projects</button>
   </nav>
-
-  <!-- Collection filter bar (shown when collections exist) -->
-  <div id="collection-bar" class="collection-bar hidden">
-    <select id="collection-filter" class="collection-filter-select" title="Filter by collection">
-      <option value="" data-i18n="allCollections">All Collections</option>
-    </select>
-  </div>
-
-  <!-- Sub-action bars (shown when specific filter is active) -->
-  <div id="url-sub-actions" class="sub-actions hidden">
-    <button id="open-all-urls" class="sub-action-btn">Open All URLs</button>
-    <button id="copy-all-urls" class="sub-action-btn">Copy All URLs</button>
-  </div>
-  <div id="code-sub-actions" class="sub-actions hidden">
-    <button id="copy-all-code" class="sub-action-btn">Copy All Snippets</button>
-  </div>
 
   <!-- Upgrade banner -->
   <div id="upgrade-banner" class="upgrade-banner hidden">
@@ -61,6 +42,7 @@
       <div class="project-detail-actions">
         <button id="project-export-txt" class="detail-action-btn" title="Export as .txt">Export .txt</button>
         <button id="project-export-html" class="detail-action-btn" title="Export as .html">Export .html</button>
+        <button id="project-export-pdf" class="detail-action-btn" title="Export as PDF (Print)">Export PDF</button>
         <button id="project-edit" class="detail-action-btn">Edit</button>
         <button id="project-delete-btn" class="detail-action-btn danger">Delete</button>
       </div>

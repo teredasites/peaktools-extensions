@@ -35,8 +35,7 @@ let allItems: ClipItem[] = [];
 let filteredItems: ClipItem[] = [];
 let collections: CollectionItem[] = [];
 let selectedIndex = -1;
-let currentFilter = 'all';
-let currentCollectionFilter = '';
+let currentView: 'recent' | 'pinned' | 'projects' = 'recent';
 let searchQuery = '';
 let refreshInterval: ReturnType<typeof setInterval> | null = null;
 let activeProjectId: string | null = null;
@@ -44,6 +43,12 @@ let projectFormDomains: string[] = [];
 let projectFormColor = '#3b82f6';
 let editingProjectId: string | null = null;
 let pendingItemIdForProject: string | null = null; // Item to assign after project creation (from right-click)
+
+// Time-grouped flat list
+type FlatEntry =
+  | { kind: 'header'; label: string }
+  | { kind: 'item'; item: ClipItem; globalIdx: number };
+let flatList: FlatEntry[] = [];
 
 // DOM Refs
 const searchInput = document.getElementById('search-input') as HTMLInputElement;
@@ -63,8 +68,7 @@ const detailCollectionSelect = document.getElementById('detail-collection-select
 const detailTags = document.getElementById('detail-tags') as HTMLDivElement;
 const itemCountEl = document.getElementById('item-count') as HTMLSpanElement;
 const clearAllBtn = document.getElementById('clear-all') as HTMLButtonElement;
-const filterChips = document.querySelectorAll('.filter-chip') as NodeListOf<HTMLButtonElement>;
-const collectionFilter = document.getElementById('collection-filter') as HTMLSelectElement;
+const viewTabs = document.querySelectorAll('.view-tab') as NodeListOf<HTMLButtonElement>;
 const addItemBtn = document.getElementById('add-item') as HTMLButtonElement;
 const addOverlay = document.getElementById('add-overlay') as HTMLDivElement;
 const addOverlayClose = document.getElementById('add-overlay-close') as HTMLButtonElement;
@@ -73,21 +77,11 @@ const addSaveBtn = document.getElementById('add-save') as HTMLButtonElement;
 const addTypeHint = document.getElementById('add-type-hint') as HTMLSpanElement;
 const addTypeSelect = document.getElementById('add-type-select') as HTMLSelectElement;
 
-// Sub-action bars
-const urlSubActions = document.getElementById('url-sub-actions') as HTMLDivElement;
-const codeSubActions = document.getElementById('code-sub-actions') as HTMLDivElement;
-const openAllUrlsBtn = document.getElementById('open-all-urls') as HTMLButtonElement;
-const copyAllUrlsBtn = document.getElementById('copy-all-urls') as HTMLButtonElement;
-const copyAllCodeBtn = document.getElementById('copy-all-code') as HTMLButtonElement;
-
 // Upgrade banner
 const upgradeBanner = document.getElementById('upgrade-banner') as HTMLDivElement;
 const upgradeBannerMsg = document.getElementById('upgrade-banner-msg') as HTMLSpanElement;
 const upgradeBannerBtn = document.getElementById('upgrade-banner-btn') as HTMLButtonElement;
 const upgradeBannerClose = document.getElementById('upgrade-banner-close') as HTMLButtonElement;
-
-// Collection bar
-const collectionBar = document.getElementById('collection-bar') as HTMLDivElement;
 
 // Projects
 const projectsPanel = document.getElementById('projects-panel') as HTMLDivElement;
@@ -97,6 +91,7 @@ const projectDetail = document.getElementById('project-detail') as HTMLDivElemen
 const projectBack = document.getElementById('project-back') as HTMLButtonElement;
 const projectExportTxt = document.getElementById('project-export-txt') as HTMLButtonElement;
 const projectExportHtml = document.getElementById('project-export-html') as HTMLButtonElement;
+const projectExportPdf = document.getElementById('project-export-pdf') as HTMLButtonElement;
 const projectEditBtn = document.getElementById('project-edit') as HTMLButtonElement;
 const projectDeleteBtn = document.getElementById('project-delete-btn') as HTMLButtonElement;
 const projectDetailInfo = document.getElementById('project-detail-info') as HTMLDivElement;
@@ -175,74 +170,60 @@ upgradeBannerBtn.addEventListener('click', () => {
 
 upgradeBannerClose.addEventListener('click', hideUpgradeBanner);
 
-// ─── Sub-action bar handlers ───
+// ─── Time Grouping ───
 
-function updateSubActions(): void {
-  urlSubActions.classList.add('hidden');
-  codeSubActions.classList.add('hidden');
-  if (currentFilter === 'url' && filteredItems.length > 0) {
-    urlSubActions.classList.remove('hidden');
-  } else if (currentFilter === 'code' && filteredItems.length > 0) {
-    codeSubActions.classList.remove('hidden');
+function groupByTime(items: ClipItem[]): FlatEntry[] {
+  if (items.length === 0) return [];
+  const now = Date.now();
+  const todayStart = new Date(); todayStart.setHours(0, 0, 0, 0);
+  const yesterdayStart = new Date(todayStart); yesterdayStart.setDate(yesterdayStart.getDate() - 1);
+  const weekStart = new Date(todayStart); weekStart.setDate(weekStart.getDate() - 7);
+
+  const buckets: { label: string; items: { item: ClipItem; globalIdx: number }[] }[] = [
+    { label: 'TODAY', items: [] },
+    { label: 'YESTERDAY', items: [] },
+    { label: 'THIS WEEK', items: [] },
+    { label: 'OLDER', items: [] },
+  ];
+
+  items.forEach((item, i) => {
+    const ts = item.timestamp;
+    if (ts >= todayStart.getTime()) {
+      buckets[0].items.push({ item, globalIdx: i });
+    } else if (ts >= yesterdayStart.getTime()) {
+      buckets[1].items.push({ item, globalIdx: i });
+    } else if (ts >= weekStart.getTime()) {
+      buckets[2].items.push({ item, globalIdx: i });
+    } else {
+      buckets[3].items.push({ item, globalIdx: i });
+    }
+  });
+
+  const result: FlatEntry[] = [];
+  for (const bucket of buckets) {
+    if (bucket.items.length === 0) continue;
+    result.push({ kind: 'header', label: bucket.label });
+    for (const entry of bucket.items) {
+      result.push({ kind: 'item', item: entry.item, globalIdx: entry.globalIdx });
+    }
   }
+  return result;
 }
 
-openAllUrlsBtn.addEventListener('click', () => {
-  const urls = filteredItems
-    .filter((i) => i.contentType === 'url')
-    .slice(0, 20) // Safety cap
-    .map((i) => i.content);
-  for (const url of urls) {
-    chrome.tabs.create({ url, active: false });
+function getAccentClass(contentType: string): string {
+  switch (contentType) {
+    case 'url': return 'accent-url';
+    case 'code': return 'accent-code';
+    case 'email': return 'accent-email';
+    case 'html': return 'accent-html';
+    default: return 'accent-text';
   }
-});
-
-copyAllUrlsBtn.addEventListener('click', async () => {
-  const urls = filteredItems
-    .filter((i) => i.contentType === 'url')
-    .map((i) => i.content)
-    .join('\n');
-  try {
-    await navigator.clipboard.writeText(urls);
-    copyAllUrlsBtn.textContent = 'Copied!';
-    setTimeout(() => { copyAllUrlsBtn.textContent = 'Copy All URLs'; }, 1500);
-  } catch { /* */ }
-});
-
-copyAllCodeBtn.addEventListener('click', async () => {
-  const code = filteredItems
-    .filter((i) => i.contentType === 'code')
-    .map((i) => i.content)
-    .join('\n\n// ───\n\n');
-  try {
-    await navigator.clipboard.writeText(code);
-    copyAllCodeBtn.textContent = 'Copied!';
-    setTimeout(() => { copyAllCodeBtn.textContent = 'Copy All Snippets'; }, 1500);
-  } catch { /* */ }
-});
+}
 
 // ─── Empty State ───
 
 function getEmptyStateMessage(): { icon: string; text: string; hint: string } {
-  switch (currentFilter) {
-    case 'url':
-      return {
-        icon: '&#128279;',
-        text: chrome.i18n.getMessage('emptyUrlText') || 'No URLs saved yet',
-        hint: chrome.i18n.getMessage('emptyUrlHint') || 'Copy any URL from your browser to save it here, or click + Add below.',
-      };
-    case 'code':
-      return {
-        icon: '&#128187;',
-        text: chrome.i18n.getMessage('emptyCodeText') || 'No code snippets yet',
-        hint: chrome.i18n.getMessage('emptyCodeHint') || 'Copy code from any editor or website to save it here.',
-      };
-    case 'text':
-      return {
-        icon: '&#128196;',
-        text: chrome.i18n.getMessage('emptyTextText') || 'No text clips yet',
-        hint: chrome.i18n.getMessage('emptyTextHint') || 'Copy text from any page to start building your history.',
-      };
+  switch (currentView) {
     case 'pinned':
       return {
         icon: '&#128204;',
@@ -261,7 +242,6 @@ function getEmptyStateMessage(): { icon: string; text: string; hint: string } {
 // ─── Render: Type-Specific List Items ───
 
 function renderUrlItem(item: ClipItem, globalIdx: number, coll: CollectionItem | null | undefined): string {
-  // Extract domain from the URL content
   let displayDomain = '';
   try {
     displayDomain = new URL(item.content).hostname.replace(/^www\./, '');
@@ -271,7 +251,7 @@ function renderUrlItem(item: ClipItem, globalIdx: number, coll: CollectionItem |
   const pageTitle = item.sourceTitle || item.preview || '';
 
   return `
-    <div class="clip-item clip-url ${globalIdx === selectedIndex ? 'selected' : ''}" data-index="${globalIdx}" data-id="${item.id}">
+    <div class="clip-item clip-url accent-url ${globalIdx === selectedIndex ? 'selected' : ''}" data-index="${globalIdx}" data-id="${item.id}">
       <div class="item-top">
         ${coll ? `<span class="collection-badge" style="background:${coll.color}" title="${escapeHtml(coll.name)}"></span>` : ''}
         ${item.pinned ? '<span class="pin-indicator">&#128204;</span>' : ''}
@@ -295,30 +275,35 @@ function renderUrlItem(item: ClipItem, globalIdx: number, coll: CollectionItem |
 function renderCodeItem(item: ClipItem, globalIdx: number, coll: CollectionItem | null | undefined): string {
   const lang = detectLanguageLabel(item.content);
   const lineCount = item.content.split('\n').length;
+  const domain = item.sourceDomain && item.sourceDomain !== 'manual' ? item.sourceDomain : '';
 
   return `
-    <div class="clip-item clip-code ${globalIdx === selectedIndex ? 'selected' : ''}" data-index="${globalIdx}" data-id="${item.id}">
+    <div class="clip-item clip-code accent-code ${globalIdx === selectedIndex ? 'selected' : ''}" data-index="${globalIdx}" data-id="${item.id}">
       <div class="item-top">
         ${coll ? `<span class="collection-badge" style="background:${coll.color}" title="${escapeHtml(coll.name)}"></span>` : ''}
         ${item.pinned ? '<span class="pin-indicator">&#128204;</span>' : ''}
+        ${domain ? `<span class="source-domain" ${item.sourceUrl ? `data-url="${escapeHtml(item.sourceUrl)}"` : ''}>${escapeHtml(domain)}</span>` : ''}
         <span class="preview">${escapeHtml(item.preview)}</span>
         <span class="lang-badge">${lang}</span>
       </div>
       <div class="meta">
         <span class="time">${timeAgo(item.timestamp)}</span>
         <span class="line-count">${lineCount} line${lineCount !== 1 ? 's' : ''}</span>
-        ${item.sourceDomain && item.sourceDomain !== 'manual' ? `<span class="source" ${item.sourceUrl ? `data-url="${escapeHtml(item.sourceUrl)}"` : ''}>${item.sourceDomain}</span>` : ''}
       </div>
     </div>
   `;
 }
 
 function renderDefaultItem(item: ClipItem, globalIdx: number, coll: CollectionItem | null | undefined): string {
+  const accent = getAccentClass(item.contentType);
+  const domain = item.sourceDomain && item.sourceDomain !== 'manual' ? item.sourceDomain : '';
+
   return `
-    <div class="clip-item ${globalIdx === selectedIndex ? 'selected' : ''}" data-index="${globalIdx}" data-id="${item.id}">
+    <div class="clip-item ${accent} ${globalIdx === selectedIndex ? 'selected' : ''}" data-index="${globalIdx}" data-id="${item.id}">
       <div class="item-top">
         ${coll ? `<span class="collection-badge" style="background:${coll.color}" title="${escapeHtml(coll.name)}"></span>` : ''}
         ${item.pinned ? '<span class="pin-indicator">&#128204;</span>' : ''}
+        ${domain ? `<span class="source-domain" ${item.sourceUrl ? `data-url="${escapeHtml(item.sourceUrl)}"` : ''}>${escapeHtml(domain)}</span>` : ''}
         <span class="preview">${escapeHtml(item.preview)}</span>
         ${item.pdfCleaned ? '<span class="pdf-badge">PDF</span>' : ''}
         <span class="type-badge">${item.contentType}</span>
@@ -326,7 +311,6 @@ function renderDefaultItem(item: ClipItem, globalIdx: number, coll: CollectionIt
       <div class="meta">
         <span class="time">${timeAgo(item.timestamp)}</span>
         ${item.wordCount ? `<span class="word-count">${chrome.i18n.getMessage('words', [String(item.wordCount)]) || item.wordCount + ' words'}</span>` : ''}
-        ${item.sourceDomain && item.sourceDomain !== 'manual' ? `<span class="source" ${item.sourceUrl ? `data-url="${escapeHtml(item.sourceUrl)}" title="${escapeHtml(item.sourceUrl)}"` : ''}>${item.sourceDomain}</span>` : ''}
       </div>
     </div>
   `;
@@ -345,47 +329,90 @@ function renderList(): void {
       </div>
     `;
     itemCountEl.textContent = chrome.i18n.getMessage('items', ['0']) || '0 items';
-    updateSubActions();
     return;
   }
 
+  // Build time-grouped flat list for recent view, flat for pinned
+  if (currentView === 'recent') {
+    flatList = groupByTime(filteredItems);
+  } else {
+    flatList = filteredItems.map((item, i) => ({ kind: 'item' as const, item, globalIdx: i }));
+  }
+
+  const HEADER_HEIGHT = 28;
   const scrollTop = clipList.scrollTop;
   const containerHeight = clipList.clientHeight;
-  const totalHeight = filteredItems.length * ITEM_HEIGHT;
 
-  const startIdx = Math.max(0, Math.floor(scrollTop / ITEM_HEIGHT) - BUFFER_SIZE);
-  const endIdx = Math.min(filteredItems.length, Math.ceil((scrollTop + containerHeight) / ITEM_HEIGHT) + BUFFER_SIZE);
+  // Calculate total height and cumulative heights for variable-size entries
+  let totalHeight = 0;
+  const entryOffsets: number[] = [];
+  for (const entry of flatList) {
+    entryOffsets.push(totalHeight);
+    totalHeight += entry.kind === 'header' ? HEADER_HEIGHT : ITEM_HEIGHT;
+  }
 
-  const visibleItems = filteredItems.slice(startIdx, endIdx);
+  // Find visible range using binary search on offsets
+  let startIdx = 0;
+  for (let i = 0; i < flatList.length; i++) {
+    if (entryOffsets[i] + (flatList[i].kind === 'header' ? HEADER_HEIGHT : ITEM_HEIGHT) >= scrollTop) {
+      startIdx = i;
+      break;
+    }
+  }
+  startIdx = Math.max(0, startIdx - BUFFER_SIZE);
+
+  let endIdx = flatList.length;
+  for (let i = startIdx; i < flatList.length; i++) {
+    if (entryOffsets[i] > scrollTop + containerHeight) {
+      endIdx = i;
+      break;
+    }
+  }
+  endIdx = Math.min(flatList.length, endIdx + BUFFER_SIZE);
+
+  const visibleEntries = flatList.slice(startIdx, endIdx);
+  const offsetY = startIdx < entryOffsets.length ? entryOffsets[startIdx] : 0;
+
+  let html = '';
+  for (const entry of visibleEntries) {
+    if (entry.kind === 'header') {
+      html += `<div class="time-group-header">${entry.label}</div>`;
+    } else {
+      const { item, globalIdx } = entry;
+      const coll = item.collection ? collections.find((c) => c.id === item.collection) : null;
+      if (item.contentType === 'url') {
+        html += renderUrlItem(item, globalIdx, coll);
+      } else if (item.contentType === 'code') {
+        html += renderCodeItem(item, globalIdx, coll);
+      } else {
+        html += renderDefaultItem(item, globalIdx, coll);
+      }
+    }
+  }
 
   clipList.innerHTML = `
     <div class="virtual-scroll-container">
       <div class="virtual-scroll-spacer" style="height: ${totalHeight}px;">
-        <div style="transform: translateY(${startIdx * ITEM_HEIGHT}px);">
-          ${visibleItems.map((item, i) => {
-            const globalIdx = startIdx + i;
-            const coll = item.collection ? collections.find((c) => c.id === item.collection) : null;
-
-            if (item.contentType === 'url') {
-              return renderUrlItem(item, globalIdx, coll);
-            } else if (item.contentType === 'code') {
-              return renderCodeItem(item, globalIdx, coll);
-            } else {
-              return renderDefaultItem(item, globalIdx, coll);
-            }
-          }).join('')}
+        <div style="transform: translateY(${offsetY}px);">
+          ${html}
         </div>
       </div>
     </div>
   `;
 
   itemCountEl.textContent = chrome.i18n.getMessage('items', [String(filteredItems.length)]) || `${filteredItems.length} items`;
-  updateSubActions();
 
   // Click handlers
   clipList.querySelectorAll('.clip-item').forEach((el) => {
     el.addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
+      // Source domain click
+      const domainEl = target.closest('.source-domain') as HTMLElement;
+      if (domainEl && domainEl.dataset.url) {
+        e.stopPropagation();
+        chrome.tabs.create({ url: domainEl.dataset.url });
+        return;
+      }
       // Open URL button
       const openBtn = target.closest('.open-url-btn') as HTMLElement;
       if (openBtn && openBtn.dataset.url) {
@@ -406,7 +433,190 @@ function renderList(): void {
       const index = parseInt((el as HTMLElement).dataset.index || '0', 10);
       openDetail(index);
     });
+
+    // Right-click context menu
+    el.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      const itemId = (el as HTMLElement).dataset.id || '';
+      const index = parseInt((el as HTMLElement).dataset.index || '0', 10);
+      const item = filteredItems[index];
+      showClipContextMenu(e as MouseEvent, itemId, item);
+    });
   });
+}
+
+// ─── Right-Click Context Menu ───
+
+function dismissContextMenu(): void {
+  const existing = document.getElementById('clip-context-menu');
+  if (existing) existing.remove();
+}
+
+function showClipContextMenu(e: MouseEvent, itemId: string, item: ClipItem): void {
+  dismissContextMenu();
+
+  const projects = collections.filter((c) => c.isProject);
+  const hasSource = item.sourceUrl && item.sourceUrl.length > 0;
+
+  // Build menu HTML
+  let menuHtml = `
+    <div id="clip-context-menu" class="clip-context-menu" style="top:${e.clientY}px;left:${e.clientX}px">
+      <button class="ctx-item" data-action="copy">Copy to clipboard</button>
+      ${item.citation ? '<button class="ctx-item" data-action="copy-citation">Copy with citation</button>' : ''}
+      ${hasSource ? '<button class="ctx-item" data-action="open-source">Open source page</button>' : ''}
+      <button class="ctx-item" data-action="pin">${item.pinned ? 'Unpin' : 'Pin to top'}</button>
+      <button class="ctx-item" data-action="detail">View details</button>
+      <div class="ctx-divider"></div>
+  `;
+
+  // Project assignment section
+  if (projects.length > 0) {
+    menuHtml += `<span class="ctx-section-label">Move to project</span>`;
+    projects.forEach((p) => {
+      const active = item.collection === p.id;
+      menuHtml += `<button class="ctx-item ${active ? 'ctx-active' : ''}" data-action="assign" data-project-id="${p.id}">
+        <span class="ctx-dot" style="background:${p.color}"></span>${escapeHtml(p.name)}${active ? ' ✓' : ''}
+      </button>`;
+    });
+    if (item.collection) {
+      menuHtml += `<button class="ctx-item" data-action="unassign">Remove from project</button>`;
+    }
+    menuHtml += `<div class="ctx-divider"></div>`;
+  }
+
+  menuHtml += `<button class="ctx-item ctx-new-project" data-action="new-project">+ New Project</button>`;
+  menuHtml += `<div class="ctx-divider"></div>`;
+  menuHtml += `<button class="ctx-item ctx-danger" data-action="delete">Delete</button>`;
+  menuHtml += `</div>`;
+
+  document.body.insertAdjacentHTML('beforeend', menuHtml);
+  const menu = document.getElementById('clip-context-menu')!;
+
+  // Keep menu in viewport
+  const rect = menu.getBoundingClientRect();
+  if (rect.right > window.innerWidth) menu.style.left = (window.innerWidth - rect.width - 4) + 'px';
+  if (rect.bottom > window.innerHeight) menu.style.top = (window.innerHeight - rect.height - 4) + 'px';
+
+  // Handle menu clicks
+  menu.addEventListener('click', async (ev) => {
+    const btn = (ev.target as HTMLElement).closest('.ctx-item') as HTMLElement;
+    if (!btn) return;
+    const action = btn.dataset.action;
+    menu.remove();
+
+    if (action === 'copy') {
+      try { await navigator.clipboard.writeText(item.content); } catch { /* */ }
+    } else if (action === 'copy-citation') {
+      try { await navigator.clipboard.writeText(item.content + '\n\n' + (item.citation || '')); } catch { /* */ }
+    } else if (action === 'open-source') {
+      if (item.sourceUrl) chrome.tabs.create({ url: item.sourceUrl });
+    } else if (action === 'pin') {
+      try {
+        await chrome.runtime.sendMessage({ type: item.pinned ? 'UNPIN_ITEM' : 'PIN_ITEM', payload: { id: itemId } });
+        await loadItems();
+      } catch { /* */ }
+    } else if (action === 'detail') {
+      const index = filteredItems.findIndex((i) => i.id === itemId);
+      if (index >= 0) openDetail(index);
+    } else if (action === 'delete') {
+      try {
+        await chrome.runtime.sendMessage({ type: 'DELETE_ITEM', payload: { id: itemId } });
+        await loadItems();
+      } catch { /* */ }
+    } else if (action === 'assign') {
+      const projectId = btn.dataset.projectId;
+      if (projectId) {
+        try {
+          await chrome.runtime.sendMessage({ type: 'SET_ITEM_COLLECTION', payload: { itemId, collectionId: projectId } });
+          await loadItems();
+          await loadCollections();
+        } catch { /* */ }
+      }
+    } else if (action === 'unassign') {
+      try {
+        await chrome.runtime.sendMessage({ type: 'SET_ITEM_COLLECTION', payload: { itemId, collectionId: null } });
+        await loadItems();
+        await loadCollections();
+      } catch { /* */ }
+    } else if (action === 'new-project') {
+      pendingItemIdForProject = itemId;
+      tryOpenNewProjectFromItem(item);
+    }
+  });
+
+  // Close on click outside or right-click elsewhere
+  const closeMenu = (ev: Event) => {
+    if (!menu.contains(ev.target as Node)) {
+      menu.remove();
+      document.removeEventListener('click', closeMenu);
+      document.removeEventListener('contextmenu', closeMenu);
+    }
+  };
+  setTimeout(() => {
+    document.addEventListener('click', closeMenu);
+    document.addEventListener('contextmenu', closeMenu);
+  }, 0);
+}
+
+// Right-click on project cards
+function showProjectContextMenu(e: MouseEvent, projectId: string): void {
+  dismissContextMenu();
+
+  const project = collections.find((c) => c.id === projectId);
+  if (!project) return;
+
+  const menuHtml = `
+    <div id="clip-context-menu" class="clip-context-menu" style="top:${e.clientY}px;left:${e.clientX}px">
+      <button class="ctx-item" data-action="open">Open project</button>
+      <button class="ctx-item" data-action="rename">Rename</button>
+      <button class="ctx-item" data-action="edit">Edit settings</button>
+      <div class="ctx-divider"></div>
+      <button class="ctx-item ctx-danger" data-action="delete">Delete project</button>
+    </div>
+  `;
+
+  document.body.insertAdjacentHTML('beforeend', menuHtml);
+  const menu = document.getElementById('clip-context-menu')!;
+
+  const rect = menu.getBoundingClientRect();
+  if (rect.right > window.innerWidth) menu.style.left = (window.innerWidth - rect.width - 4) + 'px';
+  if (rect.bottom > window.innerHeight) menu.style.top = (window.innerHeight - rect.height - 4) + 'px';
+
+  menu.addEventListener('click', async (ev) => {
+    const btn = (ev.target as HTMLElement).closest('.ctx-item') as HTMLElement;
+    if (!btn) return;
+    const action = btn.dataset.action;
+    menu.remove();
+
+    if (action === 'open') {
+      openProjectDetail(projectId);
+    } else if (action === 'rename') {
+      editingProjectId = projectId;
+      openProjectOverlay(project);
+    } else if (action === 'edit') {
+      editingProjectId = projectId;
+      openProjectOverlay(project);
+    } else if (action === 'delete') {
+      if (!confirm(`Delete project "${project.name}"? Items will be uncategorized but not deleted.`)) return;
+      try {
+        await chrome.runtime.sendMessage({ type: 'DELETE_COLLECTION', payload: { id: projectId } });
+        await loadCollections();
+        renderProjectsList();
+      } catch { /* */ }
+    }
+  });
+
+  const closeMenu = (ev: Event) => {
+    if (!menu.contains(ev.target as Node)) {
+      menu.remove();
+      document.removeEventListener('click', closeMenu);
+      document.removeEventListener('contextmenu', closeMenu);
+    }
+  };
+  setTimeout(() => {
+    document.addEventListener('click', closeMenu);
+    document.addEventListener('contextmenu', closeMenu);
+  }, 0);
 }
 
 // ─── Detail Panel: Type-Specific ───
@@ -550,28 +760,11 @@ function closeDetail(): void {
 function applyFilter(): void {
   let items = [...allItems];
 
-  // Apply type filter
-  switch (currentFilter) {
-    case 'pinned':
-      items = items.filter((i) => i.pinned);
-      break;
-    case 'url':
-      items = items.filter((i) => i.contentType === 'url');
-      break;
-    case 'code':
-      items = items.filter((i) => i.contentType === 'code');
-      break;
-    case 'text':
-      items = items.filter((i) => i.contentType === 'text');
-      break;
-    default:
-      break;
+  // Apply view filter
+  if (currentView === 'pinned') {
+    items = items.filter((i) => i.pinned);
   }
-
-  // Apply collection filter
-  if (currentCollectionFilter) {
-    items = items.filter((i) => i.collection === currentCollectionFilter);
-  }
+  // 'recent' shows everything, 'projects' is handled separately
 
   // Apply search
   if (searchQuery.trim()) {
@@ -580,7 +773,8 @@ function applyFilter(): void {
       (i) =>
         i.content.toLowerCase().includes(q) ||
         i.preview.toLowerCase().includes(q) ||
-        (i.sourceDomain && i.sourceDomain.toLowerCase().includes(q))
+        (i.sourceDomain && i.sourceDomain.toLowerCase().includes(q)) ||
+        (i.sourceTitle && i.sourceTitle.toLowerCase().includes(q))
     );
   }
 
@@ -626,46 +820,41 @@ searchInput.addEventListener('input', () => {
   }, 200);
 });
 
-// Filter chips
-filterChips.forEach((chip) => {
-  chip.addEventListener('click', () => {
-    const filter = chip.dataset.filter || 'all';
+// View tabs
+viewTabs.forEach((tab) => {
+  tab.addEventListener('click', () => {
+    const view = (tab.dataset.view || 'recent') as 'recent' | 'pinned' | 'projects';
 
-    if (filter === 'projects') {
-      // Toggle projects panel
-      filterChips.forEach((c) => c.classList.remove('active'));
-      chip.classList.add('active');
-      currentFilter = 'projects';
+    viewTabs.forEach((t) => t.classList.remove('active'));
+    tab.classList.add('active');
+    currentView = view;
+
+    if (view === 'projects') {
       showProjectsPanel();
-      return;
+    } else {
+      hideProjectsPanel();
+      applyFilter();
     }
-
-    filterChips.forEach((c) => c.classList.remove('active'));
-    chip.classList.add('active');
-    currentFilter = filter;
-    hideProjectsPanel();
-    applyFilter();
   });
 });
 
 // Keyboard navigation
 document.addEventListener('keydown', (e: KeyboardEvent) => {
-  if (e.key === '/') {
-    e.preventDefault();
-    searchInput.focus();
-    return;
-  }
+  // Check if user is typing in an input/textarea — don't intercept their keystrokes
+  const active = document.activeElement;
+  const isTyping = active instanceof HTMLInputElement || active instanceof HTMLTextAreaElement || (active as HTMLElement)?.isContentEditable;
 
   if (e.key === 'Escape') {
     if (!projectOverlay.classList.contains('hidden')) {
       projectOverlay.classList.add('hidden');
+      pendingItemIdForProject = null;
     } else if (!addOverlay.classList.contains('hidden')) {
       addOverlay.classList.add('hidden');
     } else if (!detailPanel.classList.contains('hidden')) {
       closeDetail();
     } else if (!projectDetail.classList.contains('hidden')) {
       closeProjectDetail();
-    } else if (document.activeElement === searchInput) {
+    } else if (active === searchInput) {
       searchInput.blur();
       searchInput.value = '';
       searchQuery = '';
@@ -674,7 +863,14 @@ document.addEventListener('keydown', (e: KeyboardEvent) => {
     return;
   }
 
-  if (document.activeElement === searchInput) return;
+  // Don't hijack keys when user is typing in any input field
+  if (isTyping) return;
+
+  if (e.key === '/') {
+    e.preventDefault();
+    searchInput.focus();
+    return;
+  }
 
   if (e.key === 'ArrowDown') {
     e.preventDefault();
@@ -807,29 +1003,8 @@ async function loadCollections(): Promise<void> {
       payload: {},
     });
     collections = Array.isArray(response) ? response : [];
-    populateCollectionFilter();
   } catch {
     collections = [];
-  }
-}
-
-function populateCollectionFilter(): void {
-  const current = collectionFilter.value;
-  collectionFilter.innerHTML = `<option value="">${chrome.i18n.getMessage('allCollections') || 'All Collections'}</option>`;
-  for (const c of collections) {
-    const opt = document.createElement('option');
-    opt.value = c.id;
-    opt.textContent = `${c.isProject ? '📁 ' : ''}${c.name} (${c.itemCount})`;
-    opt.style.color = c.color;
-    collectionFilter.appendChild(opt);
-  }
-  collectionFilter.value = current;
-
-  // Show/hide the collection bar based on whether collections exist
-  if (collections.length > 0) {
-    collectionBar.classList.remove('hidden');
-  } else {
-    collectionBar.classList.add('hidden');
   }
 }
 
@@ -858,11 +1033,6 @@ function populateCollectionSelect(select: HTMLSelectElement, currentValue: strin
   }
   select.value = currentValue;
 }
-
-collectionFilter.addEventListener('change', () => {
-  currentCollectionFilter = collectionFilter.value;
-  applyFilter();
-});
 
 // Detail: copy with citation
 detailCopyCitation.addEventListener('click', async () => {
@@ -1006,24 +1176,12 @@ addOverlay.addEventListener('keydown', (e: KeyboardEvent) => {
   if (e.key === 'Escape') addOverlay.classList.add('hidden');
 });
 
-// Make source domain clickable in list
-clipList.addEventListener('click', (e: Event) => {
-  const target = e.target as HTMLElement;
-  if (target.classList.contains('source') && target.dataset.url) {
-    e.stopPropagation();
-    chrome.tabs.create({ url: target.dataset.url });
-  }
-});
-
 // ─── Projects Panel ───
 
 function showProjectsPanel(): void {
   clipList.classList.add('hidden');
   projectsPanel.classList.remove('hidden');
   projectDetail.classList.add('hidden');
-  urlSubActions.classList.add('hidden');
-  codeSubActions.classList.add('hidden');
-  collectionBar.classList.add('hidden');
   renderProjectsList();
 }
 
@@ -1031,10 +1189,6 @@ function hideProjectsPanel(): void {
   clipList.classList.remove('hidden');
   projectsPanel.classList.add('hidden');
   projectDetail.classList.add('hidden');
-  // Restore collection bar if collections exist
-  if (collections.length > 0) {
-    collectionBar.classList.remove('hidden');
-  }
 }
 
 function renderProjectsList(): void {
@@ -1072,6 +1226,12 @@ function renderProjectsList(): void {
     el.addEventListener('click', () => {
       const projectId = (el as HTMLElement).dataset.projectId;
       if (projectId) openProjectDetail(projectId);
+    });
+    // Right-click on project cards
+    el.addEventListener('contextmenu', (ev) => {
+      ev.preventDefault();
+      const projectId = (el as HTMLElement).dataset.projectId;
+      if (projectId) showProjectContextMenu(ev as MouseEvent, projectId);
     });
   });
 }
@@ -1157,28 +1317,45 @@ function closeProjectDetail(): void {
 
 projectBack.addEventListener('click', closeProjectDetail);
 
-// Export project
-projectExportTxt.addEventListener('click', async () => {
+// Export project helpers
+async function exportProject(format: 'text' | 'html' | 'pdf'): Promise<void> {
   if (!activeProjectId) return;
-  try {
-    const result = await chrome.runtime.sendMessage({
-      type: 'EXPORT_PROJECT',
-      payload: { collectionId: activeProjectId, format: 'text' },
-    }) as { content: string; filename: string } | null;
-    if (result?.content) downloadFile(result.content, result.filename, 'text/plain');
-  } catch { /* */ }
-});
+  const project = collections.find((c) => c.id === activeProjectId);
+  const slug = project ? project.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') : 'project';
 
-projectExportHtml.addEventListener('click', async () => {
-  if (!activeProjectId) return;
   try {
     const result = await chrome.runtime.sendMessage({
       type: 'EXPORT_PROJECT',
-      payload: { collectionId: activeProjectId, format: 'html' },
-    }) as { content: string; filename: string } | null;
-    if (result?.content) downloadFile(result.content, result.filename, 'text/html');
-  } catch { /* */ }
-});
+      payload: { collectionId: activeProjectId, format: format === 'pdf' ? 'html' : format },
+    }) as { ok?: boolean; content?: string; error?: string } | null;
+
+    if (!result?.content) {
+      showUpgradeBanner(result?.error || 'Export failed — no content to export.');
+      return;
+    }
+
+    if (format === 'pdf') {
+      // Open HTML in new tab for print-to-PDF
+      const blob = new Blob([result.content], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const printWin = window.open(url, '_blank');
+      if (printWin) {
+        printWin.onload = () => { printWin.print(); };
+      }
+      setTimeout(() => URL.revokeObjectURL(url), 60000);
+    } else {
+      const ext = format === 'html' ? 'html' : 'txt';
+      const mime = format === 'html' ? 'text/html' : 'text/plain';
+      downloadFile(result.content, `${slug}-export.${ext}`, mime);
+    }
+  } catch {
+    showUpgradeBanner('Export failed. Please try again.');
+  }
+}
+
+projectExportTxt.addEventListener('click', () => exportProject('text'));
+projectExportHtml.addEventListener('click', () => exportProject('html'));
+projectExportPdf.addEventListener('click', () => exportProject('pdf'));
 
 function downloadFile(content: string, filename: string, mimeType: string): void {
   const blob = new Blob([content], { type: mimeType });
@@ -1217,23 +1394,58 @@ projectDeleteBtn.addEventListener('click', async () => {
   } catch { /* */ }
 });
 
-// New project button
-newProjectBtn.addEventListener('click', async () => {
-  // Check project limit
+// Shared: check project limit then open overlay
+async function tryOpenNewProject(): Promise<void> {
   const projects = collections.filter((c) => c.isProject);
+  let limit = 2;
   try {
     const proRes = await chrome.runtime.sendMessage({ type: 'GET_PRO_STATUS', payload: {} });
     const pro = proRes as { isPro: boolean } | null;
-    const limit = pro?.isPro ? 100 : 2;
-    if (projects.length >= limit) {
-      showUpgradeBanner(`Project limit reached (${projects.length}/${limit}). Upgrade for more.`);
-      return;
-    }
-  } catch { /* */ }
-
+    if (pro?.isPro) limit = 100;
+  } catch { /* fallback to free limit */ }
+  if (projects.length >= limit) {
+    showUpgradeBanner(`Project limit reached (${projects.length}/${limit}). Upgrade to Pro for unlimited projects.`);
+    return;
+  }
   editingProjectId = null;
   openProjectOverlay(null);
-});
+}
+
+// Smart new project from a clip item — pre-fills domain + suggested name
+async function tryOpenNewProjectFromItem(item: ClipItem): Promise<void> {
+  const projects = collections.filter((c) => c.isProject);
+  let limit = 2;
+  try {
+    const proRes = await chrome.runtime.sendMessage({ type: 'GET_PRO_STATUS', payload: {} });
+    const pro = proRes as { isPro: boolean } | null;
+    if (pro?.isPro) limit = 100;
+  } catch { /* fallback to free limit */ }
+  if (projects.length >= limit) {
+    showUpgradeBanner(`Project limit reached (${projects.length}/${limit}). Upgrade to Pro for unlimited projects.`);
+    return;
+  }
+  editingProjectId = null;
+  // Pre-fill with source info from the clip
+  const domain = item.sourceDomain && item.sourceDomain !== 'manual' ? item.sourceDomain : '';
+  const suggestedName = item.sourceTitle
+    ? item.sourceTitle.split(/[|\-–—]/)[0].trim().slice(0, 50)
+    : domain
+      ? domain.replace(/^www\./, '').split('.')[0].charAt(0).toUpperCase() + domain.replace(/^www\./, '').split('.')[0].slice(1)
+      : '';
+  projectNameInput.value = suggestedName;
+  projectDescInput.value = '';
+  projectFormDomains = domain ? [domain] : [];
+  projectFormColor = COLLECTION_COLORS[projects.length % COLLECTION_COLORS.length];
+  projectSaveBtn.textContent = 'Create Project';
+  renderDomainChips();
+  renderColorPicker();
+  projectOverlay.classList.remove('hidden');
+  projectNameInput.focus();
+  projectNameInput.select();
+}
+
+// New project button
+newProjectBtn.addEventListener('click', () => { tryOpenNewProject(); });
 
 function openProjectOverlay(existing: CollectionItem | null): void {
   if (existing) {
@@ -1313,18 +1525,22 @@ projectOverlay.addEventListener('keydown', (e: KeyboardEvent) => {
 
 projectSaveBtn.addEventListener('click', async () => {
   const name = projectNameInput.value.trim();
-  if (!name) return;
+  if (!name) {
+    projectNameInput.focus();
+    return;
+  }
 
+  const wasEditing = editingProjectId;
   projectSaveBtn.disabled = true;
   projectSaveBtn.textContent = 'Saving...';
 
   try {
-    if (editingProjectId) {
+    if (wasEditing) {
       // Update existing project
       await chrome.runtime.sendMessage({
         type: 'UPDATE_PROJECT',
         payload: {
-          id: editingProjectId,
+          id: wasEditing,
           name,
           description: projectDescInput.value.trim(),
           autoCaptureDomains: projectFormDomains,
@@ -1346,7 +1562,7 @@ projectSaveBtn.addEventListener('click', async () => {
       if (res && res.ok === false && res.error) {
         showUpgradeBanner(res.error);
         projectSaveBtn.disabled = false;
-        projectSaveBtn.textContent = editingProjectId ? 'Save Changes' : 'Create Project';
+        projectSaveBtn.textContent = wasEditing ? 'Save Changes' : 'Create Project';
         return;
       }
       // If there's a pending item from right-click, assign it to the new project
@@ -1362,53 +1578,29 @@ projectSaveBtn.addEventListener('click', async () => {
     }
 
     projectOverlay.classList.add('hidden');
+    editingProjectId = null;
     await loadCollections();
     await loadItems();
 
-    if (editingProjectId && activeProjectId === editingProjectId) {
-      // Re-open project detail with updated data
-      openProjectDetail(editingProjectId);
+    if (wasEditing && activeProjectId === wasEditing) {
+      openProjectDetail(wasEditing);
     } else {
       renderProjectsList();
     }
-    editingProjectId = null;
-  } catch { /* */ }
+  } catch (err) {
+    // Show error instead of silently failing
+    showUpgradeBanner('Failed to save project. Please try again.');
+  }
 
   projectSaveBtn.disabled = false;
-  projectSaveBtn.textContent = editingProjectId ? 'Save Changes' : 'Create Project';
+  projectSaveBtn.textContent = wasEditing ? 'Save Changes' : 'Create Project';
 });
 
-// Footer "+ Project" button — always accessible from main view
-newProjectFooterBtn.addEventListener('click', async () => {
-  const projects = collections.filter((c) => c.isProject);
-  try {
-    const proRes = await chrome.runtime.sendMessage({ type: 'GET_PRO_STATUS', payload: {} });
-    const pro = proRes as { isPro: boolean } | null;
-    const limit = pro?.isPro ? 100 : 2;
-    if (projects.length >= limit) {
-      showUpgradeBanner(`Project limit reached (${projects.length}/${limit}). Upgrade for more.`);
-      return;
-    }
-  } catch { /* */ }
-  editingProjectId = null;
-  openProjectOverlay(null);
-});
+// Footer "+ Project" button — always accessible from any view
+newProjectFooterBtn.addEventListener('click', () => { tryOpenNewProject(); });
 
 // Detail panel: "+ new project" button
-detailNewProject.addEventListener('click', async () => {
-  const projects = collections.filter((c) => c.isProject);
-  try {
-    const proRes = await chrome.runtime.sendMessage({ type: 'GET_PRO_STATUS', payload: {} });
-    const pro = proRes as { isPro: boolean } | null;
-    const limit = pro?.isPro ? 100 : 2;
-    if (projects.length >= limit) {
-      showUpgradeBanner(`Project limit reached (${projects.length}/${limit}). Upgrade for more.`);
-      return;
-    }
-  } catch { /* */ }
-  editingProjectId = null;
-  openProjectOverlay(null);
-});
+detailNewProject.addEventListener('click', () => { tryOpenNewProject(); });
 
 // Check for pending project creation when sidepanel regains focus
 document.addEventListener('visibilitychange', () => {

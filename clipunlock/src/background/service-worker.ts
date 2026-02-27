@@ -281,6 +281,7 @@ const CTX = {
   COPY_CITATION: 'copyunlock-copy-citation',
   SEP_2: 'copyunlock-sep-2',
   PIN: 'copyunlock-pin',
+  SAVE_PAGE_URL: 'copyunlock-save-page-url',
   COLLECTION_PARENT: 'copyunlock-collection',
   COLLECTION_NEW: 'copyunlock-collection-new',
   SEP_3: 'copyunlock-sep-3',
@@ -364,6 +365,13 @@ function setupContextMenus(): void {
       parentId: CTX.ROOT,
       title: '\u{1F4CC} Pin Selection',
       contexts: ['selection'],
+    });
+
+    chrome.contextMenus.create({
+      id: CTX.SAVE_PAGE_URL,
+      parentId: CTX.ROOT,
+      title: '\u{1F517} Save Page URL',
+      contexts: ['page', 'frame'],
     });
 
     chrome.contextMenus.create({
@@ -642,6 +650,22 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     if (pinResult) {
       await pinClipboardItem(pinResult.entry.id, true, proStatus);
     }
+    return;
+  }
+
+  // ── Save Page URL ──
+  if (menuId === CTX.SAVE_PAGE_URL) {
+    const pageUrl = tab.url ?? info.pageUrl ?? '';
+    if (!pageUrl || !pageUrl.startsWith('http')) return;
+    await addClipboardItem({
+      content: pageUrl,
+      html: null,
+      sourceUrl: pageUrl,
+      sourceTitle: tab.title ?? '',
+      wasUnlocked: false,
+      watermarkStripped: false,
+      contentTypeOverride: 'url',
+    }, proStatus);
     return;
   }
 
@@ -1184,7 +1208,9 @@ onMessage((msg: Message, sender, sendResponse) => {
       return true;
     }
     case 'EXPORT_PROJECT': {
-      const { id: exportId, format } = payload as { id: string; format: 'text' | 'html' };
+      const ep = payload as { id?: string; collectionId?: string; format: 'text' | 'html' | 'pdf' };
+      const exportId = ep.collectionId || ep.id || '';
+      const format = ep.format || 'text';
       const exportFn = format === 'html' ? exportProjectAsHtml : exportProjectAsText;
       exportFn(exportId).then((content) => {
         sendResponse({ ok: true, content, format });
