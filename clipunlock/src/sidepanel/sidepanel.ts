@@ -123,7 +123,6 @@ const sRetention = document.getElementById('s-retention') as HTMLInputElement;
 const sWatermark = document.getElementById('s-watermark') as HTMLInputElement;
 const sCitation = document.getElementById('s-citation') as HTMLSelectElement;
 const sPasteFormat = document.getElementById('s-paste-format') as HTMLSelectElement;
-const sPdfCleanup = document.getElementById('s-pdf-cleanup') as HTMLInputElement;
 const sProStatusLabel = document.getElementById('s-pro-status-label') as HTMLSpanElement;
 const sUpgradeBtn = document.getElementById('s-upgrade-btn') as HTMLButtonElement;
 const sFullSettings = document.getElementById('s-full-settings') as HTMLButtonElement;
@@ -1905,7 +1904,6 @@ function applyProStatusToSettings(isPro: boolean): void {
     if (sProUpgradeSection) sProUpgradeSection.classList.add('hidden');
     sMaxItems.max = '100000';
     sRetention.max = '3650';
-    sPdfCleanup.disabled = false;
     const fmtOpt = sCitation.querySelector('option[value="formatted"]') as HTMLOptionElement;
     if (fmtOpt) fmtOpt.disabled = false;
   } else {
@@ -1918,8 +1916,6 @@ function applyProStatusToSettings(isPro: boolean): void {
     sRetention.max = '30';
     if (parseInt(sMaxItems.value, 10) > 500) sMaxItems.value = '500';
     if (parseInt(sRetention.value, 10) > 30) sRetention.value = '30';
-    sPdfCleanup.disabled = true;
-    sPdfCleanup.checked = false;
     const fmtOpt = sCitation.querySelector('option[value="formatted"]') as HTMLOptionElement;
     if (fmtOpt) fmtOpt.disabled = true;
     if (sCitation.value === 'formatted') sCitation.value = 'url';
@@ -1980,7 +1976,6 @@ async function openSettingsModal(): Promise<void> {
     sWatermark.checked = s.watermarkStripping !== false;
     sCitation.value = s.autoCitation || 'url';
     sPasteFormat.value = s.defaultPasteFormat || 'plain';
-    sPdfCleanup.checked = s.pdfCleanup || false;
     // Load site overrides
     settingsOverrides = s.siteOverrides || {};
     renderSettingsOverrides();
@@ -2026,7 +2021,7 @@ async function saveSettings(): Promise<void> {
     watermarkStripping: sWatermark.checked,
     autoCitation: sCitation.value,
     defaultPasteFormat: sPasteFormat.value,
-    pdfCleanup: sPdfCleanup.checked,
+    pdfCleanup: true,
     siteOverrides: settingsOverrides,
   };
   try {
@@ -2039,7 +2034,7 @@ async function saveSettingsWithOverrides(): Promise<void> {
 }
 
 // Auto-save on every change
-[sEnabled, sNotifications, sContextMenu, sClipboard, sWatermark, sPdfCleanup].forEach((el) => {
+[sEnabled, sNotifications, sContextMenu, sClipboard, sWatermark].forEach((el) => {
   el.addEventListener('change', saveSettings);
 });
 [sMode, sCitation, sPasteFormat].forEach((el) => {
@@ -2056,13 +2051,6 @@ settingsOverlay.addEventListener('keydown', (e: KeyboardEvent) => {
 
 sUpgradeBtn.addEventListener('click', () => {
   chrome.runtime.sendMessage({ type: 'OPEN_CHECKOUT', payload: { plan: 'monthly' } });
-});
-
-// Show upgrade prompt when user clicks disabled Pro-only toggles
-sPdfCleanup.closest('.settings-toggle')?.addEventListener('click', () => {
-  if (sPdfCleanup.disabled) {
-    showUpgradeBanner('PDF Cleanup is a Pro feature. Upgrade to unlock it.');
-  }
 });
 
 if (sManageSubBtn) {

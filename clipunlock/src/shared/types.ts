@@ -113,7 +113,7 @@ export interface ExtensionSettings {
   siteOverrides: Record<string, { enabled: boolean; mode: UnlockMode }>;
   /** Auto-citation: 'none' | 'url' (free) | 'formatted' (pro) */
   autoCitation: CitationStyle;
-  /** PDF line break cleanup on copy (Pro only) */
+  /** PDF line break cleanup on copy (always enabled) */
   pdfCleanup: boolean;
   /** Default paste format */
   defaultPasteFormat: PasteFormat;
@@ -132,7 +132,7 @@ export const DEFAULT_SETTINGS: ExtensionSettings = {
   theme: 'dark',
   siteOverrides: {},
   autoCitation: 'url',
-  pdfCleanup: false,
+  pdfCleanup: true,
   defaultPasteFormat: 'plain',
   contextMenuEnabled: true,
 };
