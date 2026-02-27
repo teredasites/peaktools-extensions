@@ -594,6 +594,7 @@ async function openSidePanel(tab: chrome.tabs.Tab): Promise<void> {
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   if (!tab?.id) return;
   const menuId = String(info.menuItemId);
+  try {
 
   // Guard: ignore clicks on menu items that may have been removed by a concurrent rebuild
   // This prevents "Cannot find menu item with id ..." errors from stale collection items
@@ -901,6 +902,9 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     await chrome.storage.session.set({ openSettingsModal: true });
     await sendToSidepanel('SIDEPANEL_OPEN_SETTINGS', {});
     return;
+  }
+  } catch (err) {
+    log.error('context menu handler error:', err);
   }
 });
 
