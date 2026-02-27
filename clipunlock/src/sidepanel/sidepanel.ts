@@ -531,7 +531,7 @@ function showClipContextMenu(e: MouseEvent, itemId: string, item: ClipItem): voi
       if (item.sourceUrl) chrome.tabs.create({ url: item.sourceUrl });
     } else if (action === 'pin') {
       try {
-        await chrome.runtime.sendMessage({ type: item.pinned ? 'UNPIN_ITEM' : 'PIN_ITEM', payload: { id: itemId } });
+        await chrome.runtime.sendMessage({ type: 'PIN_CLIPBOARD_ITEM', payload: { id: itemId, pinned: !item.pinned } });
         await loadItems();
       } catch { /* */ }
     } else if (action === 'detail') {
@@ -539,7 +539,7 @@ function showClipContextMenu(e: MouseEvent, itemId: string, item: ClipItem): voi
       if (index >= 0) openDetail(index);
     } else if (action === 'delete') {
       try {
-        await chrome.runtime.sendMessage({ type: 'DELETE_ITEM', payload: { id: itemId } });
+        await chrome.runtime.sendMessage({ type: 'DELETE_CLIPBOARD_ITEM', payload: { id: itemId } });
         await loadItems();
       } catch { /* */ }
     } else if (action === 'assign') {

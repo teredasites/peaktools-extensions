@@ -677,6 +677,11 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
         log.error('citation copy failed:', err);
       }
     }
+    // Badge feedback
+    const badgeLabel = isCitation ? '+C' : isClean ? '✓C' : '✓';
+    chrome.action.setBadgeText({ text: badgeLabel, tabId: tab.id });
+    chrome.action.setBadgeBackgroundColor({ color: '#3b82f6', tabId: tab.id });
+    setTimeout(() => { chrome.action.setBadgeText({ text: '', tabId: tab.id }); }, 2000);
     return;
   }
 
@@ -695,6 +700,10 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     if (pinResult) {
       await pinClipboardItem(pinResult.entry.id, true, proStatus);
     }
+    // Badge feedback
+    chrome.action.setBadgeText({ text: '📌', tabId: tab.id });
+    chrome.action.setBadgeBackgroundColor({ color: '#3b82f6', tabId: tab.id });
+    setTimeout(() => { chrome.action.setBadgeText({ text: '', tabId: tab.id }); }, 2000);
     return;
   }
 
@@ -721,9 +730,10 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   // ── "Save to History" (no project) from the Save to Project submenu ──
   if (menuId === CTX.COLLECTION_NONE) {
     const text = info.selectionText ?? '';
+    let saved = false;
     if (text) {
       // Text selection — save text to history
-      await addClipboardItem({
+      const r = await addClipboardItem({
         content: text,
         html: null,
         sourceUrl: tab.url ?? '',
@@ -731,11 +741,12 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
         wasUnlocked: false,
         watermarkStripped: false,
       }, proStatus);
+      saved = !!r;
     } else {
       // No selection — save page URL to history
       const pageUrl = tab.url ?? info.pageUrl ?? '';
       if (pageUrl && pageUrl.startsWith('http')) {
-        await addClipboardItem({
+        const r = await addClipboardItem({
           content: pageUrl,
           html: null,
           sourceUrl: pageUrl,
@@ -744,7 +755,13 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
           watermarkStripped: false,
           contentTypeOverride: 'url',
         }, proStatus);
+        saved = !!r;
       }
+    }
+    if (saved) {
+      chrome.action.setBadgeText({ text: '✓', tabId: tab.id });
+      chrome.action.setBadgeBackgroundColor({ color: '#3b82f6', tabId: tab.id });
+      setTimeout(() => { chrome.action.setBadgeText({ text: '', tabId: tab.id }); }, 2000);
     }
     return;
   }
@@ -787,6 +804,10 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     }
     if (result) {
       await setItemCollection(result.entry.id, collectionId);
+      // Badge feedback — show project folder icon briefly
+      chrome.action.setBadgeText({ text: '📁', tabId: tab.id });
+      chrome.action.setBadgeBackgroundColor({ color: '#3b82f6', tabId: tab.id });
+      setTimeout(() => { chrome.action.setBadgeText({ text: '', tabId: tab.id }); }, 2000);
     }
     return;
   }
