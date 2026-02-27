@@ -228,10 +228,12 @@ upgradeBannerClose.addEventListener('click', hideUpgradeBanner);
 
 function groupByTime(items: ClipItem[]): FlatEntry[] {
   if (items.length === 0) return [];
-  const now = Date.now();
   const todayStart = new Date(); todayStart.setHours(0, 0, 0, 0);
   const yesterdayStart = new Date(todayStart); yesterdayStart.setDate(yesterdayStart.getDate() - 1);
   const weekStart = new Date(todayStart); weekStart.setDate(weekStart.getDate() - 7);
+
+  // Pinned items go to a dedicated section at the very top
+  const pinnedBucket: { item: ClipItem; globalIdx: number }[] = [];
 
   const buckets: { label: string; items: { item: ClipItem; globalIdx: number }[] }[] = [
     { label: 'TODAY', items: [] },
@@ -241,6 +243,10 @@ function groupByTime(items: ClipItem[]): FlatEntry[] {
   ];
 
   items.forEach((item, i) => {
+    if (item.pinned) {
+      pinnedBucket.push({ item, globalIdx: i });
+      return;
+    }
     const ts = item.timestamp;
     if (ts >= todayStart.getTime()) {
       buckets[0].items.push({ item, globalIdx: i });
@@ -254,6 +260,16 @@ function groupByTime(items: ClipItem[]): FlatEntry[] {
   });
 
   const result: FlatEntry[] = [];
+
+  // Pinned items first
+  if (pinnedBucket.length > 0) {
+    result.push({ kind: 'header', label: 'PINNED' });
+    for (const entry of pinnedBucket) {
+      result.push({ kind: 'item', item: entry.item, globalIdx: entry.globalIdx });
+    }
+  }
+
+  // Then time-grouped unpinned items
   for (const bucket of buckets) {
     if (bucket.items.length === 0) continue;
     result.push({ kind: 'header', label: bucket.label });
