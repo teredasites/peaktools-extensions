@@ -528,6 +528,25 @@ body {
   background: rgba(239, 68, 68, 0.1);
 }
 
+.settings-btn {
+  padding: 5px 8px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.settings-btn:hover {
+  border-color: var(--accent);
+  color: var(--text-primary);
+  background: rgba(51, 143, 255, 0.1);
+}
+
 /* Empty State */
 .empty-state {
   display: flex;

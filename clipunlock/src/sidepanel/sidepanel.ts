@@ -107,6 +107,7 @@ const domainInput = document.getElementById('domain-input') as HTMLInputElement;
 const colorPicker = document.getElementById('color-picker') as HTMLDivElement;
 const projectSaveBtn = document.getElementById('project-save') as HTMLButtonElement;
 const newProjectFooterBtn = document.getElementById('new-project-footer-btn') as HTMLButtonElement;
+const openSettingsBtn = document.getElementById('open-settings') as HTMLButtonElement;
 const detailNewProject = document.getElementById('detail-new-project') as HTMLButtonElement;
 
 // Virtual Scrolling
@@ -1598,6 +1599,9 @@ projectSaveBtn.addEventListener('click', async () => {
 
 // Footer "+ Project" button — always accessible from any view
 newProjectFooterBtn.addEventListener('click', () => { tryOpenNewProject(); });
+
+// Settings button — opens extension options page
+openSettingsBtn.addEventListener('click', () => { chrome.runtime.openOptionsPage(); });
 
 // Detail panel: "+ new project" button
 detailNewProject.addEventListener('click', () => { tryOpenNewProject(); });
