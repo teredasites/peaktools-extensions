@@ -576,6 +576,8 @@ function showClipContextMenu(e: MouseEvent, itemId: string, item: ClipItem): voi
       try {
         await chrome.runtime.sendMessage({ type: 'DELETE_CLIPBOARD_ITEM', payload: { id: itemId } });
         await loadItems();
+        await loadCollections();
+        if (activeProjectId) openProjectDetail(activeProjectId);
       } catch { /* */ }
     } else if (action === 'assign') {
       const projectId = btn.dataset.projectId;
@@ -584,6 +586,7 @@ function showClipContextMenu(e: MouseEvent, itemId: string, item: ClipItem): voi
           await chrome.runtime.sendMessage({ type: 'SET_ITEM_COLLECTION', payload: { itemId, collectionId: projectId } });
           await loadItems();
           await loadCollections();
+          if (activeProjectId) openProjectDetail(activeProjectId);
         } catch { /* */ }
       }
     } else if (action === 'unassign') {
@@ -591,6 +594,7 @@ function showClipContextMenu(e: MouseEvent, itemId: string, item: ClipItem): voi
         await chrome.runtime.sendMessage({ type: 'SET_ITEM_COLLECTION', payload: { itemId, collectionId: null } });
         await loadItems();
         await loadCollections();
+        if (activeProjectId) openProjectDetail(activeProjectId);
       } catch { /* */ }
     } else if (action === 'new-project') {
       pendingItemIdForProject = itemId;
