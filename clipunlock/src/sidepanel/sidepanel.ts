@@ -1277,6 +1277,23 @@ async function openProjectDetail(projectId: string): Promise<void> {
   const project = collections.find((c) => c.id === projectId);
   if (!project) return;
 
+  // Load project items
+  const projectItems = allItems.filter((i) => i.collection === projectId);
+
+  // Build summary stats
+  const typeCounts: Record<string, number> = {};
+  for (const item of projectItems) {
+    const t = item.contentType || 'text';
+    typeCounts[t] = (typeCounts[t] || 0) + 1;
+  }
+  const statLabels: Record<string, string> = {
+    text: 'Text', url: 'URLs', code: 'Code', email: 'Emails', html: 'HTML', image: 'Images',
+  };
+  const statsHtml = Object.entries(typeCounts)
+    .sort(([, a], [, b]) => b - a)
+    .map(([t, n]) => `<span class="project-stat-chip">${statLabels[t] || t}: ${n}</span>`)
+    .join('');
+
   projectDetailInfo.innerHTML = `
     <div class="project-detail-name">
       <span class="project-color-dot" style="background:${project.color}; display:inline-block; vertical-align:middle; margin-right:6px;"></span>
@@ -1288,10 +1305,8 @@ async function openProjectDetail(projectId: string): Promise<void> {
         ${project.autoCaptureDomains.map((d) => `<span class="domain-badge">${escapeHtml(d)}</span>`).join('')}
       </div>
     ` : ''}
+    ${projectItems.length > 0 ? `<div class="project-stats-bar">${projectItems.length} item${projectItems.length !== 1 ? 's' : ''}${statsHtml ? ' &mdash; ' + statsHtml : ''}</div>` : ''}
   `;
-
-  // Load project items
-  const projectItems = allItems.filter((i) => i.collection === projectId);
   if (projectItems.length === 0) {
     projectItemsList.innerHTML = `
       <div class="empty-state">
@@ -1301,12 +1316,59 @@ async function openProjectDetail(projectId: string): Promise<void> {
       </div>
     `;
   } else {
-    projectItemsList.innerHTML = projectItems.map((item, i) => {
-      const coll = null; // Already in the project, no need for badge
-      if (item.contentType === 'url') return renderUrlItem(item, i, coll);
-      if (item.contentType === 'code') return renderCodeItem(item, i, coll);
-      return renderDefaultItem(item, i, coll);
-    }).join('');
+    // Group items by content type for organized display
+    const typeOrder: string[] = ['text', 'url', 'code', 'email', 'html', 'image'];
+    const typeLabels: Record<string, string> = {
+      text: 'Text Clips', url: 'URLs', code: 'Code Snippets',
+      email: 'Emails', html: 'HTML', image: 'Images',
+    };
+    const typeIcons: Record<string, string> = {
+      text: '&#128196;', url: '&#128279;', code: '&#128187;',
+      email: '&#9993;', html: '&#128195;', image: '&#128444;',
+    };
+    const grouped: Record<string, typeof projectItems> = {};
+    for (const item of projectItems) {
+      const t = item.contentType || 'text';
+      (grouped[t] ??= []).push(item);
+    }
+    const activeTypes = typeOrder.filter((t) => grouped[t]?.length);
+    // If only one type, skip grouping headers
+    const showHeaders = activeTypes.length > 1;
+    let idx = 0;
+    let html = '';
+    for (const t of activeTypes) {
+      const items = grouped[t]!;
+      if (showHeaders) {
+        html += `<div class="project-type-group" data-type="${t}">
+          <button class="project-type-header" data-type="${t}">
+            <span class="project-type-icon">${typeIcons[t] || ''}</span>
+            <span class="project-type-label">${typeLabels[t] || t}</span>
+            <span class="project-type-count">${items.length}</span>
+            <span class="project-type-chevron">&#9660;</span>
+          </button>
+          <div class="project-type-items">`;
+      }
+      for (const item of items) {
+        const coll = null;
+        if (item.contentType === 'url') html += renderUrlItem(item, idx, coll);
+        else if (item.contentType === 'code') html += renderCodeItem(item, idx, coll);
+        else html += renderDefaultItem(item, idx, coll);
+        idx++;
+      }
+      if (showHeaders) {
+        html += `</div></div>`;
+      }
+    }
+    projectItemsList.innerHTML = html;
+
+    // Toggle group collapse
+    projectItemsList.querySelectorAll('.project-type-header').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const group = (btn as HTMLElement).closest('.project-type-group') as HTMLElement;
+        if (group) group.classList.toggle('collapsed');
+      });
+    });
 
     // Click handler for project items
     projectItemsList.querySelectorAll('.clip-item').forEach((el) => {
@@ -1327,12 +1389,9 @@ async function openProjectDetail(projectId: string): Promise<void> {
           });
           return;
         }
-        // Open detail from project items — use single-item array to avoid corrupting filter state
         const itemId = (el as HTMLElement).dataset.id;
         const item = allItems.find((ai) => ai.id === itemId);
         if (item) {
-          // Set filteredItems to just this item so openDetail(0) works correctly
-          // closeDetail() calls applyFilter() which rebuilds filteredItems properly
           filteredItems = [item];
           openDetail(0);
         }
