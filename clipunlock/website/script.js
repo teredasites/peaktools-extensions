@@ -104,10 +104,10 @@
 
       if (proPrice && proPeriod) {
         if (isYearly) {
-          proPrice.textContent = '$29.99';
+          proPrice.textContent = '$19.99';
           proPeriod.textContent = '/ year';
         } else {
-          proPrice.textContent = '$3.99';
+          proPrice.textContent = '$1.99';
           proPeriod.textContent = '/ month';
         }
       }

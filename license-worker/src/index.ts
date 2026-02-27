@@ -586,6 +586,67 @@ async function onPaymentFailed(invoice: any, env: Env): Promise<void> {
 }
 
 // ---------------------------------------------------------------------------
+// Route: POST /api/billing-portal
+// ---------------------------------------------------------------------------
+
+interface BillingPortalBody {
+  email: string;
+  extensionSlug: string;
+}
+
+async function handleBillingPortal(
+  request: Request,
+  env: Env
+): Promise<Response> {
+  let body: BillingPortalBody;
+  try {
+    body = await request.json();
+  } catch {
+    return errorResponse("Invalid JSON body", 400, request);
+  }
+
+  const { email, extensionSlug } = body;
+
+  if (!email || !extensionSlug) {
+    return errorResponse(
+      "Missing required fields: email, extensionSlug",
+      400,
+      request
+    );
+  }
+
+  // Look up the user's Stripe customer ID from their license
+  const license = await env.DB.prepare(
+    `SELECT stripe_customer_id FROM licenses
+     WHERE email = ? AND extension_slug = ? AND active = 1
+     LIMIT 1`
+  )
+    .bind(email.toLowerCase(), extensionSlug)
+    .first<{ stripe_customer_id: string | null }>();
+
+  if (!license || !license.stripe_customer_id) {
+    return errorResponse(
+      "No active subscription found for this email",
+      404,
+      request
+    );
+  }
+
+  // Create a Stripe Customer Portal session
+  const result = await stripeRequest(env, "POST", "/billing_portal/sessions", {
+    customer: license.stripe_customer_id,
+    return_url: `https://peaktools.dev/copyunlock`,
+  });
+
+  if (!result.ok) {
+    console.error("Stripe billing portal error:", JSON.stringify(result.data));
+    return errorResponse("Failed to create billing portal session", 502, request);
+  }
+
+  return jsonResponse({ url: result.data.url }, 200, request);
+}
+
+// ---------------------------------------------------------------------------
 // Route: GET /api/license?email={email}&ext={slug}
 // ---------------------------------------------------------------------------
 
@@ -701,6 +762,11 @@ async function handleRequest(
     // POST /api/webhook
     if (path === "/api/webhook" && method === "POST") {
       return await handleWebhook(request, env);
+    }
+
+    // POST /api/billing-portal
+    if (path === "/api/billing-portal" && method === "POST") {
+      return await handleBillingPortal(request, env);
     }
 
     // GET /api/license

@@ -1631,6 +1631,30 @@ body {
   display: none;
 }
 
+.settings-manage-btn {
+  padding: 5px 14px;
+  background: transparent;
+  border: 1px solid var(--accent, #6366f1);
+  border-radius: 6px;
+  color: var(--accent, #6366f1);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+.settings-manage-btn:hover {
+  background: var(--accent, #6366f1);
+  color: #fff;
+}
+
+.settings-row-hint {
+  display: block;
+  font-size: 10px;
+  color: var(--text-muted, #64748b);
+  margin-top: 1px;
+}
+
 .settings-link-btn {
   background: none;
   border: none;

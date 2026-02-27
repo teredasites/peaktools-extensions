@@ -127,6 +127,8 @@ const sPdfCleanup = document.getElementById('s-pdf-cleanup') as HTMLInputElement
 const sProStatusLabel = document.getElementById('s-pro-status-label') as HTMLSpanElement;
 const sUpgradeBtn = document.getElementById('s-upgrade-btn') as HTMLButtonElement;
 const sFullSettings = document.getElementById('s-full-settings') as HTMLButtonElement;
+const sManageRow = document.getElementById('s-manage-row') as HTMLDivElement;
+const sManageSubBtn = document.getElementById('s-manage-sub-btn') as HTMLButtonElement;
 
 // Clear data modal refs
 const clearOverlay = document.getElementById('clear-overlay') as HTMLDivElement;
@@ -1827,6 +1829,7 @@ async function openSettingsModal(): Promise<void> {
   if (settingsIsPro) {
     sProStatusLabel.textContent = 'Pro Plan Active';
     sUpgradeBtn.classList.add('hidden');
+    if (sManageRow) sManageRow.classList.remove('hidden');
     sMaxItems.max = '100000';
     sRetention.max = '3650';
     sPdfCleanup.disabled = false;
@@ -1835,6 +1838,7 @@ async function openSettingsModal(): Promise<void> {
   } else {
     sProStatusLabel.textContent = 'Free Plan';
     sUpgradeBtn.classList.remove('hidden');
+    if (sManageRow) sManageRow.classList.add('hidden');
     sMaxItems.max = '500';
     sRetention.max = '30';
     if (parseInt(sMaxItems.value, 10) > 500) sMaxItems.value = '500';
@@ -1898,6 +1902,23 @@ sPdfCleanup.closest('.settings-toggle')?.addEventListener('click', () => {
     showUpgradeBanner('PDF Cleanup is a Pro feature. Upgrade to unlock it.');
   }
 });
+
+if (sManageSubBtn) {
+  sManageSubBtn.addEventListener('click', () => {
+    sManageSubBtn.disabled = true;
+    sManageSubBtn.textContent = 'Opening…';
+    chrome.runtime.sendMessage({ type: 'OPEN_BILLING_PORTAL', payload: {} }).then((result) => {
+      if (!result?.ok) {
+        showUpgradeBanner('Could not open billing portal. Please contact support@peaktools.dev.');
+      }
+    }).catch(() => {
+      showUpgradeBanner('Could not open billing portal. Please contact support@peaktools.dev.');
+    }).finally(() => {
+      sManageSubBtn.disabled = false;
+      sManageSubBtn.textContent = 'Manage';
+    });
+  });
+}
 
 sFullSettings.addEventListener('click', () => {
   chrome.runtime.openOptionsPage();
