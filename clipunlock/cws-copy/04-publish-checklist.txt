@@ -5,12 +5,20 @@ Go to: https://chrome.google.com/webstore/devconsole
 Find item: fepnibopopogakkkjaimedepnpkgcgbb
 
 
+STEP 0 — UPLOAD NEW PACKAGE
+=============================
+
+1. Click "Package" tab (or "Upload new package" button)
+2. Upload: clipunlock/copyunlock-v1.0.0.zip
+3. Wait for it to process — check that version shows 1.0.0
+
+
 STEP 1 — STORE LISTING TAB
 ============================
 
-1. The name and short description are already in the manifest.json upload:
+1. The name and short description come from manifest.json:
    Name: CopyUnlock — Enable Copy, Right Click & Text Selection
-   Short desc: Enable copy paste on any website. Remove right-click restrictions, unblock text selection, strip watermarks. Free. No data collected.
+   Short desc: Enable copy paste on any website. Remove right-click restrictions, unblock text selection, strip watermarks. Free.
 
 2. Detailed Description:
    Open 01-detailed-description.txt
@@ -23,9 +31,20 @@ STEP 1 — STORE LISTING TAB
 
 5. Store Icon: Upload assets/store-icon-128.png
 
-6. Screenshots (1280x800 PNG each):
-   You need to create these — take real screenshots in Chrome, add text overlays in Canva.
-   Minimum 1 required, recommend all 5. See CWS-LISTING.md for what to capture.
+6. Screenshots (upload from "Peaktools photos/CopyUnlock photos/" folder):
+   Upload in this order — first image becomes the main listing image:
+
+   a) Card 2.png — HERO. Browser mockup with popup overlay, bullet points.
+      ⚠️ "100% free — no upsells" text may conflict with in-app purchases.
+      Consider editing this image first.
+
+   b) Card 1 (1).png — Feature overview. Popup, modes, stats, feature pills.
+
+   c) Screenshot 2026-02-27 023828.png — Right-click context menu.
+      May need resizing to 1280x800.
+
+   d) Screenshot 2026-02-27 023933.png — Sidepanel with pinned items + projects.
+      May need resizing to 1280x800.
 
 7. Homepage URL: https://peaktools.dev/copyunlock
 
@@ -57,7 +76,7 @@ STEP 3 — DISTRIBUTION TAB
 ==========================
 
 1. Payments: Select "This item uses in-app payments"
-   (CopyUnlock has Pro tier via Stripe)
+   (CopyUnlock has Pro tier via Stripe — $1.99/mo, $19.99/yr, $49.99 lifetime)
 
 2. Visibility: Public
 

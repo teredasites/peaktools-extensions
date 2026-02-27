@@ -26,32 +26,40 @@ Support URL: https://peaktools.dev/contact
 Privacy Policy URL: https://peaktools.dev/privacy/copyunlock
 Store Icon: assets/store-icon-128.png (128x128)
 
-## Screenshots Needed (1280x800 PNG, take in Chrome, add text overlay in Canva)
+## Screenshots — Ready to Upload
 
-1. HERO — Popup showing "Page Unlocked" on a protected site
-   Overlay text: "Enable Copy & Paste on Any Website"
+All photos are in: `C:\Users\Developer LLC\Desktop\Peaktools photos\CopyUnlock photos\`
 
-2. CLIPBOARD HISTORY — Side panel showing time-grouped clips (Today, Yesterday) with pinned items at top
-   Overlay text: "Clipboard History — Auto-Saves Every Copy"
+Upload them in this order (CWS shows first image as the main listing image):
 
-3. PROJECTS — Side panel showing project folders with color-coded cards and domain badges
-   Overlay text: "Organize Clips into Projects by Domain"
+1. **Card 2.png** (use as MAIN/HERO image)
+   Browser mockup showing a copy-protected article with "COPY DISABLED" badge.
+   CopyUnlock popup overlay active with "3 restrictions removed".
+   Right side: "Unlock any copy-protected page", "Built-in clipboard history",
+   "Zero data collection", "100% free — no upsells".
+   ⚠️ NOTE: "100% free — no upsells" may conflict with "Contains in-app purchases"
+   declaration. Consider updating to "Free forever — Pro optional" to avoid rejection.
 
-4. RIGHT-CLICK MENU — Context menu on a clip item showing Copy, Pin, Move to Project, Delete options
-   Overlay text: "Full Right-Click Menu on Every Item"
+2. **Card 1 (1).png** (feature overview)
+   Popup mockup with power button, Auto/Safe/Aggressive modes.
+   "Copy anything from any website." headline.
+   Stats: <10ms execution, 0 data collected, 500+ clip history.
+   Feature pills: Auto-detect, Clipboard History, PDF Cleanup, Zero Tracking.
 
-5. SETTINGS — In-panel settings modal showing unlock mode, clipboard toggles, Pro status
-   Overlay text: "3 Unlock Modes — Auto, Safe, Aggressive"
+3. **Screenshot 2026-02-27 023828.png** (right-click context menu)
+   Real screenshot of the CopyUnlock right-click submenu on peaktools.dev.
+   Shows: Lock Page (revert), Copy Save, Pin Selection, Save to Project submenu
+   with existing projects and "+ New Project" option.
 
-## Key Features to Highlight in Screenshots
+4. **Screenshot 2026-02-27 023933.png** (sidepanel / clipboard history)
+   Real screenshot of the sidepanel showing the full UI:
+   - Recent / Pinned / Projects tabs (Projects tab active with badge)
+   - PINNED section at top with pinned items (pin icons visible)
+   - TODAY section with time-grouped clips
+   - Projects section showing "peaktools.dev" project (4 items, domain badge)
+   - Footer: + Project, + Add, Clear All, Settings
 
-- Time-grouped history (PINNED → TODAY → YESTERDAY → THIS WEEK → OLDER)
-- Content-type accent bars (blue=URL, purple=Code, gray=Text, green=Email, orange=HTML)
-- Language detection badges on code clips (JS, Python, CSS, SQL, Shell, etc.)
-- URL items with one-click Open and Copy buttons
-- Project cards with color dots, item counts, and domain badges
-- Project detail view with content grouped by type (Text, URLs, Code, etc.)
-- Pin to top — pinned items in dedicated PINNED section
-- Quick Paste popup overlay on a webpage (Ctrl+Shift+V)
-- Clear Data modal with granular toggles (History, Pinned, Projects)
-- Manage Subscription button in settings for Pro users
+### Screenshot Size Requirements
+CWS requires 1280x800 or 640x400 PNG/JPEG screenshots.
+The Card images should already be the right size.
+The raw screenshots may need to be resized/cropped to 1280x800 in Canva or similar.
