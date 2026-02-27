@@ -588,14 +588,17 @@ function isScriptableUrl(url: string | undefined): boolean {
 }
 
 // Send a message to the sidepanel. Returns true if delivered, false if sidepanel not open.
-async function sendToSidepanel(type: string, payload: Record<string, unknown>): Promise<boolean> {
-  try {
-    await chrome.runtime.sendMessage({ type, payload });
-    return true;
-  } catch {
-    // Sidepanel not open or no listener — message not delivered
-    return false;
+async function sendToSidepanel(type: string, payload: Record<string, unknown>, retries = 5, delayMs = 300): Promise<boolean> {
+  for (let i = 0; i < retries; i++) {
+    try {
+      await chrome.runtime.sendMessage({ type, payload });
+      return true;
+    } catch {
+      // Sidepanel not open or no listener yet — wait and retry
+      if (i < retries - 1) await new Promise((r) => setTimeout(r, delayMs));
+    }
   }
+  return false;
 }
 
 // Open sidepanel reliably — tries windowId first, then tabId fallback
@@ -658,24 +661,29 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     if (!text) return;
     const isClean = menuId === CTX.COPY_CLEAN;
     const isCitation = menuId === CTX.COPY_CITATION;
+    // For "Copy Clean", strip extra whitespace, zero-width chars, and watermark patterns
+    const cleanedText = isClean
+      ? text.replace(/[\u200B-\u200D\uFEFF\u00AD]/g, '').replace(/\s+/g, ' ').trim()
+      : text;
     const addResult = await addClipboardItem({
-      content: text,
+      content: cleanedText,
       html: null,
       sourceUrl: tab.url ?? '',
       sourceTitle: tab.title ?? '',
       wasUnlocked: false,
       watermarkStripped: isClean,
     }, proStatus);
-    // For citation copy, write text + citation to clipboard via offscreen
-    if (isCitation && addResult) {
-      try {
-        await ensureOffscreen();
+    // Write to system clipboard via offscreen document
+    try {
+      await ensureOffscreen();
+      let textToCopy = cleanedText;
+      if (isCitation && addResult) {
         const citation = addResult.entry.citation || tab.url || '';
-        const textWithCitation = `${text}\n\n— ${citation}`;
-        await chrome.runtime.sendMessage({ type: 'OFFSCREEN_COPY', payload: { text: textWithCitation } });
-      } catch (err) {
-        log.error('citation copy failed:', err);
+        textToCopy = `${cleanedText}\n\n— ${citation}`;
       }
+      await chrome.runtime.sendMessage({ type: 'OFFSCREEN_COPY', payload: { text: textToCopy } });
+    } catch (err) {
+      log.error('clipboard copy failed:', err);
     }
     // Badge feedback
     const badgeLabel = isCitation ? '+C' : isClean ? '✓C' : '✓';
@@ -699,6 +707,13 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     }, proStatus);
     if (pinResult) {
       await pinClipboardItem(pinResult.entry.id, true, proStatus);
+    }
+    // Also copy to clipboard
+    try {
+      await ensureOffscreen();
+      await chrome.runtime.sendMessage({ type: 'OFFSCREEN_COPY', payload: { text } });
+    } catch (err) {
+      log.error('pin copy failed:', err);
     }
     // Badge feedback
     chrome.action.setBadgeText({ text: '📌', tabId: tab.id });
@@ -1119,35 +1134,35 @@ onMessage((msg: Message, sender, sendResponse) => {
     }
     case 'GET_CLIPBOARD_HISTORY': {
       const { limit, offset } = (payload as { limit?: number; offset?: number }) ?? {};
-      getClipboardItems(limit, offset).then((items) => sendResponse(items));
+      getClipboardItems(limit, offset).then((items) => sendResponse(items)).catch((err) => sendResponse({ error: String(err) }));
       return true;
     }
     case 'SEARCH_CLIPBOARD': {
       const { query, limit } = payload as ClipboardSearchPayload;
-      searchClipboard(query, limit).then((items) => sendResponse(items));
+      searchClipboard(query, limit).then((items) => sendResponse(items)).catch((err) => sendResponse({ error: String(err) }));
       return true;
     }
     case 'DELETE_CLIPBOARD_ITEM': {
       const { id } = payload as { id: string };
-      deleteClipboardItem(id).then(() => sendResponse({ ok: true }));
+      deleteClipboardItem(id).then(() => sendResponse({ ok: true })).catch((err) => sendResponse({ ok: false, error: String(err) }));
       return true;
     }
     case 'PIN_CLIPBOARD_ITEM': {
       const { id, pinned } = payload as { id: string; pinned: boolean };
-      pinClipboardItem(id, pinned, proStatus).then((result) => sendResponse(result));
+      pinClipboardItem(id, pinned, proStatus).then((result) => sendResponse(result)).catch((err) => sendResponse({ ok: false, error: String(err) }));
       return true;
     }
     case 'TAG_CLIPBOARD_ITEM': {
       const { id, tags } = payload as ClipboardTagPayload;
-      tagClipboardItem(id, tags, proStatus).then((result) => sendResponse(result));
+      tagClipboardItem(id, tags, proStatus).then((result) => sendResponse(result)).catch((err) => sendResponse({ ok: false, error: String(err) }));
       return true;
     }
     case 'CLEAR_CLIPBOARD': {
-      clearClipboard().then(() => sendResponse({ ok: true }));
+      clearClipboard().then(() => sendResponse({ ok: true })).catch((err) => sendResponse({ ok: false, error: String(err) }));
       return true;
     }
     case 'GET_SETTINGS': {
-      getSettings().then((s) => sendResponse(s));
+      getSettings().then((s) => sendResponse(s)).catch((err) => sendResponse({ error: String(err) }));
       return true;
     }
     case 'UPDATE_SETTINGS': {
@@ -1172,7 +1187,7 @@ onMessage((msg: Message, sender, sendResponse) => {
           }
         });
         sendResponse({ ok: true });
-      });
+      }).catch((err) => sendResponse({ ok: false, error: String(err) }));
       return true;
     }
     case 'SETTINGS_CHANGED': {
@@ -1191,17 +1206,17 @@ onMessage((msg: Message, sender, sendResponse) => {
     }
     case 'GET_SITE_PROFILE': {
       const { domain } = payload as { domain: string };
-      getProfile(domain).then((p) => sendResponse(p));
+      getProfile(domain).then((p) => sendResponse(p)).catch((err) => sendResponse({ error: String(err) }));
       return true;
     }
     case 'CLEAR_SITE_PROFILE': {
       const { domain } = payload as { domain: string };
-      clearProfile(domain).then(() => sendResponse({ ok: true }));
+      clearProfile(domain).then(() => sendResponse({ ok: true })).catch((err) => sendResponse({ ok: false, error: String(err) }));
       return true;
     }
     case 'GET_PRO_STATUS': {
       // Wait for initial license check to complete before responding
-      licenseReady.then(() => sendResponse(proStatus));
+      licenseReady.then(() => sendResponse(proStatus)).catch(() => sendResponse(proStatus));
       return true;
     }
     case 'CHECK_LICENSE': {
@@ -1211,8 +1226,8 @@ onMessage((msg: Message, sender, sendResponse) => {
       chrome.storage.local.remove(LICENSE_CACHE_KEY).then(() => {
         checkLicense().then(() => {
           sendResponse(proStatus);
-        });
-      });
+        }).catch(() => sendResponse(proStatus));
+      }).catch(() => sendResponse(proStatus));
       return true;
     }
     case 'OPEN_SIDEPANEL': {
@@ -1230,7 +1245,7 @@ onMessage((msg: Message, sender, sendResponse) => {
       const { plan } = payload as { plan: 'monthly' | 'annual' | 'lifetime' };
       openCheckout(plan || 'monthly').then((url) => {
         sendResponse({ ok: true, url });
-      });
+      }).catch((err) => sendResponse({ ok: false, error: String(err) }));
       return true;
     }
 
@@ -1260,7 +1275,7 @@ onMessage((msg: Message, sender, sendResponse) => {
           chrome.tabs.create({ url: 'mailto:support@peaktools.dev?subject=CopyUnlock%20Subscription%20Management' });
           sendResponse({ ok: false, error: String(err) });
         }
-      });
+      }).catch((err) => sendResponse({ ok: false, error: String(err) }));
       return true;
     }
 
@@ -1297,7 +1312,7 @@ onMessage((msg: Message, sender, sendResponse) => {
 
     // ─── Collections ───
     case 'GET_COLLECTIONS': {
-      getCollections().then((collections) => sendResponse(collections));
+      getCollections().then((collections) => sendResponse(collections)).catch((err) => sendResponse({ error: String(err) }));
       return true;
     }
     case 'CREATE_COLLECTION': {
@@ -1305,7 +1320,7 @@ onMessage((msg: Message, sender, sendResponse) => {
       createCollection(name, proStatus).then((result) => {
         refreshCollectionMenuItems();
         sendResponse(result);
-      });
+      }).catch((err) => sendResponse({ ok: false, error: String(err) }));
       return true;
     }
     case 'DELETE_COLLECTION': {
@@ -1313,7 +1328,7 @@ onMessage((msg: Message, sender, sendResponse) => {
       deleteCollection(id).then(() => {
         refreshCollectionMenuItems();
         sendResponse({ ok: true });
-      });
+      }).catch((err) => sendResponse({ ok: false, error: String(err) }));
       return true;
     }
     case 'RENAME_COLLECTION': {
@@ -1321,12 +1336,12 @@ onMessage((msg: Message, sender, sendResponse) => {
       renameCollection(id, name).then((result) => {
         refreshCollectionMenuItems();
         sendResponse(result);
-      });
+      }).catch((err) => sendResponse({ ok: false, error: String(err) }));
       return true;
     }
     case 'SET_ITEM_COLLECTION': {
       const { itemId, collectionId } = payload as { itemId: string; collectionId: string | null };
-      setItemCollection(itemId, collectionId).then((result) => sendResponse(result));
+      setItemCollection(itemId, collectionId).then((result) => sendResponse(result)).catch((err) => sendResponse({ ok: false, error: String(err) }));
       return true;
     }
 
@@ -1337,14 +1352,24 @@ onMessage((msg: Message, sender, sendResponse) => {
       createProject(p.name, domains, p.description, proStatus, p.color).then((result) => {
         refreshCollectionMenuItems();
         sendResponse(result);
-      });
+      }).catch((err) => sendResponse({ ok: false, error: String(err) }));
       return true;
     }
     case 'UPDATE_PROJECT': {
-      const { id: projId, updates } = payload as { id: string; updates: { name?: string; domains?: string[]; description?: string } };
+      const p = payload as { id: string; name?: string; description?: string; autoCaptureDomains?: string[]; color?: string; updates?: { name?: string; domains?: string[]; description?: string } };
+      const projId = p.id;
+      // Support both flat payload (from sidepanel) and nested { updates } format
+      const updates = p.updates ?? {
+        name: p.name,
+        domains: p.autoCaptureDomains,
+        description: p.description,
+        color: p.color,
+      };
       updateProject(projId, updates).then((result) => {
         refreshCollectionMenuItems();
         sendResponse(result);
+      }).catch((err) => {
+        sendResponse({ ok: false, error: String(err) });
       });
       return true;
     }
@@ -1364,7 +1389,7 @@ onMessage((msg: Message, sender, sendResponse) => {
     // ─── Quick-paste items ───
     case 'QUICK_PASTE_ITEMS': {
       const { limit } = (payload as { limit?: number }) ?? {};
-      getQuickPasteItems(limit || 10).then((items) => sendResponse(items));
+      getQuickPasteItems(limit || 10).then((items) => sendResponse(items)).catch((err) => sendResponse({ error: String(err) }));
       return true;
     }
 
@@ -1377,7 +1402,7 @@ onMessage((msg: Message, sender, sendResponse) => {
           return;
         }
         sendResponse({ citation: item.citation });
-      });
+      }).catch((err) => sendResponse({ citation: null, error: String(err) }));
       return true;
     }
 
