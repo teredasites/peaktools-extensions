@@ -826,5 +826,13 @@
         "example": "Jan 15, 2026"
       }
     }
+  },
+  "contextMenuSavePageUrl": {
+    "message": "保存页面网址",
+    "description": "Context menu save page URL"
+  },
+  "contextMenuSaveToHistory": {
+    "message": "保存到历史记录（无项目）",
+    "description": "Context menu save to history without project"
   }
 }

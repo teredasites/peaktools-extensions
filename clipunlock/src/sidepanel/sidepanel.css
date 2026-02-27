@@ -1669,6 +1669,316 @@ body {
   opacity: 1;
 }
 
+/* ─── Site Overrides in Settings ─── */
+.settings-row-hint-block {
+  font-size: 11px;
+  color: var(--text-secondary);
+  opacity: 0.7;
+  padding: 4px 0 6px;
+}
+
+.s-overrides-list {
+  max-height: 140px;
+  overflow-y: auto;
+  margin-bottom: 4px;
+}
+
+.s-override-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(42, 42, 74, 0.3);
+  gap: 6px;
+}
+
+.s-override-domain {
+  font-size: 12px;
+  color: var(--text-primary);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.s-override-mode {
+  font-size: 10px;
+  padding: 2px 6px;
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+  color: var(--accent);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.s-override-remove {
+  background: none;
+  border: none;
+  color: var(--danger);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0 2px;
+  line-height: 1;
+  opacity: 0.6;
+}
+
+.s-override-remove:hover {
+  opacity: 1;
+}
+
+.s-override-add-row {
+  gap: 4px !important;
+  padding: 6px 0 !important;
+}
+
+.settings-text-input {
+  flex: 1;
+  min-width: 0;
+  padding: 4px 8px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 12px;
+  outline: none;
+}
+
+.settings-text-input:focus {
+  border-color: var(--accent);
+}
+
+.settings-text-input::placeholder {
+  color: var(--text-secondary);
+}
+
+.settings-select-sm {
+  max-width: 100px;
+  font-size: 11px;
+}
+
+.settings-add-btn {
+  padding: 4px 10px;
+  background: var(--accent);
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+.settings-add-btn:hover {
+  background: #2570d4;
+}
+
+.s-no-overrides {
+  font-size: 11px;
+  color: var(--text-secondary);
+  opacity: 0.6;
+  padding: 6px 0;
+  text-align: center;
+}
+
+/* ─── Keyboard Shortcuts in Settings ─── */
+.s-shortcuts-list {
+  padding: 4px 0 2px;
+}
+
+.s-shortcut-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(42, 42, 74, 0.3);
+}
+
+.s-shortcut-row-last {
+  border-bottom: none;
+  justify-content: center;
+  padding: 8px 0 4px;
+}
+
+.s-shortcut-action {
+  font-size: 12px;
+  color: var(--text-primary);
+}
+
+.s-shortcut-key {
+  font-family: 'Segoe UI', system-ui, monospace;
+  font-size: 11px;
+  padding: 2px 8px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-secondary);
+}
+
+/* ─── Pro Active Info in Settings ─── */
+.s-pro-active-info {
+  padding: 8px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.s-pro-active-info.hidden {
+  display: none;
+}
+
+.s-pro-active-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.s-pro-active-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.s-pro-active-plan {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.s-pro-renew-date {
+  font-size: 10px;
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+
+/* ─── Plan Cards in Settings ─── */
+.s-plan-cards {
+  display: flex;
+  gap: 6px;
+  padding: 8px 0;
+}
+
+.s-plan-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px 4px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  position: relative;
+}
+
+.s-plan-card:hover {
+  border-color: var(--accent);
+  background: var(--bg-tertiary);
+}
+
+.s-plan-popular {
+  border-color: var(--accent);
+  background: rgba(51, 143, 255, 0.05);
+}
+
+.s-plan-badge-tag {
+  position: absolute;
+  top: -8px;
+  font-size: 9px;
+  padding: 1px 6px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 4px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.s-plan-period {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.s-plan-price {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.s-plan-unit {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+.s-plan-savings {
+  font-size: 10px;
+  color: var(--success);
+  font-weight: 600;
+}
+
+.s-pro-legal {
+  font-size: 10px;
+  color: var(--text-secondary);
+  opacity: 0.6;
+  text-align: center;
+  padding: 4px 0;
+}
+
+.s-already-purchased {
+  display: block;
+  text-align: center;
+  padding: 4px 0 8px;
+}
+
+/* ─── Statistics in Settings ─── */
+.s-stats-grid {
+  display: flex;
+  gap: 6px;
+  padding: 8px 0;
+}
+
+.s-stat-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px 4px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.s-stat-number {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.s-stat-name {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+/* ─── Version in Settings ─── */
+.s-version-row {
+  justify-content: center !important;
+}
+
+.s-version-text {
+  font-size: 11px;
+  color: var(--text-secondary);
+  opacity: 0.5;
+}
+
 /* ─── Clear Data Modal ─── */
 .clear-overlay-content {
   max-width: 340px;

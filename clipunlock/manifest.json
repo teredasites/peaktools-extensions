@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "CopyUnlock — Enable Copy, Right Click & Text Selection",
   "version": "1.0.0",
-  "description": "Enable copy paste on any website. Remove right-click restrictions, unblock text selection, strip watermarks. Free.",
+  "description": "Enable copy paste on any website. Unblock right-click, text selection & clipboard. Won't break Google Docs or YouTube. Free.",
   "default_locale": "en",
   "minimum_chrome_version": "120",
   "permissions": [
@@ -51,7 +51,6 @@
   "side_panel": {
     "default_path": "src/sidepanel/sidepanel.html"
   },
-  "options_page": "src/options/options.html",
   "icons": {
     "16": "assets/icons/icon-16.png",
     "32": "assets/icons/icon-32.png",

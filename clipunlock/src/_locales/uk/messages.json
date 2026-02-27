@@ -826,5 +826,13 @@
         "example": "Jan 15, 2026"
       }
     }
+  },
+  "contextMenuSavePageUrl": {
+    "message": "Зберегти URL сторінки",
+    "description": "Context menu save page URL"
+  },
+  "contextMenuSaveToHistory": {
+    "message": "Зберегти в історію (без проєкту)",
+    "description": "Context menu save to history without project"
   }
 }

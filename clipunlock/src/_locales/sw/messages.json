@@ -826,5 +826,13 @@
         "example": "Jan 15, 2026"
       }
     }
+  },
+  "contextMenuSavePageUrl": {
+    "message": "Hifadhi URL ya ukurasa",
+    "description": "Context menu save page URL"
+  },
+  "contextMenuSaveToHistory": {
+    "message": "Hifadhi kwenye historia (hakuna mradi)",
+    "description": "Context menu save to history without project"
   }
 }

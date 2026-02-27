@@ -826,5 +826,13 @@
         "example": "Jan 15, 2026"
       }
     }
+  },
+  "contextMenuSavePageUrl": {
+    "message": "പേജ് URL സേവ് ചെയ്യുക",
+    "description": "Context menu save page URL"
+  },
+  "contextMenuSaveToHistory": {
+    "message": "ചരിത്രത്തിൽ സേവ് ചെയ്യുക (പ്രോജ്ക്ട് ഇല്ല)",
+    "description": "Context menu save to history without project"
   }
 }

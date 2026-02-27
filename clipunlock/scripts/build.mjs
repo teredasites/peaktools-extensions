@@ -50,12 +50,6 @@ const configs = [
   },
   {
     ...sharedConfig,
-    entryPoints: ['src/options/options.ts'],
-    outfile: 'dist/options/options.js',
-    format: 'iife',
-  },
-  {
-    ...sharedConfig,
     entryPoints: ['src/offscreen/offscreen.ts'],
     outfile: 'dist/offscreen/offscreen.js',
     format: 'iife',

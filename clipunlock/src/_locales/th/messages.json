@@ -826,5 +826,13 @@
         "example": "Jan 15, 2026"
       }
     }
+  },
+  "contextMenuSavePageUrl": {
+    "message": "บันทึก URL หน้า",
+    "description": "Context menu save page URL"
+  },
+  "contextMenuSaveToHistory": {
+    "message": "บันทึกในประวัติ (ไม่มีโปรเจกต์)",
+    "description": "Context menu save to history without project"
   }
 }

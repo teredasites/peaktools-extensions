@@ -826,5 +826,13 @@
         "example": "Jan 15, 2026"
       }
     }
+  },
+  "contextMenuSavePageUrl": {
+    "message": "I-save ang URL ng pahina",
+    "description": "Context menu save page URL"
+  },
+  "contextMenuSaveToHistory": {
+    "message": "I-save sa kasaysayan (walang proyekto)",
+    "description": "Context menu save to history without project"
   }
 }

@@ -822,5 +822,13 @@
         "example": "Jan 15, 2026"
       }
     }
+  },
+  "contextMenuSavePageUrl": {
+    "message": "የገጽ URL ያስቀምጡ",
+    "description": "Context menu save page URL"
+  },
+  "contextMenuSaveToHistory": {
+    "message": "ወደ ታሪክ ያስቀምጡ (ምንም ፕሮጀክት የለም)",
+    "description": "Context menu save to history without project"
   }
 }

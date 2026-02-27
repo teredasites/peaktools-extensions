@@ -826,5 +826,13 @@
         "example": "Jan 15, 2026"
       }
     }
+  },
+  "contextMenuSavePageUrl": {
+    "message": "पेज URL सेव करें",
+    "description": "Context menu save page URL"
+  },
+  "contextMenuSaveToHistory": {
+    "message": "इतिहास में सेव करें (कोई प्रोजेक्ट नहीं)",
+    "description": "Context menu save to history without project"
   }
 }

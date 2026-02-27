@@ -826,5 +826,13 @@
         "example": "Jan 15, 2026"
       }
     }
+  },
+  "contextMenuSavePageUrl": {
+    "message": "Enregistrer l'URL de la page",
+    "description": "Context menu save page URL"
+  },
+  "contextMenuSaveToHistory": {
+    "message": "Enregistrer dans l'historique (sans projet)",
+    "description": "Context menu save to history without project"
   }
 }

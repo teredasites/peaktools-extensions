@@ -822,5 +822,13 @@
         "example": "Jan 15, 2026"
       }
     }
+  },
+  "contextMenuSavePageUrl": {
+    "message": "حفظ رابط الصفحة",
+    "description": "Context menu save page URL"
+  },
+  "contextMenuSaveToHistory": {
+    "message": "حفظ في السجل (بدون مشروع)",
+    "description": "Context menu save to history without project"
   }
 }

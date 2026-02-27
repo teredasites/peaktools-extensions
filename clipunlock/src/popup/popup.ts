@@ -1,4 +1,4 @@
-import { applyI18n } from '../shared/i18n';
+import { initI18n, applyI18n, getMessage } from '../shared/i18n';
 
 // DOM Refs
 const toggleBtn = document.getElementById('toggle-btn') as HTMLButtonElement;
@@ -21,33 +21,33 @@ let currentTabId: number | null = null;
 // Helpers
 function timeAgo(timestamp: number): string {
   const seconds = Math.floor((Date.now() - timestamp) / 1000);
-  if (seconds < 60) return chrome.i18n.getMessage('timeNow') || 'now';
+  if (seconds < 60) return getMessage('timeNow') || 'now';
   const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) return chrome.i18n.getMessage('minutesAgo', [String(minutes)]) || `${minutes}m`;
+  if (minutes < 60) return getMessage('minutesAgo', [String(minutes)]) || `${minutes}m`;
   const hours = Math.floor(minutes / 60);
-  if (hours < 24) return chrome.i18n.getMessage('hoursAgo', [String(hours)]) || `${hours}h`;
+  if (hours < 24) return getMessage('hoursAgo', [String(hours)]) || `${hours}h`;
   const days = Math.floor(hours / 24);
-  return chrome.i18n.getMessage('daysAgo', [String(days)]) || `${days}d`;
+  return getMessage('daysAgo', [String(days)]) || `${days}d`;
 }
 
 function setUnlockedState(active: boolean, protections: number = 0): void {
   if (active) {
     toggleBtn.classList.add('active');
-    toggleLabel.textContent = chrome.i18n.getMessage('protectionActive') || 'Protection active';
+    toggleLabel.textContent = getMessage('protectionActive') || 'Protection active';
     statusPill.classList.remove('off');
     statusPill.classList.add('on');
-    statusText.textContent = chrome.i18n.getMessage('statusActive') || 'Active';
+    statusText.textContent = getMessage('statusActive') || 'Active';
   } else {
     toggleBtn.classList.remove('active');
-    toggleLabel.textContent = chrome.i18n.getMessage('tapToEnable') || 'Tap to enable';
+    toggleLabel.textContent = getMessage('tapToEnable') || 'Tap to enable';
     statusPill.classList.remove('on');
     statusPill.classList.add('off');
-    statusText.textContent = chrome.i18n.getMessage('statusOff') || 'Off';
+    statusText.textContent = getMessage('statusOff') || 'Off';
   }
 
   if (protections > 0) {
     protectionBadge.classList.remove('hidden');
-    protectionCount.textContent = chrome.i18n.getMessage('removed', [String(protections)]) || `${protections} removed`;
+    protectionCount.textContent = getMessage('removed', [String(protections)]) || `${protections} removed`;
   } else {
     protectionBadge.classList.add('hidden');
   }
@@ -67,7 +67,7 @@ function renderRecentItems(items: Array<{ id: string; preview: string; contentTy
   clipCount.textContent = String(list.length);
 
   if (list.length === 0) {
-    recentItemsContainer.innerHTML = `<div class="no-items">${chrome.i18n.getMessage('noRecentCopies') || 'No recent copies'}</div>`;
+    recentItemsContainer.innerHTML = `<div class="no-items">${getMessage('noRecentCopies') || 'No recent copies'}</div>`;
     return;
   }
 
@@ -197,12 +197,20 @@ openSidepanelBtn.addEventListener('click', async () => {
   }
 });
 
-openOptionsBtn.addEventListener('click', () => {
-  chrome.runtime.openOptionsPage();
+openOptionsBtn.addEventListener('click', async () => {
+  // Open sidepanel with settings modal instead of separate options page
+  try {
+    await chrome.storage.session.set({ openSettingsModal: true });
+    if (chrome.sidePanel) {
+      await chrome.sidePanel.open({ windowId: (await chrome.windows.getCurrent()).id });
+    }
+  } catch {
+    chrome.tabs.create({ url: chrome.runtime.getURL('src/sidepanel/sidepanel.html') });
+  }
 });
 
-// Apply i18n translations to static HTML elements
-applyI18n();
-
-// Initialize
-init();
+// Initialize i18n with user's language preference, apply translations, then init
+initI18n().then(() => {
+  applyI18n();
+  init();
+});

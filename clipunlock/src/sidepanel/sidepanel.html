@@ -229,7 +229,113 @@
           <label class="settings-toggle"><input type="checkbox" id="s-pdf-cleanup"><span class="settings-toggle-track"></span></label>
         </div>
 
+        <div class="settings-section-label">Site Overrides</div>
+        <div class="settings-row-hint-block">Set custom unlock modes for specific websites.</div>
+        <div id="s-overrides-list" class="s-overrides-list"></div>
+        <div class="settings-row s-override-add-row">
+          <input type="text" id="s-override-domain" class="settings-text-input" placeholder="example.com">
+          <select id="s-override-mode" class="settings-select settings-select-sm">
+            <option value="auto">Auto</option>
+            <option value="safe">Safe</option>
+            <option value="aggressive">Aggressive</option>
+            <option value="disabled">Disabled</option>
+          </select>
+          <button id="s-add-override" class="settings-add-btn">Add</button>
+        </div>
+
+        <div class="settings-section-label">Language</div>
+        <div class="settings-row">
+          <div class="settings-row-info">
+            <span class="settings-row-label">Display Language</span>
+            <span class="settings-row-hint">Restart may be needed after changing</span>
+          </div>
+          <select id="s-language" class="settings-select">
+            <option value="auto">Auto (Browser)</option>
+            <option value="ar">العربية</option>
+            <option value="bg">Български</option>
+            <option value="bn">বাংলা</option>
+            <option value="ca">Català</option>
+            <option value="cs">Čeština</option>
+            <option value="da">Dansk</option>
+            <option value="de">Deutsch</option>
+            <option value="el">Ελληνικά</option>
+            <option value="en">English</option>
+            <option value="es">Español</option>
+            <option value="et">Eesti</option>
+            <option value="fa">فارسی</option>
+            <option value="fi">Suomi</option>
+            <option value="fil">Filipino</option>
+            <option value="fr">Français</option>
+            <option value="gu">ગુજરાતી</option>
+            <option value="he">עברית</option>
+            <option value="hi">हिन्दी</option>
+            <option value="hr">Hrvatski</option>
+            <option value="hu">Magyar</option>
+            <option value="id">Bahasa Indonesia</option>
+            <option value="it">Italiano</option>
+            <option value="ja">日本語</option>
+            <option value="kn">ಕನ್ನಡ</option>
+            <option value="ko">한국어</option>
+            <option value="lt">Lietuvių</option>
+            <option value="lv">Latviešu</option>
+            <option value="ml">മലയാളം</option>
+            <option value="mr">मराठी</option>
+            <option value="ms">Bahasa Melayu</option>
+            <option value="nb">Norsk Bokmål</option>
+            <option value="nl">Nederlands</option>
+            <option value="pl">Polski</option>
+            <option value="pt_BR">Português (Brasil)</option>
+            <option value="pt_PT">Português (Portugal)</option>
+            <option value="ro">Română</option>
+            <option value="ru">Русский</option>
+            <option value="sk">Slovenčina</option>
+            <option value="sl">Slovenščina</option>
+            <option value="sr">Srpski</option>
+            <option value="sv">Svenska</option>
+            <option value="sw">Kiswahili</option>
+            <option value="ta">தமிழ்</option>
+            <option value="te">తెలుగు</option>
+            <option value="th">ไทย</option>
+            <option value="tr">Türkçe</option>
+            <option value="uk">Українська</option>
+            <option value="ur">اردو</option>
+            <option value="vi">Tiếng Việt</option>
+            <option value="zh_CN">中文 (简体)</option>
+            <option value="zh_TW">中文 (繁體)</option>
+          </select>
+        </div>
+
+        <div class="settings-section-label">Keyboard Shortcuts</div>
+        <div class="s-shortcuts-list">
+          <div class="s-shortcut-row">
+            <span class="s-shortcut-action">Toggle CopyUnlock</span>
+            <kbd class="s-shortcut-key">Alt+Shift+U</kbd>
+          </div>
+          <div class="s-shortcut-row">
+            <span class="s-shortcut-action">Open Clipboard History</span>
+            <kbd class="s-shortcut-key">Alt+Shift+C</kbd>
+          </div>
+          <div class="s-shortcut-row">
+            <span class="s-shortcut-action">Search Clipboard</span>
+            <kbd class="s-shortcut-key">Alt+Shift+S</kbd>
+          </div>
+          <div class="s-shortcut-row">
+            <span class="s-shortcut-action">Quick Paste</span>
+            <kbd class="s-shortcut-key">Ctrl+Shift+V</kbd>
+          </div>
+          <div class="s-shortcut-row s-shortcut-row-last">
+            <a href="#" id="s-configure-shortcuts" class="settings-link-btn">Configure in Chrome Settings</a>
+          </div>
+        </div>
+
         <div class="settings-section-label">Account</div>
+        <div id="s-pro-active-info" class="s-pro-active-info hidden">
+          <div class="s-pro-active-row">
+            <span class="s-pro-active-title">Pro License Active</span>
+            <span class="s-pro-active-plan">Plan: <strong id="s-pro-plan-name">—</strong> <span id="s-pro-renews-at" class="s-pro-renew-date"></span></span>
+          </div>
+          <button id="s-refresh-license" class="settings-link-btn">Refresh License</button>
+        </div>
         <div class="settings-row">
           <div class="settings-row-info">
             <span class="settings-row-label" id="s-pro-status-label">Free Plan</span>
@@ -243,8 +349,65 @@
           </div>
           <button id="s-manage-sub-btn" class="settings-manage-btn">Manage</button>
         </div>
-        <div class="settings-row settings-row-last">
-          <button id="s-full-settings" class="settings-link-btn">Open Full Settings Page</button>
+
+        <!-- Pro upgrade section (shown to free users) -->
+        <div id="s-pro-upgrade-section">
+          <div class="s-plan-cards">
+            <button class="s-plan-card" id="s-plan-monthly" data-plan="monthly">
+              <span class="s-plan-period">Monthly</span>
+              <span class="s-plan-price">$1.99<span class="s-plan-unit">/mo</span></span>
+            </button>
+            <button class="s-plan-card s-plan-popular" id="s-plan-annual" data-plan="annual">
+              <span class="s-plan-badge-tag">Best value</span>
+              <span class="s-plan-period">Annual</span>
+              <span class="s-plan-price">$19.99<span class="s-plan-unit">/yr</span></span>
+              <span class="s-plan-savings">Save 16%</span>
+            </button>
+            <button class="s-plan-card" id="s-plan-lifetime" data-plan="lifetime">
+              <span class="s-plan-period">Lifetime</span>
+              <span class="s-plan-price">$49.99</span>
+              <span class="s-plan-savings">One-time</span>
+            </button>
+          </div>
+          <div class="s-pro-legal">Powered by Stripe. Cancel anytime.</div>
+          <button id="s-refresh-license-free" class="settings-link-btn s-already-purchased">Already purchased? Refresh license</button>
+        </div>
+
+        <div class="settings-section-label">Data</div>
+        <div class="settings-row">
+          <div class="settings-row-info">
+            <span class="settings-row-label">Export Data</span>
+            <span class="settings-row-hint">Download settings + clipboard as JSON</span>
+          </div>
+          <button id="s-export-data" class="settings-manage-btn">Export</button>
+        </div>
+        <div class="settings-row">
+          <div class="settings-row-info">
+            <span class="settings-row-label">Import Data</span>
+            <span class="settings-row-hint">Restore from exported JSON file</span>
+          </div>
+          <button id="s-import-data" class="settings-manage-btn">Import</button>
+        </div>
+        <input type="file" id="s-import-file" accept=".json" style="display: none;">
+
+        <div class="settings-section-label">Statistics</div>
+        <div class="s-stats-grid">
+          <div class="s-stat-card">
+            <span class="s-stat-number" id="s-stat-unlocks">0</span>
+            <span class="s-stat-name">Unlocks</span>
+          </div>
+          <div class="s-stat-card">
+            <span class="s-stat-number" id="s-stat-copies">0</span>
+            <span class="s-stat-name">Copies</span>
+          </div>
+          <div class="s-stat-card">
+            <span class="s-stat-number" id="s-stat-watermarks">0</span>
+            <span class="s-stat-name">Watermarks</span>
+          </div>
+        </div>
+
+        <div class="settings-row settings-row-last s-version-row">
+          <span class="s-version-text">CopyUnlock v<span id="s-version">1.0.0</span></span>
         </div>
       </div>
     </div>

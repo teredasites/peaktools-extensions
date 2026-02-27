@@ -826,5 +826,13 @@
         "example": "Jan 15, 2026"
       }
     }
+  },
+  "contextMenuSavePageUrl": {
+    "message": "ಪುಟ URL ಉಳಿಸಿ",
+    "description": "Context menu save page URL"
+  },
+  "contextMenuSaveToHistory": {
+    "message": "ಇತಿಹಾಸಕ್ಕೆ ಉಳಿಸಿ (ಯಾವುದೇ ಪ್ರಾಜೆಕ್ಟ್ ಇಲ್ಲ)",
+    "description": "Context menu save to history without project"
   }
 }

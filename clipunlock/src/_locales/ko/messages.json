@@ -826,5 +826,13 @@
         "example": "Jan 15, 2026"
       }
     }
+  },
+  "contextMenuSavePageUrl": {
+    "message": "페이지 URL 저장",
+    "description": "Context menu save page URL"
+  },
+  "contextMenuSaveToHistory": {
+    "message": "기록에 저장 (프로젝트 없음)",
+    "description": "Context menu save to history without project"
   }
 }

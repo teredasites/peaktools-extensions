@@ -24,7 +24,7 @@ zip.file('manifest.json', readFileSync('manifest.json'));
 addDirToZip(zip, 'dist', 'dist');
 
 // Add HTML/CSS from src
-const uiDirs = ['popup', 'sidepanel', 'options', 'offscreen'];
+const uiDirs = ['popup', 'sidepanel', 'offscreen'];
 for (const dir of uiDirs) {
   const srcDir = path.join('src', dir);
   if (!existsSync(srcDir)) continue;

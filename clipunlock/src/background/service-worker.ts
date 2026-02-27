@@ -10,6 +10,55 @@ import { createLogger } from '../shared/logger';
 
 const log = createLogger('service-worker');
 
+// ─── Service Worker i18n — custom locale support for context menus ───
+type SWMessageEntry = { message: string; placeholders?: Record<string, { content: string }> };
+let swCustomMessages: Record<string, SWMessageEntry> | null = null;
+
+/** Get translated string using custom locale or fallback to chrome.i18n */
+function swGetMessage(key: string, subs?: string[]): string {
+  if (swCustomMessages) {
+    const entry = swCustomMessages[key];
+    if (entry) {
+      let msg = entry.message;
+      const s = subs || [];
+      for (let i = 0; i < s.length; i++) {
+        msg = msg.replace(new RegExp(`\\$${i + 1}`, 'g'), s[i]);
+      }
+      if (entry.placeholders) {
+        for (const [name, ph] of Object.entries(entry.placeholders)) {
+          let resolved = ph.content;
+          const m = resolved.match(/^\$(\d+)$/);
+          if (m) resolved = s[parseInt(m[1], 10) - 1] ?? resolved;
+          msg = msg.replace(new RegExp(`\\$${name}\\$`, 'gi'), resolved);
+        }
+      }
+      return msg;
+    }
+  }
+  return '';
+}
+
+/** Load custom locale messages for service worker context menus */
+async function swLoadLocale(): Promise<void> {
+  try {
+    const result = await chrome.storage.sync.get('copyunlock_language');
+    const locale = result.copyunlock_language || 'auto';
+    if (locale === 'auto') {
+      swCustomMessages = null;
+      return;
+    }
+    const url = chrome.runtime.getURL(`_locales/${locale}/messages.json`);
+    const resp = await fetch(url);
+    if (resp.ok) {
+      swCustomMessages = await resp.json();
+    } else {
+      swCustomMessages = null;
+    }
+  } catch {
+    swCustomMessages = null;
+  }
+}
+
 let proStatus: ProStatus = { isPro: false, trialActive: false, trialDaysLeft: 0 };
 
 // License readiness gate — all Pro-dependent code awaits this before responding
@@ -308,6 +357,10 @@ function setupContextMenus(): void {
   activeCollectionMenuIds = [];
   collectionRefreshInProgress = false;
   collectionRefreshQueued = false;
+
+  // Helper: get translated context menu title with fallback
+  const t = (key: string, fallback: string): string => swGetMessage(key) || chrome.i18n.getMessage(key) || fallback;
+
   chrome.contextMenus.removeAll(() => {
     // ── Parent menu ──
     chrome.contextMenus.create({
@@ -320,7 +373,7 @@ function setupContextMenus(): void {
     chrome.contextMenus.create({
       id: CTX.TOGGLE,
       parentId: CTX.ROOT,
-      title: '\u{1F513} Unlock Page',
+      title: '\u{1F513} ' + t('contextMenuUnlock', 'Unlock Page'),
       contexts: ['page', 'frame', 'selection', 'editable', 'image', 'video', 'audio'],
     });
 
@@ -331,19 +384,18 @@ function setupContextMenus(): void {
       contexts: ['page', 'frame', 'selection', 'editable', 'image', 'video', 'audio'],
     });
 
-    // ── Copy actions (selection only) ──
     // ── Copy & Save (selection only) ──
     chrome.contextMenus.create({
       id: CTX.COPY,
       parentId: CTX.ROOT,
-      title: 'Copy & Save',
+      title: t('contextMenuCopy', 'Copy & Save'),
       contexts: ['selection'],
     });
 
     chrome.contextMenus.create({
       id: CTX.PIN,
       parentId: CTX.ROOT,
-      title: '\u{1F4CC} Pin Selection',
+      title: '\u{1F4CC} ' + t('contextMenuPin', 'Pin Selection'),
       contexts: ['selection'],
     });
 
@@ -358,21 +410,21 @@ function setupContextMenus(): void {
     chrome.contextMenus.create({
       id: CTX.COLLECTION_PARENT,
       parentId: CTX.ROOT,
-      title: '\u{1F4C1} Save to Project',
+      title: '\u{1F4C1} ' + t('contextMenuSaveCollection', 'Save to Project'),
       contexts: ['page', 'frame', 'selection'],
     });
 
     chrome.contextMenus.create({
       id: CTX.COLLECTION_NONE,
       parentId: CTX.COLLECTION_PARENT,
-      title: 'Save to History (no project)',
+      title: t('contextMenuSaveToHistory', 'Save to History (no project)'),
       contexts: ['page', 'frame', 'selection'],
     });
 
     chrome.contextMenus.create({
       id: CTX.COLLECTION_NEW,
       parentId: CTX.COLLECTION_PARENT,
-      title: '+ New Project...',
+      title: t('contextMenuNewCollection', '+ New Project...'),
       contexts: ['page', 'frame', 'selection'],
     });
 
@@ -380,7 +432,7 @@ function setupContextMenus(): void {
     chrome.contextMenus.create({
       id: CTX.SAVE_PAGE_URL,
       parentId: CTX.ROOT,
-      title: '\u{1F517} Save Page URL',
+      title: '\u{1F517} ' + t('contextMenuSavePageUrl', 'Save Page URL'),
       contexts: ['page', 'frame'],
     });
 
@@ -395,14 +447,14 @@ function setupContextMenus(): void {
     chrome.contextMenus.create({
       id: CTX.MODE_PARENT,
       parentId: CTX.ROOT,
-      title: 'Mode',
+      title: t('contextMenuMode', 'Mode'),
       contexts: ['page', 'frame', 'editable', 'image', 'video', 'audio'],
     });
 
     chrome.contextMenus.create({
       id: CTX.MODE_AUTO,
       parentId: CTX.MODE_PARENT,
-      title: 'Auto',
+      title: t('modeAuto', 'Auto'),
       type: 'radio',
       checked: contextMenuMode === 'auto',
       contexts: ['page', 'frame', 'editable', 'image', 'video', 'audio'],
@@ -411,7 +463,7 @@ function setupContextMenus(): void {
     chrome.contextMenus.create({
       id: CTX.MODE_SAFE,
       parentId: CTX.MODE_PARENT,
-      title: 'Safe',
+      title: t('modeSafe', 'Safe'),
       type: 'radio',
       checked: contextMenuMode === 'safe',
       contexts: ['page', 'frame', 'editable', 'image', 'video', 'audio'],
@@ -420,7 +472,7 @@ function setupContextMenus(): void {
     chrome.contextMenus.create({
       id: CTX.MODE_AGGRESSIVE,
       parentId: CTX.MODE_PARENT,
-      title: 'Aggressive',
+      title: t('modeAggressive', 'Aggressive'),
       type: 'radio',
       checked: contextMenuMode === 'aggressive',
       contexts: ['page', 'frame', 'editable', 'image', 'video', 'audio'],
@@ -437,14 +489,14 @@ function setupContextMenus(): void {
     chrome.contextMenus.create({
       id: CTX.CLIPBOARD_HISTORY,
       parentId: CTX.ROOT,
-      title: 'Clipboard History',
+      title: t('contextMenuClipboardHistory', 'Clipboard History'),
       contexts: ['page', 'frame', 'editable', 'image', 'video', 'audio'],
     });
 
     chrome.contextMenus.create({
       id: CTX.QUICK_PASTE,
       parentId: CTX.ROOT,
-      title: 'Quick Paste',
+      title: t('contextMenuQuickPaste', 'Quick Paste'),
       contexts: ['page', 'frame', 'editable'],
     });
 
@@ -458,7 +510,7 @@ function setupContextMenus(): void {
     chrome.contextMenus.create({
       id: CTX.SETTINGS,
       parentId: CTX.ROOT,
-      title: 'Settings',
+      title: t('contextMenuSettings', 'Settings'),
       contexts: ['page', 'frame', 'selection', 'editable', 'image', 'video', 'audio'],
     });
 
@@ -1217,6 +1269,20 @@ onMessage((msg: Message, sender, sendResponse) => {
       }).catch(() => sendResponse(proStatus));
       return true;
     }
+    case 'LANGUAGE_CHANGED': {
+      // User changed language — reload locale and rebuild context menus
+      const { locale: newLocale } = payload as { locale: string };
+      (async () => {
+        if (newLocale === 'auto') {
+          swCustomMessages = null;
+        } else {
+          await swLoadLocale();
+        }
+        setupContextMenus();
+        sendResponse({ ok: true });
+      })().catch(() => sendResponse({ ok: false }));
+      return true;
+    }
     case 'OPEN_SIDEPANEL': {
       if (tabId > 0) {
         chrome.sidePanel.open({ tabId }).catch(() => {});
@@ -1418,6 +1484,7 @@ chrome.tabs.onActivated.addListener(async (activeInfo) => {
 
 chrome.runtime.onInstalled.addListener(async (details) => {
   log.info(`installed: ${details.reason}`);
+  await swLoadLocale();
   const settings = await getSettings();
   contextMenuMode = settings.defaultMode;
   if (settings.contextMenuEnabled !== false) {
@@ -1433,6 +1500,7 @@ chrome.runtime.onInstalled.addListener(async (details) => {
 
 chrome.runtime.onStartup.addListener(async () => {
   log.info('startup');
+  await swLoadLocale();
   const settings = await getSettings();
   contextMenuMode = settings.defaultMode;
   if (settings.contextMenuEnabled !== false) {

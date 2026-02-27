@@ -1,4 +1,4 @@
-import { applyI18n } from '../shared/i18n';
+import { initI18n, applyI18n, getMessage } from '../shared/i18n';
 
 // Types — match ClipboardEntry from shared/types.ts
 interface ClipItem {
@@ -129,6 +129,40 @@ const sUpgradeBtn = document.getElementById('s-upgrade-btn') as HTMLButtonElemen
 const sFullSettings = document.getElementById('s-full-settings') as HTMLButtonElement;
 const sManageRow = document.getElementById('s-manage-row') as HTMLDivElement;
 const sManageSubBtn = document.getElementById('s-manage-sub-btn') as HTMLButtonElement;
+
+// Site overrides refs
+const sOverridesList = document.getElementById('s-overrides-list') as HTMLDivElement;
+const sOverrideDomain = document.getElementById('s-override-domain') as HTMLInputElement;
+const sOverrideMode = document.getElementById('s-override-mode') as HTMLSelectElement;
+const sAddOverride = document.getElementById('s-add-override') as HTMLButtonElement;
+
+// Language selector ref
+const sLanguage = document.getElementById('s-language') as HTMLSelectElement;
+
+// Keyboard shortcuts
+const sConfigureShortcuts = document.getElementById('s-configure-shortcuts') as HTMLAnchorElement;
+
+// Pro details refs
+const sProActiveInfo = document.getElementById('s-pro-active-info') as HTMLDivElement;
+const sProPlanName = document.getElementById('s-pro-plan-name') as HTMLElement;
+const sProRenewsAt = document.getElementById('s-pro-renews-at') as HTMLSpanElement;
+const sRefreshLicense = document.getElementById('s-refresh-license') as HTMLButtonElement;
+const sRefreshLicenseFree = document.getElementById('s-refresh-license-free') as HTMLButtonElement;
+const sProUpgradeSection = document.getElementById('s-pro-upgrade-section') as HTMLDivElement;
+const sPlanCards = document.querySelectorAll('.s-plan-card') as NodeListOf<HTMLButtonElement>;
+
+// Export/Import refs
+const sExportData = document.getElementById('s-export-data') as HTMLButtonElement;
+const sImportData = document.getElementById('s-import-data') as HTMLButtonElement;
+const sImportFile = document.getElementById('s-import-file') as HTMLInputElement;
+
+// Stats refs
+const sStatUnlocks = document.getElementById('s-stat-unlocks') as HTMLSpanElement;
+const sStatCopies = document.getElementById('s-stat-copies') as HTMLSpanElement;
+const sStatWatermarks = document.getElementById('s-stat-watermarks') as HTMLSpanElement;
+
+// Version ref
+const sVersion = document.getElementById('s-version') as HTMLSpanElement;
 
 // Clear data modal refs
 const clearOverlay = document.getElementById('clear-overlay') as HTMLDivElement;
@@ -297,14 +331,14 @@ function getEmptyStateMessage(): { icon: string; text: string; hint: string } {
     case 'pinned':
       return {
         icon: '&#128204;',
-        text: chrome.i18n.getMessage('emptyPinnedText') || 'No pinned items',
-        hint: chrome.i18n.getMessage('emptyPinnedHint') || 'Open any item and click Pin to keep it at the top.',
+        text: getMessage('emptyPinnedText') || 'No pinned items',
+        hint: getMessage('emptyPinnedHint') || 'Open any item and click Pin to keep it at the top.',
       };
     default:
       return {
         icon: '&#128203;',
-        text: chrome.i18n.getMessage('noHistory') || 'No clipboard items',
-        hint: chrome.i18n.getMessage('emptyDefaultHint') || 'Copy anything on the web — it shows up here automatically.',
+        text: getMessage('noHistory') || 'No clipboard items',
+        hint: getMessage('emptyDefaultHint') || 'Copy anything on the web — it shows up here automatically.',
       };
   }
 }
@@ -380,7 +414,7 @@ function renderDefaultItem(item: ClipItem, globalIdx: number, coll: CollectionIt
       </div>
       <div class="meta">
         <span class="time">${timeAgo(item.timestamp)}</span>
-        ${item.wordCount ? `<span class="word-count">${chrome.i18n.getMessage('words', [String(item.wordCount)]) || item.wordCount + ' words'}</span>` : ''}
+        ${item.wordCount ? `<span class="word-count">${getMessage('words', [String(item.wordCount)]) || item.wordCount + ' words'}</span>` : ''}
       </div>
     </div>
   `;
@@ -398,7 +432,7 @@ function renderList(): void {
         <div class="empty-hint">${empty.hint}</div>
       </div>
     `;
-    itemCountEl.textContent = chrome.i18n.getMessage('items', ['0']) || '0 items';
+    itemCountEl.textContent = getMessage('items', ['0']) || '0 items';
     return;
   }
 
@@ -470,7 +504,7 @@ function renderList(): void {
     </div>
   `;
 
-  itemCountEl.textContent = chrome.i18n.getMessage('items', [String(filteredItems.length)]) || `${filteredItems.length} items`;
+  itemCountEl.textContent = getMessage('items', [String(filteredItems.length)]) || `${filteredItems.length} items`;
 
   // Click handlers
   clipList.querySelectorAll('.clip-item').forEach((el) => {
@@ -775,7 +809,7 @@ function openDetail(index: number): void {
     `;
   } else {
     detailMeta.innerHTML = `
-      <div>${item.contentType} &bull; ${timeAgo(item.timestamp)} &bull; ${chrome.i18n.getMessage('words', [String(item.wordCount || 0)]) || (item.wordCount || 0) + ' words'}${item.pdfCleaned ? ' &bull; PDF cleaned' : ''}</div>
+      <div>${item.contentType} &bull; ${timeAgo(item.timestamp)} &bull; ${getMessage('words', [String(item.wordCount || 0)]) || (item.wordCount || 0) + ' words'}${item.pdfCleaned ? ' &bull; PDF cleaned' : ''}</div>
       ${sourceLink ? `<div>Source: ${sourceLink}</div>` : ''}
     `;
   }
@@ -816,8 +850,8 @@ function openDetail(index: number): void {
     .map((tag) => `<span class="detail-tag">${escapeHtml(tag)}</span>`)
     .join('');
   detailPin.textContent = item.pinned
-    ? (chrome.i18n.getMessage('unpin') || 'Unpin')
-    : (chrome.i18n.getMessage('pin') || 'Pin');
+    ? (getMessage('unpin') || 'Unpin')
+    : (getMessage('pin') || 'Pin');
 
   detailPanel.classList.remove('hidden');
 }
@@ -997,9 +1031,9 @@ detailCopy.addEventListener('click', async () => {
     } else {
       await chrome.runtime.sendMessage({ type: 'COPY_ITEM', payload: { id: item.id } });
     }
-    detailCopy.textContent = chrome.i18n.getMessage('copied') || 'Copied!';
+    detailCopy.textContent = getMessage('copied') || 'Copied!';
     setTimeout(() => {
-      detailCopy.textContent = chrome.i18n.getMessage('copy') || 'Copy';
+      detailCopy.textContent = getMessage('copy') || 'Copy';
     }, 1500);
   } catch { /* */ }
 });
@@ -1031,8 +1065,8 @@ detailPin.addEventListener('click', async () => {
     }
     item.pinned = !item.pinned;
     detailPin.textContent = item.pinned
-      ? (chrome.i18n.getMessage('unpin') || 'Unpin')
-      : (chrome.i18n.getMessage('pin') || 'Pin');
+      ? (getMessage('unpin') || 'Unpin')
+      : (getMessage('pin') || 'Pin');
     renderList();
   } catch { /* */ }
 });
@@ -1127,13 +1161,13 @@ clipList.addEventListener('scroll', () => {
 // Helpers
 function timeAgo(timestamp: number): string {
   const seconds = Math.floor((Date.now() - timestamp) / 1000);
-  if (seconds < 60) return chrome.i18n.getMessage('justNow') || 'Just now';
+  if (seconds < 60) return getMessage('justNow') || 'Just now';
   const minutes = Math.floor(seconds / 60);
-  if (minutes < 60) return chrome.i18n.getMessage('minutesAgo', [String(minutes)]) || `${minutes}m ago`;
+  if (minutes < 60) return getMessage('minutesAgo', [String(minutes)]) || `${minutes}m ago`;
   const hours = Math.floor(minutes / 60);
-  if (hours < 24) return chrome.i18n.getMessage('hoursAgo', [String(hours)]) || `${hours}h ago`;
+  if (hours < 24) return getMessage('hoursAgo', [String(hours)]) || `${hours}h ago`;
   const days = Math.floor(hours / 24);
-  return chrome.i18n.getMessage('daysAgo', [String(days)]) || `${days}d ago`;
+  return getMessage('daysAgo', [String(days)]) || `${days}d ago`;
 }
 
 function escapeHtml(str: string): string {
@@ -1201,9 +1235,9 @@ detailCopyCitation.addEventListener('click', async () => {
       type: 'PASTE_ITEM',
       payload: { id: item.id, format: 'with-citation' },
     });
-    detailCopyCitation.textContent = chrome.i18n.getMessage('copied') || 'Copied!';
+    detailCopyCitation.textContent = getMessage('copied') || 'Copied!';
     setTimeout(() => {
-      detailCopyCitation.textContent = chrome.i18n.getMessage('cite') || '+ Cite';
+      detailCopyCitation.textContent = getMessage('cite') || '+ Cite';
     }, 1500);
   } catch { /* */ }
 });
@@ -1302,7 +1336,7 @@ addSaveBtn.addEventListener('click', async () => {
   const content = addInput.value.trim();
   if (!content) return;
 
-  addSaveBtn.textContent = chrome.i18n.getMessage('saving') || 'Saving...';
+  addSaveBtn.textContent = getMessage('saving') || 'Saving...';
   addSaveBtn.disabled = true;
 
   const chosenType = addTypeSelect.value !== 'auto' ? addTypeSelect.value : undefined;
@@ -1325,7 +1359,7 @@ addSaveBtn.addEventListener('click', async () => {
     loadItems();
   } catch { /* */ }
 
-  addSaveBtn.textContent = chrome.i18n.getMessage('save') || 'Save';
+  addSaveBtn.textContent = getMessage('save') || 'Save';
   addSaveBtn.disabled = false;
 });
 
@@ -1829,6 +1863,37 @@ detailNewProject.addEventListener('click', () => { tryOpenNewProject(); });
 // ─── Settings Modal ───
 
 let settingsIsPro = false;
+let settingsOverrides: Record<string, { enabled: boolean; mode: string }> = {};
+
+function escapeHtmlSettings(str: string): string {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function renderSettingsOverrides(): void {
+  const domains = Object.keys(settingsOverrides);
+  if (domains.length === 0) {
+    sOverridesList.innerHTML = '<div class="s-no-overrides">No site overrides configured.</div>';
+    return;
+  }
+  sOverridesList.innerHTML = domains.map((domain) => `
+    <div class="s-override-row">
+      <span class="s-override-domain">${escapeHtmlSettings(domain)}</span>
+      <span class="s-override-mode">${settingsOverrides[domain].mode}</span>
+      <button class="s-override-remove" data-domain="${escapeHtmlSettings(domain)}" aria-label="Remove">&times;</button>
+    </div>
+  `).join('');
+
+  sOverridesList.querySelectorAll('.s-override-remove').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const domain = (btn as HTMLElement).dataset.domain || '';
+      delete settingsOverrides[domain];
+      saveSettingsWithOverrides();
+      renderSettingsOverrides();
+    });
+  });
+}
 
 function applyProStatusToSettings(isPro: boolean): void {
   settingsIsPro = isPro;
@@ -1836,6 +1901,8 @@ function applyProStatusToSettings(isPro: boolean): void {
     sProStatusLabel.textContent = 'Pro Plan Active';
     sUpgradeBtn.classList.add('hidden');
     if (sManageRow) sManageRow.classList.remove('hidden');
+    if (sProActiveInfo) sProActiveInfo.classList.remove('hidden');
+    if (sProUpgradeSection) sProUpgradeSection.classList.add('hidden');
     sMaxItems.max = '100000';
     sRetention.max = '3650';
     sPdfCleanup.disabled = false;
@@ -1845,6 +1912,8 @@ function applyProStatusToSettings(isPro: boolean): void {
     sProStatusLabel.textContent = 'Free Plan';
     sUpgradeBtn.classList.remove('hidden');
     if (sManageRow) sManageRow.classList.add('hidden');
+    if (sProActiveInfo) sProActiveInfo.classList.add('hidden');
+    if (sProUpgradeSection) sProUpgradeSection.classList.remove('hidden');
     sMaxItems.max = '500';
     sRetention.max = '30';
     if (parseInt(sMaxItems.value, 10) > 500) sMaxItems.value = '500';
@@ -1857,6 +1926,32 @@ function applyProStatusToSettings(isPro: boolean): void {
   }
 }
 
+async function loadSettingsStats(): Promise<void> {
+  try {
+    const result = await chrome.storage.local.get('copyunlock_stats');
+    const stats = result.copyunlock_stats || { totalUnlocks: 0, totalCopies: 0, totalWatermarks: 0 };
+    if (sStatUnlocks) sStatUnlocks.textContent = String(stats.totalUnlocks);
+    if (sStatCopies) sStatCopies.textContent = String(stats.totalCopies);
+    if (sStatWatermarks) sStatWatermarks.textContent = String(stats.totalWatermarks);
+  } catch { /* zeros */ }
+}
+
+async function loadProDetails(): Promise<void> {
+  try {
+    const cache = await chrome.storage.local.get('copyunlock_license_cache');
+    const cached = cache['copyunlock_license_cache'];
+    if (cached?.plan && sProPlanName) {
+      sProPlanName.textContent = cached.plan.charAt(0).toUpperCase() + cached.plan.slice(1);
+    }
+    if (cached?.expiresAt && sProRenewsAt) {
+      const renewDate = new Date(cached.expiresAt);
+      if (!isNaN(renewDate.getTime())) {
+        sProRenewsAt.textContent = `Renews ${renewDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}`;
+      }
+    }
+  } catch { /* */ }
+}
+
 async function openSettingsModal(): Promise<void> {
   // Dismiss any open context menu first
   dismissContextMenu();
@@ -1864,6 +1959,12 @@ async function openSettingsModal(): Promise<void> {
   // Use last-known pro status as initial state (updated async below)
   applyProStatusToSettings(_cachedIsPro === true);
   settingsOverlay.classList.remove('hidden');
+
+  // Set version
+  try {
+    const manifest = chrome.runtime.getManifest();
+    if (sVersion) sVersion.textContent = manifest.version;
+  } catch { /* */ }
 
   // Load settings from storage (non-blocking — overlay is already visible)
   try {
@@ -1880,9 +1981,22 @@ async function openSettingsModal(): Promise<void> {
     sCitation.value = s.autoCitation || 'url';
     sPasteFormat.value = s.defaultPasteFormat || 'plain';
     sPdfCleanup.checked = s.pdfCleanup || false;
+    // Load site overrides
+    settingsOverrides = s.siteOverrides || {};
+    renderSettingsOverrides();
     // Re-apply pro constraints after loading settings (max values may need clamping)
     applyProStatusToSettings(settingsIsPro);
   } catch { /* use defaults */ }
+
+  // Load language preference
+  try {
+    const langResult = await chrome.storage.sync.get('copyunlock_language');
+    if (sLanguage) sLanguage.value = langResult.copyunlock_language || 'auto';
+  } catch { /* */ }
+
+  // Load stats
+  loadSettingsStats();
+  loadProDetails();
 
   // Async update pro status with 3s timeout — if it takes longer, cached status stands
   try {
@@ -1890,6 +2004,7 @@ async function openSettingsModal(): Promise<void> {
     const timeoutPromise = new Promise<boolean>((_, reject) => setTimeout(() => reject(new Error('timeout')), 3000));
     const isPro = await Promise.race([proPromise, timeoutPromise]);
     applyProStatusToSettings(isPro);
+    if (isPro) loadProDetails();
   } catch {
     // Timeout or error — keep whatever status we already applied
   }
@@ -1912,10 +2027,15 @@ async function saveSettings(): Promise<void> {
     autoCitation: sCitation.value,
     defaultPasteFormat: sPasteFormat.value,
     pdfCleanup: sPdfCleanup.checked,
+    siteOverrides: settingsOverrides,
   };
   try {
     await chrome.runtime.sendMessage({ type: 'UPDATE_SETTINGS', payload: updated });
   } catch { /* */ }
+}
+
+async function saveSettingsWithOverrides(): Promise<void> {
+  await saveSettings();
 }
 
 // Auto-save on every change
@@ -1962,9 +2082,115 @@ if (sManageSubBtn) {
   });
 }
 
-sFullSettings.addEventListener('click', () => {
-  chrome.runtime.openOptionsPage();
-  closeSettingsModal();
+// ─── Site Overrides ───
+sAddOverride.addEventListener('click', () => {
+  const domain = sOverrideDomain.value.trim();
+  const mode = sOverrideMode.value;
+  if (!domain) return;
+  settingsOverrides[domain] = { enabled: mode !== 'disabled', mode: mode === 'disabled' ? 'auto' : mode };
+  sOverrideDomain.value = '';
+  saveSettingsWithOverrides();
+  renderSettingsOverrides();
+});
+
+// ─── Language Selector ───
+if (sLanguage) {
+  sLanguage.addEventListener('change', async () => {
+    const lang = sLanguage.value;
+    try {
+      await chrome.storage.sync.set({ copyunlock_language: lang });
+    } catch { /* */ }
+    // Re-initialize i18n with new locale and re-apply ALL translations
+    await initI18n(lang);
+    applyI18n();
+    // Notify service worker to rebuild context menus with new locale
+    try {
+      await chrome.runtime.sendMessage({ type: 'LANGUAGE_CHANGED', payload: { locale: lang } });
+    } catch { /* */ }
+  });
+}
+
+// ─── Keyboard Shortcuts Link ───
+if (sConfigureShortcuts) {
+  sConfigureShortcuts.addEventListener('click', (e) => {
+    e.preventDefault();
+    chrome.tabs.create({ url: 'chrome://extensions/shortcuts' });
+  });
+}
+
+// ─── Plan Card Checkout Buttons ───
+sPlanCards.forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const plan = btn.dataset.plan || 'monthly';
+    btn.style.opacity = '0.6';
+    btn.style.pointerEvents = 'none';
+    chrome.runtime.sendMessage({ type: 'OPEN_CHECKOUT', payload: { plan } }).then(() => {
+      setTimeout(() => {
+        btn.style.opacity = '';
+        btn.style.pointerEvents = '';
+      }, 3000);
+    });
+  });
+});
+
+// ─── Refresh License Buttons ───
+function handleRefreshLicenseSettings(): void {
+  showUpgradeBanner('Checking license...');
+  chrome.runtime.sendMessage({ type: 'CHECK_LICENSE', payload: {} }).then((result) => {
+    if (result?.isPro) {
+      showUpgradeBanner('Pro license verified!');
+      applyProStatusToSettings(true);
+      loadProDetails();
+    } else {
+      showUpgradeBanner('No active license found.');
+    }
+  }).catch(() => {
+    showUpgradeBanner('License check failed.');
+  });
+}
+
+if (sRefreshLicense) sRefreshLicense.addEventListener('click', handleRefreshLicenseSettings);
+if (sRefreshLicenseFree) sRefreshLicenseFree.addEventListener('click', handleRefreshLicenseSettings);
+
+// ─── Export Data ───
+sExportData.addEventListener('click', async () => {
+  try {
+    const syncData = await chrome.storage.sync.get(null);
+    const localData = await chrome.storage.local.get(null);
+    const exportPayload = { sync: syncData, local: localData, exportedAt: Date.now() };
+    const blob = new Blob([JSON.stringify(exportPayload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `copyunlock-export-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showUpgradeBanner('Data exported successfully.');
+  } catch {
+    showUpgradeBanner('Export failed.');
+  }
+});
+
+// ─── Import Data ───
+sImportData.addEventListener('click', () => {
+  sImportFile.click();
+});
+
+sImportFile.addEventListener('change', async () => {
+  const file = sImportFile.files?.[0];
+  if (!file) return;
+  try {
+    const text = await file.text();
+    const data = JSON.parse(text);
+    if (data.sync) await chrome.storage.sync.set(data.sync);
+    if (data.local) await chrome.storage.local.set(data.local);
+    showUpgradeBanner('Data imported successfully. Reloading settings...');
+    // Reload settings modal
+    setTimeout(() => openSettingsModal(), 500);
+  } catch {
+    showUpgradeBanner('Import failed — invalid file.');
+  }
+  sImportFile.value = '';
 });
 
 // Check for pending settings modal open (from right-click menu "Settings")
@@ -2022,8 +2248,8 @@ refreshInterval = setInterval(() => {
   loadCollections();
 }, 10_000);
 
-// Apply i18n translations to static HTML elements
-applyI18n();
+// Initialize i18n with user's language preference, then apply translations
+initI18n().then(() => applyI18n());
 
 // Check for pending project creation (from right-click "New Project") — fallback for when sidepanel wasn't open
 async function checkPendingProjectCreation(): Promise<void> {
