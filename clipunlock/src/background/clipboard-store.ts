@@ -125,6 +125,25 @@ function wordCount(text: string): number {
   return text.trim().split(/\s+/).filter(Boolean).length;
 }
 
+// Cache project domain mappings to avoid getAll on every clipboard add
+let _domainCacheTTL = 0;
+let _domainCache: { id: string; domains: string[] }[] = [];
+
+function invalidateDomainCache(): void {
+  _domainCacheTTL = 0;
+}
+
+async function getProjectDomainMap(database: IDBPDatabase): Promise<{ id: string; domains: string[] }[]> {
+  const now = Date.now();
+  if (now < _domainCacheTTL) return _domainCache;
+  const allCols = await database.getAll(IDB_STORE_COLLECTIONS) as Collection[];
+  _domainCache = allCols
+    .filter((c) => c.isProject && c.autoCaptureDomains.length > 0)
+    .map((c) => ({ id: c.id, domains: c.autoCaptureDomains }));
+  _domainCacheTTL = now + 10_000; // 10s TTL
+  return _domainCache;
+}
+
 export async function addClipboardItem(params: {
   content: string;
   html: string | null;
@@ -137,18 +156,17 @@ export async function addClipboardItem(params: {
   contentTypeOverride?: string;
 }, proStatus: ProStatus): Promise<{ entry: ClipboardEntry; limitWarning: string | null } | null> {
   const { content, html, sourceUrl, sourceTitle, wasUnlocked, watermarkStripped, citation, pdfCleaned, contentTypeOverride } = params;
-  if (new Blob([content]).size > MAX_ITEM_SIZE_BYTES) {
+  if (content.length * 2 > MAX_ITEM_SIZE_BYTES) {
     log.warn('clipboard item too large, skipping');
     return null;
   }
   const database = await getDB();
-  const tx = database.transaction(IDB_STORE_CLIPS, 'readonly');
-  const index = tx.store.index('timestamp');
+
+  // Dedup check — single cursor read
   const now = Date.now();
-  const cursor = index.openCursor(IDBKeyRange.lowerBound(now - DEDUP_WINDOW_MS), 'prev');
-  const recent = await cursor;
+  const tx = database.transaction(IDB_STORE_CLIPS, 'readonly');
+  const recent = await tx.store.index('timestamp').openCursor(IDBKeyRange.lowerBound(now - DEDUP_WINDOW_MS), 'prev');
   if (recent && (recent.value as ClipboardEntry).content === content) {
-    log.debug('dedup: identical content within window');
     return null;
   }
 
@@ -159,6 +177,7 @@ export async function addClipboardItem(params: {
     sourceDomain = sourceUrl;
   }
 
+  // Build entry synchronously — all CPU work, no DB
   const entry: ClipboardEntry = {
     id: generateId(),
     content,
@@ -181,18 +200,17 @@ export async function addClipboardItem(params: {
     citation: citation ?? null,
     pdfCleaned: pdfCleaned ?? false,
   };
-  // Auto-capture: if no explicit collection, check project domains
-  if (!entry.collection && entry.sourceDomain) {
-    const collections = await database.getAll(IDB_STORE_COLLECTIONS) as Collection[];
-    const match = collections.find(
-      (c) => c.isProject && c.autoCaptureDomains.length > 0 &&
-        c.autoCaptureDomains.some((d) => entry.sourceDomain.includes(d))
-    );
+
+  // Auto-capture: check cached project domains (avoids getAll on every add)
+  if (sourceDomain) {
+    const projectDomains = await getProjectDomainMap(database);
+    const match = projectDomains.find((p) => p.domains.some((d) => sourceDomain.includes(d)));
     if (match) {
       entry.collection = match.id;
     }
   }
 
+  // Count + evict + put in one flow
   const maxItems = proStatus.isPro ? PRO_MAX_ITEMS : FREE_MAX_ITEMS;
   const count = await database.count(IDB_STORE_CLIPS);
   let limitWarning: string | null = null;
@@ -204,7 +222,7 @@ export async function addClipboardItem(params: {
   }
   await database.put(IDB_STORE_CLIPS, entry);
 
-  // Update project item count if auto-captured
+  // Update project item count if auto-captured (lightweight single-key read+write)
   if (entry.collection) {
     await recalcCollectionCount(database, entry.collection);
   }
@@ -314,6 +332,7 @@ export async function clearSelective(options: { history: boolean; pinned: boolea
     const clipCount = await database.count(IDB_STORE_CLIPS);
     await database.clear(IDB_STORE_CLIPS);
     await database.clear(IDB_STORE_COLLECTIONS);
+    invalidateDomainCache();
     deleted = clipCount;
     log.info('cleared all data (history + pinned + projects)');
     return { deleted };
@@ -326,7 +345,7 @@ export async function clearSelective(options: { history: boolean; pinned: boolea
     let cur0 = await tx0.store.openCursor();
     while (cur0) {
       const entry = cur0.value as ClipboardEntry;
-      if (entry.collectionId) {
+      if (entry.collection) {
         await cur0.delete();
         deleted++;
       }
@@ -335,6 +354,7 @@ export async function clearSelective(options: { history: boolean; pinned: boolea
     await tx0.done;
     // Then remove the collection records
     await database.clear(IDB_STORE_COLLECTIONS);
+    invalidateDomainCache();
     log.info('cleared all projects/collections');
   }
 
@@ -345,7 +365,7 @@ export async function clearSelective(options: { history: boolean; pinned: boolea
     while (cursor) {
       const entry = cursor.value as ClipboardEntry;
       const isPinned = !!entry.pinned;
-      const hasCollection = !!entry.collectionId;
+      const hasCollection = !!entry.collection;
 
       let shouldDelete = false;
 
@@ -514,6 +534,7 @@ export async function deleteCollection(collectionId: string): Promise<void> {
   await tx.done;
 
   await database.delete(IDB_STORE_COLLECTIONS, collectionId);
+  invalidateDomainCache();
   log.info(`deleted collection: ${collectionId}`);
 }
 
@@ -639,6 +660,7 @@ export async function createProject(
     description: description.trim(),
   };
   await database.put(IDB_STORE_COLLECTIONS, project);
+  invalidateDomainCache();
   log.info(`created project: ${project.id} "${project.name}" domains=[${project.autoCaptureDomains}]`);
   return { ok: true, collection: project };
 }
@@ -669,6 +691,7 @@ export async function updateProject(
     project.color = updates.color;
   }
   await database.put(IDB_STORE_COLLECTIONS, project);
+  invalidateDomainCache();
   log.info(`updated project: ${project.id}`);
   return { ok: true };
 }

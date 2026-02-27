@@ -845,11 +845,11 @@ async function loadItems(): Promise<void> {
   try {
     const response = await chrome.runtime.sendMessage({
       type: 'GET_CLIPBOARD_HISTORY',
-      payload: { limit: 5000 },
+      payload: { limit: 500 },
     });
     allItems = Array.isArray(response) ? response : [];
 
-    // Check capacity for free-tier upgrade prompt
+    // Check capacity for free-tier upgrade prompt (uses cached pro status)
     checkCapacityWarning();
 
     applyFilter();
@@ -859,14 +859,30 @@ async function loadItems(): Promise<void> {
   }
 }
 
-async function checkCapacityWarning(): Promise<void> {
+// Cached pro status — avoids a GET_PRO_STATUS roundtrip on every loadItems()
+let _cachedIsPro: boolean | null = null;
+let _cachedIsProAt = 0;
+const PRO_CACHE_TTL = 60_000; // 1 minute
+
+async function getCachedProStatus(): Promise<boolean> {
+  const now = Date.now();
+  if (_cachedIsPro !== null && now - _cachedIsProAt < PRO_CACHE_TTL) return _cachedIsPro;
   try {
     const proRes = await chrome.runtime.sendMessage({ type: 'GET_PRO_STATUS', payload: {} });
-    const pro = proRes as { isPro: boolean } | null;
-    if (!pro?.isPro && allItems.length >= 450) {
-      showUpgradeBanner(`${allItems.length}/500 clips used. Upgrade for 100,000 clips.`);
-    }
-  } catch { /* */ }
+    _cachedIsPro = !!(proRes as { isPro: boolean })?.isPro;
+    _cachedIsProAt = now;
+  } catch {
+    if (_cachedIsPro === null) _cachedIsPro = false;
+  }
+  return _cachedIsPro;
+}
+
+function checkCapacityWarning(): void {
+  // Use cached pro status — don't block on async call
+  if (_cachedIsPro) return; // Pro users never see this
+  if (allItems.length >= 450) {
+    showUpgradeBanner(`${allItems.length}/500 clips used. Upgrade for 100,000 clips.`);
+  }
 }
 
 // Search debounce
@@ -1068,7 +1084,7 @@ clearConfirmBtn.addEventListener('click', async () => {
 
     // Refresh all data from backend
     try {
-      const items = await chrome.runtime.sendMessage({ type: 'GET_CLIPBOARD_HISTORY', payload: { limit: 5000 } });
+      const items = await chrome.runtime.sendMessage({ type: 'GET_CLIPBOARD_HISTORY', payload: { limit: 500 } });
       allItems = Array.isArray(items) ? items : [];
     } catch {
       allItems = [];
@@ -1578,12 +1594,8 @@ projectDeleteBtn.addEventListener('click', async () => {
 // Shared: check project limit then open overlay
 async function tryOpenNewProject(): Promise<void> {
   const projects = collections.filter((c) => c.isProject);
-  let limit = 3;
-  try {
-    const proRes = await chrome.runtime.sendMessage({ type: 'GET_PRO_STATUS', payload: {} });
-    const pro = proRes as { isPro: boolean } | null;
-    if (pro?.isPro) limit = 100;
-  } catch { /* fallback to free limit */ }
+  const isPro = await getCachedProStatus();
+  const limit = isPro ? 100 : 3;
   if (projects.length >= limit) {
     showUpgradeBanner(`Project limit reached (${projects.length}/${limit}). Upgrade to Pro for more projects.`);
     return;
@@ -1595,12 +1607,8 @@ async function tryOpenNewProject(): Promise<void> {
 // Smart new project from a clip item — pre-fills domain + suggested name
 async function tryOpenNewProjectFromItem(item: ClipItem): Promise<void> {
   const projects = collections.filter((c) => c.isProject);
-  let limit = 3;
-  try {
-    const proRes = await chrome.runtime.sendMessage({ type: 'GET_PRO_STATUS', payload: {} });
-    const pro = proRes as { isPro: boolean } | null;
-    if (pro?.isPro) limit = 100;
-  } catch { /* fallback to free limit */ }
+  const isPro = await getCachedProStatus();
+  const limit = isPro ? 100 : 3;
   if (projects.length >= limit) {
     showUpgradeBanner(`Project limit reached (${projects.length}/${limit}). Upgrade to Pro for more projects.`);
     return;
@@ -1813,13 +1821,8 @@ async function openSettingsModal(): Promise<void> {
     sPdfCleanup.checked = s.pdfCleanup || false;
   } catch { /* use defaults */ }
 
-  // Check pro status
-  try {
-    const proRes = await chrome.runtime.sendMessage({ type: 'GET_PRO_STATUS', payload: {} });
-    settingsIsPro = !!(proRes as { isPro: boolean })?.isPro;
-  } catch {
-    settingsIsPro = false;
-  }
+  // Check pro status (cached — no extra roundtrip)
+  settingsIsPro = await getCachedProStatus();
 
   if (settingsIsPro) {
     sProStatusLabel.textContent = 'Pro Plan Active';
@@ -1949,11 +1952,11 @@ function doOpenNewProjectForm(itemId: string | null, suggestedName: string, sugg
   projectNameInput.select();
 }
 
-// Auto-refresh every 3 seconds
+// Auto-refresh every 10 seconds (was 3s — too aggressive, caused sluggish UI)
 refreshInterval = setInterval(() => {
   loadItems();
   loadCollections();
-}, 3000);
+}, 10_000);
 
 // Apply i18n translations to static HTML elements
 applyI18n();
@@ -1977,6 +1980,9 @@ async function checkPendingProjectCreation(): Promise<void> {
 checkPendingSettingsOpen();
 checkPendingProjectCreation();
 checkPendingLimitMessage();
+
+// Prime pro status cache so checkCapacityWarning is instant
+getCachedProStatus();
 
 loadItems();
 loadCollections().then(() => {

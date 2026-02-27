@@ -277,9 +277,6 @@ const CTX = {
   TOGGLE: 'copyunlock-toggle',
   SEP_1: 'copyunlock-sep-1',
   COPY: 'copyunlock-copy',
-  COPY_CLEAN: 'copyunlock-copy-clean',
-  COPY_CITATION: 'copyunlock-copy-citation',
-  SEP_2: 'copyunlock-sep-2',
   PIN: 'copyunlock-pin',
   SEP_2B: 'copyunlock-sep-2b',
   // Unified "Save to Project" — works on BOTH selection AND page context
@@ -335,35 +332,14 @@ function setupContextMenus(): void {
     });
 
     // ── Copy actions (selection only) ──
+    // ── Copy & Save (selection only) ──
     chrome.contextMenus.create({
       id: CTX.COPY,
       parentId: CTX.ROOT,
-      title: 'Copy to History',
+      title: 'Copy & Save',
       contexts: ['selection'],
     });
 
-    chrome.contextMenus.create({
-      id: CTX.COPY_CLEAN,
-      parentId: CTX.ROOT,
-      title: 'Copy Clean (strip watermarks)',
-      contexts: ['selection'],
-    });
-
-    chrome.contextMenus.create({
-      id: CTX.COPY_CITATION,
-      parentId: CTX.ROOT,
-      title: 'Copy with Citation',
-      contexts: ['selection'],
-    });
-
-    chrome.contextMenus.create({
-      id: CTX.SEP_2,
-      parentId: CTX.ROOT,
-      type: 'separator',
-      contexts: ['selection'],
-    });
-
-    // ── Pin (selection only) ──
     chrome.contextMenus.create({
       id: CTX.PIN,
       parentId: CTX.ROOT,
@@ -655,14 +631,15 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     return;
   }
 
-  // ── Copy actions ──
-  if (menuId === CTX.COPY || menuId === CTX.COPY_CLEAN || menuId === CTX.COPY_CITATION) {
+  // ── Copy & Save (smart: applies watermark strip + citation from settings) ──
+  if (menuId === CTX.COPY) {
     const text = info.selectionText ?? '';
     if (!text) return;
-    const isClean = menuId === CTX.COPY_CLEAN;
-    const isCitation = menuId === CTX.COPY_CITATION;
-    // For "Copy Clean", strip extra whitespace, zero-width chars, and watermark patterns
-    const cleanedText = isClean
+    // Apply clean/citation based on user settings
+    const settings = await getSettings();
+    const doClean = settings.watermarkStripping !== false;
+    const doCitation = settings.autoCitation && settings.autoCitation !== 'none';
+    const cleanedText = doClean
       ? text.replace(/[\u200B-\u200D\uFEFF\u00AD]/g, '').replace(/\s+/g, ' ').trim()
       : text;
     const addResult = await addClipboardItem({
@@ -671,23 +648,21 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
       sourceUrl: tab.url ?? '',
       sourceTitle: tab.title ?? '',
       wasUnlocked: false,
-      watermarkStripped: isClean,
+      watermarkStripped: doClean,
     }, proStatus);
-    // Write to system clipboard via offscreen document
+    // Write to clipboard — append citation if setting enabled
     try {
-      await ensureOffscreen();
       let textToCopy = cleanedText;
-      if (isCitation && addResult) {
+      if (doCitation && addResult) {
         const citation = addResult.entry.citation || tab.url || '';
         textToCopy = `${cleanedText}\n\n— ${citation}`;
       }
+      await ensureOffscreen();
       await chrome.runtime.sendMessage({ type: 'OFFSCREEN_COPY', payload: { text: textToCopy } });
     } catch (err) {
       log.error('clipboard copy failed:', err);
     }
-    // Badge feedback
-    const badgeLabel = isCitation ? '+C' : isClean ? '✓C' : '✓';
-    chrome.action.setBadgeText({ text: badgeLabel, tabId: tab.id });
+    chrome.action.setBadgeText({ text: '✓', tabId: tab.id });
     chrome.action.setBadgeBackgroundColor({ color: '#3b82f6', tabId: tab.id });
     setTimeout(() => { chrome.action.setBadgeText({ text: '', tabId: tab.id }); }, 2000);
     return;
@@ -1448,6 +1423,8 @@ chrome.runtime.onInstalled.addListener(async (details) => {
   chrome.alarms.create(ALARM_LICENSE_CHECK, { periodInMinutes: ALARM_LICENSE_CHECK_INTERVAL_MIN });
   await checkLicense();
   await trackSession();
+  // Pre-create offscreen document so clipboard writes are instant
+  ensureOffscreen().catch(() => {});
 });
 
 chrome.runtime.onStartup.addListener(async () => {
@@ -1461,4 +1438,5 @@ chrome.runtime.onStartup.addListener(async () => {
   chrome.alarms.create(ALARM_LICENSE_CHECK, { periodInMinutes: ALARM_LICENSE_CHECK_INTERVAL_MIN });
   await checkLicense();
   await trackSession();
+  ensureOffscreen().catch(() => {});
 });
