@@ -300,7 +300,96 @@ export async function tagClipboardItem(id: string, tags: string[], proStatus?: P
 export async function clearClipboard(): Promise<void> {
   const database = await getDB();
   await database.clear(IDB_STORE_CLIPS);
+  // Zero out all collection item counts since all clips are gone
+  await recalcAllCollectionCounts(database);
   log.info('clipboard history cleared');
+}
+
+export async function clearSelective(options: { history: boolean; pinned: boolean; projects: boolean }): Promise<{ deleted: number }> {
+  const database = await getDB();
+  let deleted = 0;
+
+  if (options.history && options.pinned && options.projects) {
+    // Nuke everything
+    const clipCount = await database.count(IDB_STORE_CLIPS);
+    await database.clear(IDB_STORE_CLIPS);
+    await database.clear(IDB_STORE_COLLECTIONS);
+    deleted = clipCount;
+    log.info('cleared all data (history + pinned + projects)');
+    return { deleted };
+  }
+
+  // Delete projects/collections if requested
+  if (options.projects) {
+    // First remove all clips that belong to projects
+    const tx0 = database.transaction(IDB_STORE_CLIPS, 'readwrite');
+    let cur0 = await tx0.store.openCursor();
+    while (cur0) {
+      const entry = cur0.value as ClipboardEntry;
+      if (entry.collectionId) {
+        await cur0.delete();
+        deleted++;
+      }
+      cur0 = await cur0.continue();
+    }
+    await tx0.done;
+    // Then remove the collection records
+    await database.clear(IDB_STORE_COLLECTIONS);
+    log.info('cleared all projects/collections');
+  }
+
+  // Selective clip deletion
+  if (options.history || options.pinned) {
+    const tx = database.transaction(IDB_STORE_CLIPS, 'readwrite');
+    let cursor = await tx.store.openCursor();
+    while (cursor) {
+      const entry = cursor.value as ClipboardEntry;
+      const isPinned = !!entry.pinned;
+      const hasCollection = !!entry.collectionId;
+
+      let shouldDelete = false;
+
+      // Delete unpinned, non-project items if clearing history
+      if (options.history && !isPinned && !hasCollection) {
+        shouldDelete = true;
+      }
+      // Delete pinned items if clearing pinned
+      if (options.pinned && isPinned) {
+        shouldDelete = true;
+      }
+
+      if (shouldDelete) {
+        await cursor.delete();
+        deleted++;
+      }
+      cursor = await cursor.continue();
+    }
+    await tx.done;
+    log.info(`selectively cleared ${deleted} items (history=${options.history}, pinned=${options.pinned}, projects=${options.projects})`);
+  }
+
+  // Recalculate counts on any remaining collections
+  await recalcAllCollectionCounts(database);
+
+  return { deleted };
+}
+
+async function recalcAllCollectionCounts(database: IDBPDatabase): Promise<void> {
+  const allCols = await database.getAll(IDB_STORE_COLLECTIONS) as Collection[];
+  for (const col of allCols) {
+    try {
+      const tx = database.transaction(IDB_STORE_CLIPS, 'readonly');
+      const index = tx.store.index('collection');
+      const count = await index.count(IDBKeyRange.only(col.id));
+      if (col.itemCount !== count) {
+        col.itemCount = count;
+        await database.put(IDB_STORE_COLLECTIONS, col);
+      }
+    } catch {
+      col.itemCount = 0;
+      await database.put(IDB_STORE_COLLECTIONS, col);
+    }
+  }
 }
 
 export async function getClipboardCount(): Promise<number> {
@@ -556,8 +645,9 @@ export async function createProject(
 
 export async function updateProject(
   projectId: string,
-  updates: { name?: string; domains?: string[]; description?: string },
+  updates: { name?: string; domains?: string[]; description?: string; color?: string },
 ): Promise<{ ok: boolean; error?: string }> {
+  if (!updates) return { ok: false, error: 'No updates provided' };
   const database = await getDB();
   const project = await database.get(IDB_STORE_COLLECTIONS, projectId) as Collection | undefined;
   if (!project) return { ok: false, error: 'Project not found' };
@@ -574,6 +664,9 @@ export async function updateProject(
   }
   if (updates.description !== undefined) {
     project.description = updates.description.trim();
+  }
+  if (updates.color !== undefined) {
+    project.color = updates.color;
   }
   await database.put(IDB_STORE_COLLECTIONS, project);
   log.info(`updated project: ${project.id}`);

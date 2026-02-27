@@ -243,6 +243,44 @@
     </div>
   </div>
 
+  <!-- Clear Data Modal Overlay -->
+  <div id="clear-overlay" class="add-overlay hidden">
+    <div class="add-overlay-content clear-overlay-content">
+      <div class="add-overlay-header">
+        <span class="add-overlay-title">Clear Data</span>
+        <button id="clear-overlay-close" class="add-overlay-close">&times;</button>
+      </div>
+      <p class="clear-warning-text">Select what you want to delete. This action cannot be undone.</p>
+      <div class="clear-options">
+        <div class="clear-option-row">
+          <div class="clear-option-info">
+            <span class="clear-option-label">Clipboard History</span>
+            <span class="clear-option-desc">All copied text, URLs, and code snippets</span>
+          </div>
+          <label class="settings-toggle"><input type="checkbox" id="clear-history" checked><span class="settings-toggle-track"></span></label>
+        </div>
+        <div class="clear-option-row">
+          <div class="clear-option-info">
+            <span class="clear-option-label">Pinned Items</span>
+            <span class="clear-option-desc">Items you've pinned to keep</span>
+          </div>
+          <label class="settings-toggle"><input type="checkbox" id="clear-pinned"><span class="settings-toggle-track"></span></label>
+        </div>
+        <div class="clear-option-row">
+          <div class="clear-option-info">
+            <span class="clear-option-label">Project Folders</span>
+            <span class="clear-option-desc">All projects and their saved items</span>
+          </div>
+          <label class="settings-toggle"><input type="checkbox" id="clear-projects"><span class="settings-toggle-track"></span></label>
+        </div>
+      </div>
+      <div class="clear-overlay-footer">
+        <button id="clear-cancel-btn" class="clear-cancel-btn">Cancel</button>
+        <button id="clear-confirm-btn" class="clear-confirm-btn">Delete Selected</button>
+      </div>
+    </div>
+  </div>
+
   <footer class="panel-footer">
     <span id="item-count" class="item-count">0 items</span>
     <div class="footer-actions">

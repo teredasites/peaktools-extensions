@@ -2,7 +2,7 @@ import type { Message, ClipboardCapturePayload, ClipboardSearchPayload, Clipboar
 import type { ProStatus, ExtensionSettings } from '../shared/types';
 import { onMessage } from '../shared/messages';
 import { getSettings, saveSettings } from '../shared/storage';
-import { addClipboardItem, getClipboardItems, getClipboardItem, searchClipboard, deleteClipboardItem, pinClipboardItem, tagClipboardItem, clearClipboard, cleanupExpired, getCollections, createCollection, deleteCollection, renameCollection, setItemCollection, getQuickPasteItems, createProject, updateProject, exportProjectAsText, exportProjectAsHtml } from './clipboard-store';
+import { addClipboardItem, getClipboardItems, getClipboardItem, searchClipboard, deleteClipboardItem, pinClipboardItem, tagClipboardItem, clearClipboard, clearSelective, cleanupExpired, getCollections, createCollection, deleteCollection, renameCollection, setItemCollection, getQuickPasteItems, createProject, updateProject, exportProjectAsText, exportProjectAsHtml } from './clipboard-store';
 import { getProfile, clearProfile } from './site-profiles';
 import { trackUnlock, trackCopy, trackSession } from './analytics';
 import { ALARM_CLEANUP, ALARM_CLEANUP_INTERVAL_MIN, ALARM_LICENSE_CHECK, ALARM_LICENSE_CHECK_INTERVAL_MIN, LICENSE_API_BASE, EXTENSION_SLUG, LICENSE_CACHE_KEY, LICENSE_CACHE_TTL_MS, FREE_RETENTION_DAYS, PRO_RETENTION_DAYS, FREE_MAX_PROJECTS, PRO_MAX_PROJECTS } from '../shared/constants';
@@ -1159,6 +1159,14 @@ onMessage((msg: Message, sender, sendResponse) => {
     }
     case 'CLEAR_CLIPBOARD': {
       clearClipboard().then(() => sendResponse({ ok: true })).catch((err) => sendResponse({ ok: false, error: String(err) }));
+      return true;
+    }
+    case 'CLEAR_SELECTIVE': {
+      const opts = payload as { history: boolean; pinned: boolean; projects: boolean };
+      clearSelective(opts).then((result) => {
+        if (opts.projects) refreshCollectionMenuItems();
+        sendResponse({ ok: true, deleted: result.deleted });
+      }).catch((err) => sendResponse({ ok: false, error: String(err) }));
       return true;
     }
     case 'GET_SETTINGS': {

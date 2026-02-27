@@ -128,6 +128,41 @@ const sProStatusLabel = document.getElementById('s-pro-status-label') as HTMLSpa
 const sUpgradeBtn = document.getElementById('s-upgrade-btn') as HTMLButtonElement;
 const sFullSettings = document.getElementById('s-full-settings') as HTMLButtonElement;
 
+// Clear data modal refs
+const clearOverlay = document.getElementById('clear-overlay') as HTMLDivElement;
+const clearOverlayClose = document.getElementById('clear-overlay-close') as HTMLButtonElement;
+const clearHistory = document.getElementById('clear-history') as HTMLInputElement;
+const clearPinned = document.getElementById('clear-pinned') as HTMLInputElement;
+const clearProjects = document.getElementById('clear-projects') as HTMLInputElement;
+const clearCancelBtn = document.getElementById('clear-cancel-btn') as HTMLButtonElement;
+const clearConfirmBtn = document.getElementById('clear-confirm-btn') as HTMLButtonElement;
+
+// ─── EARLY message listener — must register ASAP so service worker messages aren't lost ───
+chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
+  if (!msg?.type) return;
+  switch (msg.type) {
+    case 'SIDEPANEL_OPEN_NEW_PROJECT': {
+      const p = msg.payload as { itemId?: string; suggestedName?: string; suggestedDomain?: string } | undefined;
+      doOpenNewProjectForm(p?.itemId ?? null, p?.suggestedName ?? '', p?.suggestedDomain ?? '');
+      sendResponse({ ok: true });
+      break;
+    }
+    case 'SIDEPANEL_OPEN_SETTINGS': {
+      openSettingsModal().catch(() => {
+        settingsOverlay.classList.remove('hidden');
+      });
+      sendResponse({ ok: true });
+      break;
+    }
+    case 'SIDEPANEL_SHOW_LIMIT_MESSAGE': {
+      const message2 = (msg.payload as { message?: string })?.message ?? 'Project limit reached. Upgrade to Pro for more projects.';
+      showUpgradeBanner(message2);
+      sendResponse({ ok: true });
+      break;
+    }
+  }
+});
+
 // Virtual Scrolling
 const ITEM_HEIGHT = 62;
 const BUFFER_SIZE = 5;
@@ -986,15 +1021,66 @@ detailOpenUrl.addEventListener('click', () => {
   if (url) chrome.tabs.create({ url });
 });
 
-// Clear all
-clearAllBtn.addEventListener('click', async () => {
-  const msg = chrome.i18n.getMessage('clearConfirm') || 'Clear all clipboard history?';
-  if (!confirm(msg)) return;
+// Clear all — open the Clear Data modal
+clearAllBtn.addEventListener('click', () => {
+  // Reset toggles to defaults
+  clearHistory.checked = true;
+  clearPinned.checked = false;
+  clearProjects.checked = false;
+  clearConfirmBtn.disabled = false;
+  clearConfirmBtn.textContent = 'Delete Selected';
+  updateClearBtnState();
+  clearOverlay.classList.remove('hidden');
+});
+
+function updateClearBtnState(): void {
+  const anySelected = clearHistory.checked || clearPinned.checked || clearProjects.checked;
+  clearConfirmBtn.disabled = !anySelected;
+}
+
+clearHistory.addEventListener('change', updateClearBtnState);
+clearPinned.addEventListener('change', updateClearBtnState);
+clearProjects.addEventListener('change', updateClearBtnState);
+
+function closeClearModal(): void {
+  clearOverlay.classList.add('hidden');
+}
+
+clearOverlayClose.addEventListener('click', closeClearModal);
+clearCancelBtn.addEventListener('click', closeClearModal);
+clearOverlay.addEventListener('keydown', (e: KeyboardEvent) => {
+  if (e.key === 'Escape') closeClearModal();
+});
+
+clearConfirmBtn.addEventListener('click', async () => {
+  const opts = {
+    history: clearHistory.checked,
+    pinned: clearPinned.checked,
+    projects: clearProjects.checked,
+  };
+  if (!opts.history && !opts.pinned && !opts.projects) return;
+
+  clearConfirmBtn.disabled = true;
+  clearConfirmBtn.textContent = 'Deleting...';
+
   try {
-    await chrome.runtime.sendMessage({ type: 'CLEAR_CLIPBOARD', payload: {} });
-    allItems = [];
+    await chrome.runtime.sendMessage({ type: 'CLEAR_SELECTIVE', payload: opts });
+
+    // Refresh all data from backend
+    try {
+      const items = await chrome.runtime.sendMessage({ type: 'GET_CLIPBOARD_HISTORY', payload: { limit: 5000 } });
+      allItems = Array.isArray(items) ? items : [];
+    } catch {
+      allItems = [];
+    }
+    await loadCollections();
+    renderProjectsList();
     applyFilter();
-  } catch { /* */ }
+    closeClearModal();
+  } catch {
+    clearConfirmBtn.textContent = 'Error — try again';
+    clearConfirmBtn.disabled = false;
+  }
 });
 
 // Scroll-based re-render for virtual scroll
@@ -1694,9 +1780,12 @@ projectSaveBtn.addEventListener('click', async () => {
 // Footer "+ Project" button — always accessible from any view
 newProjectFooterBtn.addEventListener('click', () => { tryOpenNewProject(); });
 
-// Settings button — opens in-panel settings modal
+// Settings button — opens in-panel settings modal (always show overlay even if data fetch fails)
 openSettingsBtn.addEventListener('click', () => {
-  openSettingsModal().catch(() => { chrome.runtime.openOptionsPage(); });
+  openSettingsModal().catch(() => {
+    // Even if data fetch fails, still show the overlay with defaults
+    settingsOverlay.classList.remove('hidden');
+  });
 });
 
 // Detail panel: "+ new project" button
@@ -1800,6 +1889,13 @@ sUpgradeBtn.addEventListener('click', () => {
   chrome.runtime.sendMessage({ type: 'OPEN_CHECKOUT', payload: { plan: 'monthly' } });
 });
 
+// Show upgrade prompt when user clicks disabled Pro-only toggles
+sPdfCleanup.closest('.settings-toggle')?.addEventListener('click', () => {
+  if (sPdfCleanup.disabled) {
+    showUpgradeBanner('PDF Cleanup is a Pro feature. Upgrade to unlock it.');
+  }
+});
+
 sFullSettings.addEventListener('click', () => {
   chrome.runtime.openOptionsPage();
   closeSettingsModal();
@@ -1836,29 +1932,7 @@ document.addEventListener('visibilitychange', () => {
   }
 });
 
-// ─── Direct message listener — receives commands from service worker ───
-chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
-  if (!msg?.type) return;
-  switch (msg.type) {
-    case 'SIDEPANEL_OPEN_NEW_PROJECT': {
-      const p = msg.payload as { itemId?: string; suggestedName?: string; suggestedDomain?: string } | undefined;
-      doOpenNewProjectForm(p?.itemId ?? null, p?.suggestedName ?? '', p?.suggestedDomain ?? '');
-      sendResponse({ ok: true });
-      break;
-    }
-    case 'SIDEPANEL_OPEN_SETTINGS': {
-      openSettingsModal().catch(() => {});
-      sendResponse({ ok: true });
-      break;
-    }
-    case 'SIDEPANEL_SHOW_LIMIT_MESSAGE': {
-      const message = (msg.payload as { message?: string })?.message ?? 'Project limit reached. Upgrade to Pro for more projects.';
-      showUpgradeBanner(message);
-      sendResponse({ ok: true });
-      break;
-    }
-  }
-});
+// (Message listener moved to top of file for early registration — see line 131)
 
 function doOpenNewProjectForm(itemId: string | null, suggestedName: string, suggestedDomain: string): void {
   pendingItemIdForProject = itemId;
@@ -1899,10 +1973,19 @@ async function checkPendingProjectCreation(): Promise<void> {
   } catch { /* */ }
 }
 
-// Init
+// Init — check pending flags IMMEDIATELY, don't wait for data loads
+checkPendingSettingsOpen();
+checkPendingProjectCreation();
+checkPendingLimitMessage();
+
 loadItems();
 loadCollections().then(() => {
+  // Re-check after collections load in case session storage was written after our first check
   checkPendingProjectCreation();
   checkPendingSettingsOpen();
   checkPendingLimitMessage();
 });
+
+// Poll for pending flags briefly after init to catch late session storage writes from service worker
+const _pendingPoll = setInterval(() => { checkPendingSettingsOpen(); checkPendingProjectCreation(); }, 200);
+setTimeout(() => clearInterval(_pendingPoll), 3000);

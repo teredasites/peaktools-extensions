@@ -1553,6 +1553,17 @@ body {
   background: #fff;
 }
 
+.settings-toggle input:disabled + .settings-toggle-track {
+  background: var(--border);
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.settings-toggle input:disabled + .settings-toggle-track::after {
+  background: var(--text-secondary);
+  opacity: 0.5;
+}
+
 .settings-select {
   padding: 4px 8px;
   background: var(--bg-secondary);
@@ -1632,4 +1643,99 @@ body {
 
 .settings-link-btn:hover {
   opacity: 1;
+}
+
+/* ─── Clear Data Modal ─── */
+.clear-overlay-content {
+  max-width: 340px;
+}
+
+.clear-warning-text {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 0 0 12px 0;
+  padding: 0 16px;
+  line-height: 1.4;
+}
+
+.clear-options {
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.clear-option-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.clear-option-row:last-child {
+  border-bottom: none;
+}
+
+.clear-option-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.clear-option-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.clear-option-desc {
+  font-size: 11px;
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+
+.clear-overlay-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+}
+
+.clear-cancel-btn {
+  padding: 6px 16px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 12px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.clear-cancel-btn:hover {
+  background: var(--bg-secondary);
+}
+
+.clear-confirm-btn {
+  padding: 6px 16px;
+  border: none;
+  border-radius: 6px;
+  background: #ef4444;
+  color: #fff;
+  font-size: 12px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.clear-confirm-btn:hover {
+  background: #dc2626;
+}
+
+.clear-confirm-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
