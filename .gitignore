@@ -28,7 +28,7 @@ desktop.ini
 *.log
 npm-debug.log*
 
-# Claude/Agent private files
+# Local dev notes
 CLAUDE.md
 MEMORY.md
 HANDOFF.md
