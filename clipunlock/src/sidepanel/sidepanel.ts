@@ -150,9 +150,7 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
       break;
     }
     case 'SIDEPANEL_OPEN_SETTINGS': {
-      openSettingsModal().catch(() => {
-        settingsOverlay.classList.remove('hidden');
-      });
+      openSettingsModal().catch(() => {});
       sendResponse({ ok: true });
       break;
     }
@@ -1790,12 +1788,9 @@ projectSaveBtn.addEventListener('click', async () => {
 // Footer "+ Project" button — always accessible from any view
 newProjectFooterBtn.addEventListener('click', () => { tryOpenNewProject(); });
 
-// Settings button — opens in-panel settings modal (always show overlay even if data fetch fails)
+// Settings button — opens in-panel settings modal (overlay shown immediately, never blocks)
 openSettingsBtn.addEventListener('click', () => {
-  openSettingsModal().catch(() => {
-    // Even if data fetch fails, still show the overlay with defaults
-    settingsOverlay.classList.remove('hidden');
-  });
+  openSettingsModal().catch(() => {});
 });
 
 // Detail panel: "+ new project" button
@@ -1805,28 +1800,9 @@ detailNewProject.addEventListener('click', () => { tryOpenNewProject(); });
 
 let settingsIsPro = false;
 
-async function openSettingsModal(): Promise<void> {
-  // Load current settings from storage
-  try {
-    const result = await chrome.storage.sync.get('copyunlock_settings');
-    const s = result.copyunlock_settings || {};
-    sEnabled.checked = s.enabled !== false;
-    sMode.value = s.defaultMode || 'auto';
-    sNotifications.checked = s.showNotifications !== false;
-    sContextMenu.checked = s.contextMenuEnabled !== false;
-    sClipboard.checked = s.clipboardHistoryEnabled !== false;
-    sMaxItems.value = String(s.maxItems || 500);
-    sRetention.value = String(s.retentionDays || 30);
-    sWatermark.checked = s.watermarkStripping !== false;
-    sCitation.value = s.autoCitation || 'url';
-    sPasteFormat.value = s.defaultPasteFormat || 'plain';
-    sPdfCleanup.checked = s.pdfCleanup || false;
-  } catch { /* use defaults */ }
-
-  // Check pro status (cached — no extra roundtrip)
-  settingsIsPro = await getCachedProStatus();
-
-  if (settingsIsPro) {
+function applyProStatusToSettings(isPro: boolean): void {
+  settingsIsPro = isPro;
+  if (isPro) {
     sProStatusLabel.textContent = 'Pro Plan Active';
     sUpgradeBtn.classList.add('hidden');
     if (sManageRow) sManageRow.classList.remove('hidden');
@@ -1849,8 +1825,44 @@ async function openSettingsModal(): Promise<void> {
     if (fmtOpt) fmtOpt.disabled = true;
     if (sCitation.value === 'formatted') sCitation.value = 'url';
   }
+}
 
+async function openSettingsModal(): Promise<void> {
+  // Dismiss any open context menu first
+  dismissContextMenu();
+  // Show overlay IMMEDIATELY — never block on async calls
+  // Use last-known pro status as initial state (updated async below)
+  applyProStatusToSettings(_cachedIsPro === true);
   settingsOverlay.classList.remove('hidden');
+
+  // Load settings from storage (non-blocking — overlay is already visible)
+  try {
+    const result = await chrome.storage.sync.get('copyunlock_settings');
+    const s = result.copyunlock_settings || {};
+    sEnabled.checked = s.enabled !== false;
+    sMode.value = s.defaultMode || 'auto';
+    sNotifications.checked = s.showNotifications !== false;
+    sContextMenu.checked = s.contextMenuEnabled !== false;
+    sClipboard.checked = s.clipboardHistoryEnabled !== false;
+    sMaxItems.value = String(s.maxItems || 500);
+    sRetention.value = String(s.retentionDays || 30);
+    sWatermark.checked = s.watermarkStripping !== false;
+    sCitation.value = s.autoCitation || 'url';
+    sPasteFormat.value = s.defaultPasteFormat || 'plain';
+    sPdfCleanup.checked = s.pdfCleanup || false;
+    // Re-apply pro constraints after loading settings (max values may need clamping)
+    applyProStatusToSettings(settingsIsPro);
+  } catch { /* use defaults */ }
+
+  // Async update pro status with 3s timeout — if it takes longer, cached status stands
+  try {
+    const proPromise = getCachedProStatus();
+    const timeoutPromise = new Promise<boolean>((_, reject) => setTimeout(() => reject(new Error('timeout')), 3000));
+    const isPro = await Promise.race([proPromise, timeoutPromise]);
+    applyProStatusToSettings(isPro);
+  } catch {
+    // Timeout or error — keep whatever status we already applied
+  }
 }
 
 function closeSettingsModal(): void {
@@ -1930,8 +1942,9 @@ async function checkPendingSettingsOpen(): Promise<void> {
   try {
     const data = await chrome.storage.session.get('openSettingsModal');
     if (data.openSettingsModal) {
-      await chrome.storage.session.remove('openSettingsModal');
       openSettingsModal();
+      // Remove flag AFTER opening (not before) so retries can re-trigger if it fails
+      await chrome.storage.session.remove('openSettingsModal');
     }
   } catch { /* */ }
 }
