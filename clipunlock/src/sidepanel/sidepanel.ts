@@ -1498,6 +1498,16 @@ async function openProjectDetail(projectId: string): Promise<void> {
           openDetail(0);
         }
       });
+
+      // Right-click context menu for project items
+      el.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        const itemId = (el as HTMLElement).dataset.id || '';
+        const item = allItems.find((ai) => ai.id === itemId);
+        if (item) {
+          showClipContextMenu(e as MouseEvent, itemId, item);
+        }
+      });
     });
   }
 
